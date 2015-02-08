@@ -50,8 +50,6 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         celular.setText("");
         dni.setText("");
         direccion.setText("");
-        
-
     }
 
     public void CargarCampos(Cliente cliente) {

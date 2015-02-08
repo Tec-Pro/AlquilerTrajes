@@ -13,32 +13,25 @@ import org.javalite.activejdbc.Base;
  */
 public class ABMArticulo {
 
-    //busca por el codigo, no por el id
-    public Articulo getArticulo(Articulo p) {
-        return Articulo.first("codigo =?", p.get("codigo"));
-    }
-
+    
     //existe  el articulo?
     public boolean findArticulo(Articulo p) {
-        return (Articulo.first("codigo = ?", p.get("codigo")) != null);
+        return (Articulo.first("id = ?", p.get("id")) != null);
     }
 
     public boolean alta(Articulo art) {
-        if (!findArticulo(art)) {
-   
+        if (!findArticulo(art)) {   
             Base.openTransaction();
             Articulo nuevo = Articulo.create(
-                    "id", art.get("id"),
                     "modelo", art.get("modelo"),
                     "marca", art.get("marca"),
                     "stock", art.get("stock"),
-                    "precio", art.get("precio_compra"),
-                    "precio_alquiler", art.get("precio_venta"),
-                    "descripcion", art.get("descripcion") 
-                    );         
-
+                    "precio_compra", art.get("precio_compra"),
+                    "precio_alquiler", art.get("precio_alquiler"),
+                    "descripcion", art.get("descripcion"),
+                    "talle", art.get("talle"), 
+                    "tipo", art.get("tipo"));
             nuevo.saveIt();
-
             Base.commitTransaction();
             return true;
         } else {
@@ -60,18 +53,18 @@ public class ABMArticulo {
 
     public boolean modificar(Articulo art) {
         boolean ret = false;
-        Articulo viejo = Articulo.findFirst("codigo = ?", art.get("codigo"));
+        Articulo viejo = Articulo.findFirst("id = ?", art.get("id"));
         if (viejo != null) {
-            Base.openTransaction();
-
-            
+            Base.openTransaction();            
             viejo.set(
                    "modelo", art.get("modelo"),
                     "marca", art.get("marca"),
                     "stock", art.get("stock"),
-                    "precio", art.get("precio_compra"),
-                    "precio_alquiler", art.get("precio_venta"),
-                    "descripcion", art.get("descripcion"));
+                    "precio_compra", art.get("precio_compra"),
+                    "precio_alquiler", art.get("precio_alquiler"),
+                    "descripcion", art.get("descripcion"),
+                    "talle", art.get("talle"), 
+                    "tipo", art.get("tipo"));
             viejo.saveIt();
             Base.commitTransaction();
         }

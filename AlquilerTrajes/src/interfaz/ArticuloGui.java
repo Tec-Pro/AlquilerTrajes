@@ -6,19 +6,14 @@
 package interfaz;
 
 import java.awt.event.ActionListener;
-import java.util.Date;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import modelos.Articulo;
-import org.javalite.activejdbc.Base;
 
 /**
  *
@@ -46,47 +41,43 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
 
     public void habilitarCampos(boolean b) {
         marca.setEnabled(b);
-        codigo.setEnabled(b);
-        nombre.setEnabled(b);
+        id.setEnabled(b);
+        modelo.setEnabled(b);
         descripcion.setEnabled(b);
-        precioCompra.setEnabled(b);
+        precioAlquiler.setEnabled(b);
         stock.setEnabled(b);
-        precioVenta.setEnabled(b);
-        stockMinimo.setEnabled(b);
-        proveedores.setEnabled(b);
+        precioCompra.setEnabled(b);
+        talle.setEnabled(b);
+        tipo.setEnabled(b);
     }
 
     public void limpiarCampos() {
         marca.setText("");
-        nombre.setText("");
+        modelo.setText("");
         stock.setText("");
-        stockMinimo.setText("");
-        codigo.setText("");
+        talle.setText("");
+        id.setText("");
         descripcion.setText("");
+        precioAlquiler.setText("");
         precioCompra.setText("");
-        precioVenta.setText("");
-        proveedores.removeAllItems();
+        tipo.removeAllItems();
     }
 
 
-    public void CargarCampos(Articulo art) {        
-       }
+    public void CargarCampos(Articulo art) {  
+        id.setText(art.getString("id"));
+        modelo.setText(art.getString("modelo"));
+        marca.setText(art.getString("marca"));
+        precioCompra.setText(art.getBigDecimal("precio_compra").setScale(2).toString());
+        stock.setText(art.getString("stock_actual"));
+        precioAlquiler.setText(art.getBigDecimal("precio_alquiler").setScale(2).toString());
+        talle.setText(art.getString("talle"));
+        descripcion.setText(art.getString("descripcion"));
+        tipo.addItem(art.getString("tipo"));
+        tipo.setSelectedItem(art.getString("tipo"));
+   }
 
-        /*va true si se quiere usar para mostrarla por pantalla es decir 12/12/2014 y false si va 
-     para la base de datos, es decir 2014/12/12*/
-    public String dateToMySQLDate(Date fecha, boolean paraMostrar) {
-        if(fecha!=null){
-        if (paraMostrar) {
-            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
-            return sdf.format(fecha);
-        } else {
-            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
-            return sdf.format(fecha);
-        }
-        }else{
-            return "";
-        }
-    }
+  
     public DefaultTableModel getTablaArticulosDefault() {
         return tablaArticulosDefault;
     }
@@ -104,8 +95,8 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
         return busqueda;
     }
 
-    public JTextField getCodigo() {
-        return codigo;
+    public JTextField getId() {
+        return id;
     }
 
     public JTextArea getDescripcion() {
@@ -125,8 +116,8 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
         return modificar;
     }
 
-    public JTextField getNombre() {
-        return nombre;
+    public JTextField getModelo() {
+        return modelo;
     }
 
     public JLabel getCantidadArticulos() {
@@ -137,24 +128,24 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
         return nuevo;
     }
 
+    public JTextField getPrecioAlquiler() {
+        return precioAlquiler;
+    }
+
     public JTextField getPrecioCompra() {
         return precioCompra;
     }
-
-    public JTextField getPrecioVenta() {
-        return precioVenta;
-    }
-
-    public JComboBox getProveedores() {
-        return proveedores;
+    
+    public JComboBox getTipo() {
+        return tipo;
     }
 
     public JTextField getStock() {
         return stock;
     }
 
-    public JTextField getStockMinimo() {
-        return stockMinimo;
+    public JTextField getTalle() {
+        return talle;
     }
 
     /**
@@ -179,24 +170,24 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
         modificar = new javax.swing.JButton();
         guardar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        codigo = new javax.swing.JTextField();
+        id = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         marca = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         descripcion = new javax.swing.JTextArea();
-        precioCompra = new javax.swing.JTextField();
+        precioAlquiler = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        precioVenta = new javax.swing.JTextField();
+        precioCompra = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        proveedores = new javax.swing.JComboBox();
+        tipo = new javax.swing.JComboBox();
         jLabel10 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        nombre = new javax.swing.JTextField();
+        modelo = new javax.swing.JTextField();
         stock = new javax.swing.JTextField();
-        stockMinimo = new javax.swing.JTextField();
+        talle = new javax.swing.JTextField();
         cantidadArticulos = new javax.swing.JLabel();
 
         setClosable(true);
@@ -220,14 +211,14 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Id fabrica", "Nombre", "Marca", "Descrip.", "Precio compra", "Precio venta", "Id interno"
+                "Id", "Tipo", "Modelo", "Marca", "Talle", "Stock", "Precio alquiler"
             }
         ) {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, true, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -300,9 +291,9 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
 
         jLabel1.setText("ID");
 
-        codigo.setToolTipText("Código del artículo");
-        codigo.setDisabledTextColor(new java.awt.Color(16, 2, 245));
-        codigo.setEnabled(false);
+        id.setToolTipText("Código del artículo");
+        id.setDisabledTextColor(new java.awt.Color(16, 2, 245));
+        id.setEnabled(false);
 
         jLabel3.setText("Modelo");
 
@@ -321,37 +312,37 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
         descripcion.setEnabled(false);
         jScrollPane3.setViewportView(descripcion);
 
-        precioCompra.setToolTipText("Precio de compra");
-        precioCompra.setDisabledTextColor(new java.awt.Color(16, 2, 245));
-        precioCompra.setEnabled(false);
+        precioAlquiler.setToolTipText("Precio de compra");
+        precioAlquiler.setDisabledTextColor(new java.awt.Color(16, 2, 245));
+        precioAlquiler.setEnabled(false);
 
         jLabel5.setText("Precio Alquiler");
 
         jLabel7.setText("Stock");
 
-        jLabel6.setText("Precio");
+        jLabel6.setText("Precio Compra");
 
-        precioVenta.setToolTipText("Precio de venta");
-        precioVenta.setDisabledTextColor(new java.awt.Color(16, 2, 245));
-        precioVenta.setEnabled(false);
+        precioCompra.setToolTipText("Precio de venta");
+        precioCompra.setDisabledTextColor(new java.awt.Color(16, 2, 245));
+        precioCompra.setEnabled(false);
 
         jLabel9.setText("Talle");
 
-        proveedores.setEnabled(false);
+        tipo.setEnabled(false);
 
         jLabel10.setText("Tipo");
 
         jLabel8.setText("Marca");
 
-        nombre.setToolTipText("Marca del artículo");
-        nombre.setDisabledTextColor(new java.awt.Color(16, 2, 245));
-        nombre.setEnabled(false);
+        modelo.setToolTipText("Marca del artículo");
+        modelo.setDisabledTextColor(new java.awt.Color(16, 2, 245));
+        modelo.setEnabled(false);
 
         stock.setDisabledTextColor(new java.awt.Color(16, 2, 245));
         stock.setEnabled(false);
 
-        stockMinimo.setDisabledTextColor(new java.awt.Color(16, 2, 245));
-        stockMinimo.setEnabled(false);
+        talle.setDisabledTextColor(new java.awt.Color(16, 2, 245));
+        talle.setEnabled(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -362,7 +353,7 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(codigo)
+                        .addComponent(id)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -370,7 +361,7 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(modelo, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(80, 80, 80))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -383,11 +374,11 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
                             .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(6, 6, 6)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(proveedores, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(precioCompra, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
-                                    .addComponent(precioVenta))
+                                    .addComponent(precioAlquiler, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+                                    .addComponent(precioCompra))
                                 .addGap(0, 0, 0)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -399,7 +390,7 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel9)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(stockMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                                        .addComponent(talle, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -408,11 +399,11 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(codigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(marca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
-                    .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(modelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(1, 1, 1)
@@ -427,20 +418,20 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
-                            .addComponent(precioCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(precioAlquiler, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5)
                             .addComponent(stock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(precioVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(precioCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel6))
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(stockMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(talle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel9)))
                         .addGap(8, 8, 8)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(proveedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10))
                         .addGap(0, 0, Short.MAX_VALUE))))
             .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -494,9 +485,9 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
     private javax.swing.JButton borrar;
     private javax.swing.JTextField busqueda;
     private javax.swing.JLabel cantidadArticulos;
-    private javax.swing.JTextField codigo;
     private javax.swing.JTextArea descripcion;
     private javax.swing.JButton guardar;
+    private javax.swing.JTextField id;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -514,13 +505,13 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField marca;
+    private javax.swing.JTextField modelo;
     private javax.swing.JButton modificar;
-    private javax.swing.JTextField nombre;
     private javax.swing.JButton nuevo;
+    private javax.swing.JTextField precioAlquiler;
     private javax.swing.JTextField precioCompra;
-    private javax.swing.JTextField precioVenta;
-    private javax.swing.JComboBox proveedores;
     private javax.swing.JTextField stock;
-    private javax.swing.JTextField stockMinimo;
+    private javax.swing.JTextField talle;
+    private javax.swing.JComboBox tipo;
     // End of variables declaration//GEN-END:variables
 }

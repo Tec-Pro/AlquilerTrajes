@@ -10,7 +10,6 @@ import org.javalite.activejdbc.Model;
  *
  * @author jacinto
  */
-public class Cliente extends Model{
- 
+public class Baja extends Model{
     
 }

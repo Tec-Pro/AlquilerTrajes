@@ -11,18 +11,6 @@ import org.javalite.activejdbc.Model;
  * @author nico
  */
 public class Articulo extends Model {
-    
-    
-        private String nombreProveedor;
 
-
-    public String getNombreProv() {
-        return nombreProveedor;
-    }
-
-
-    public void setNombreProv(String nombreProv) {
-        this.nombreProveedor =nombreProv;
-    }
-    
+       
 }

@@ -73,7 +73,7 @@ public class ControladorArticulo implements ActionListener, FocusListener {
 
     private void realizarBusqueda() {
         Base.openTransaction();
-        listArticulos = Articulo.where("es_articulo = 1 and (codigo like ? or descripcion like ? or marca like ? or id like ? or nombre like ? or id like ?)", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%");
+        listArticulos = Articulo.where("es_articulo = 1 and (modelo like ? or descripcion like ? or marca like ? or id like ? or nombre like ? or id like ?)", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%");
         Base.openTransaction();
         actualizarLista();
         
@@ -102,7 +102,7 @@ public class ControladorArticulo implements ActionListener, FocusListener {
             editandoInfo = false;
             articuloGui.limpiarCampos();
             Base.openTransaction();
-            articulo = Articulo.findFirst("codigo = ?", tablaArticulos.getValueAt(tablaArticulos.getSelectedRow(), 0));
+            articulo = Articulo.findFirst("id = ?", tablaArticulos.getValueAt(tablaArticulos.getSelectedRow(), 0));
             Base.commitTransaction();
             articuloGui.CargarCampos(articulo);
             
@@ -117,20 +117,17 @@ public class ControladorArticulo implements ActionListener, FocusListener {
         while (it.hasNext()) {
             Articulo art = it.next();
             Object row[] = new String[7];
-            row[0] = art.getString("codigo");
-            row[1] = art.getString("nombre");
-            row[2] = art.getString("marca");
-            row[3] = art.getString("descripcion");
-            row[4] = art.getBigDecimal("precio_compra").setScale(2, RoundingMode.CEILING).toString();
-            row[5] = art.getBigDecimal("precio_venta").setScale(2, RoundingMode.CEILING).toString();
-            row[6]= art.getString("id");
+            row[0] = art.getString("id");
+            row[1] = art.getString("tipo");
+            row[2] = art.getString("modelo");
+            row[3] = art.getString("marca");
+            row[4] = art.getString("talle");
+            row[5] = art.getString("stock");
+            row[6] = art.getBigDecimal("precio_alquiler").setScale(2, RoundingMode.CEILING).toString();
             tablaArtDefault.addRow(row);
-
         }
         articuloGui.getCantidadArticulos().setText(String.valueOf(tablaArticulos.getRowCount()));
-        
-        
-    }
+   }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -143,7 +140,6 @@ public class ControladorArticulo implements ActionListener, FocusListener {
             articuloGui.getBorrar().setEnabled(false);
             articuloGui.getModificar().setEnabled(false);
             articuloGui.getGuardar().setEnabled(true);
-            articuloGui.getProveedores().setSelectedItem("");
         }
         
              
@@ -172,8 +168,8 @@ public class ControladorArticulo implements ActionListener, FocusListener {
             articuloGui.habilitarCampos(false);
             
             
-            if (articulo.getString("codigo") != null && !editandoInfo) {
-                Integer resp = JOptionPane.showConfirmDialog(articuloGui, "¿Desea borrar el artículo " + articuloGui.getCodigo().getText(), "Confirmar borrado", JOptionPane.YES_NO_OPTION);
+            if (articulo.getString("id") != null && !editandoInfo) {
+                Integer resp = JOptionPane.showConfirmDialog(articuloGui, "¿Desea borrar el artículo " + articuloGui.getId().getText(), "Confirmar borrado", JOptionPane.YES_NO_OPTION);
                 if (resp == JOptionPane.YES_OPTION) {
                     
                     Boolean seBorro = abmArticulo.baja(articulo);
@@ -199,7 +195,7 @@ public class ControladorArticulo implements ActionListener, FocusListener {
             System.out.println("Boton modificar pulsado");
             
             articuloGui.habilitarCampos(true);
-            articuloGui.getCodigo().setEnabled(false);
+            articuloGui.getId().setEnabled(false);
             editandoInfo = true;
             isNuevo = false;
             //articuloGui.getCodigo().setEnabled(false);
@@ -230,27 +226,13 @@ public class ControladorArticulo implements ActionListener, FocusListener {
         }
    }
 
-    /*private void actualizarPrecioVenta() {
-
-     try {
-     Double precioCompra = Double.valueOf(articuloGui.getPrecioCompra().getText());
-     BigDecimal precioVenta = BigDecimal.valueOf(precioCompra * 5.0).setScale(2, RoundingMode.CEILING);
-     articuloGui.getPrecioVenta().setText(precioVenta.toString());
-     } catch (NumberFormatException | ClassCastException e) {
-     }
-     }*/
-
-
- 
-
     private boolean cargarDatosProd(Articulo art) {
         boolean ret = true;
         try {
-            String codigo = articuloGui.getCodigo().getText();
-            art.set("codigo", codigo);
+            art.set("id", articuloGui.getId().getText());
         } catch (ClassCastException e) {
             ret = false;
-            JOptionPane.showMessageDialog(articuloGui, "Error en el codigo", "Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(articuloGui, "Error en el id", "Error!", JOptionPane.ERROR_MESSAGE);
         }
         try {
             String marca = articuloGui.getMarca().getText();
@@ -261,11 +243,11 @@ public class ControladorArticulo implements ActionListener, FocusListener {
         }
         
                 try {
-            String nombre = articuloGui.getNombre().getText();
-            art.set("nombre", nombre);
+            String modelo = articuloGui.getModelo().getText();
+            art.set("modelo", modelo);
         } catch (ClassCastException e) {
             ret = false;
-            JOptionPane.showMessageDialog(articuloGui, "Error en el nombre", "Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(articuloGui, "Error en el modelo", "Error!", JOptionPane.ERROR_MESSAGE);
         }
         
         try {
@@ -283,36 +265,35 @@ public class ControladorArticulo implements ActionListener, FocusListener {
             JOptionPane.showMessageDialog(articuloGui, "Error en precio de compra", "Error!", JOptionPane.ERROR_MESSAGE);
         }
         try {
-            Double precioVenta = Double.valueOf(articuloGui.getPrecioVenta().getText());
-            art.set("precio_venta", BigDecimal.valueOf(precioVenta).setScale(2, RoundingMode.CEILING));
+            Double precioAlquiler = Double.valueOf(articuloGui.getPrecioAlquiler().getText());
+            art.set("precio_alquiler", BigDecimal.valueOf(precioAlquiler).setScale(2, RoundingMode.CEILING));
         } catch (NumberFormatException | ClassCastException e) {
             ret = false;
-            JOptionPane.showMessageDialog(articuloGui, "Error en precio de venta", "Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(articuloGui, "Error en precio de alquiler", "Error!", JOptionPane.ERROR_MESSAGE);
         }
         try {
             Float stock= Float.valueOf(articuloGui.getStock().getText());
-            art.set("stock_actual", articuloGui.getStock().getText());
+            art.set("stock", articuloGui.getStock().getText());
 
                  } catch (NumberFormatException | ClassCastException e) {
             ret = false;
             JOptionPane.showMessageDialog(articuloGui, "Error en el stock", "Error!", JOptionPane.ERROR_MESSAGE);
         }
-      
-        try {
-            Float stock= Float.valueOf(articuloGui.getStockMinimo().getText());
-            art.set("stock_minimo", articuloGui.getStockMinimo().getText());
-
-                 } catch (NumberFormatException | ClassCastException e) {
+          try {
+            String tipo =articuloGui.getTipo().getSelectedItem().toString();
+            art.set("tipo",tipo);
+        } catch (NumberFormatException | ClassCastException e) {
             ret = false;
-            JOptionPane.showMessageDialog(articuloGui, "Error en el stock minimo", "Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(articuloGui, "Error en el tipo", "Error!", JOptionPane.ERROR_MESSAGE);
         }
-        Object prv=articuloGui.getProveedores().getSelectedItem();
-        if(prv!=null){
-            art.setNombreProv(prv.toString());
+            try {
+            String talle = articuloGui.getTalle().getText();
+            art.set("precio_alquiler", talle);
+        } catch (NumberFormatException | ClassCastException e) {
+            ret = false;
+            JOptionPane.showMessageDialog(articuloGui, "Error en el talle", "Error!", JOptionPane.ERROR_MESSAGE);
         }
-        else{
-            art.setNombreProv("");
-        }       
+       
         return ret;
     }
 

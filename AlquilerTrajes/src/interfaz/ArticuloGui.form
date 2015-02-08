@@ -109,13 +109,13 @@
                     <Property name="autoCreateRowSorter" type="boolean" value="true"/>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="7" rowCount="0">
-                        <Column editable="false" title="Id fabrica" type="java.lang.String"/>
-                        <Column editable="false" title="Nombre" type="java.lang.String"/>
+                        <Column editable="false" title="Id" type="java.lang.String"/>
+                        <Column editable="true" title="Tipo" type="java.lang.String"/>
+                        <Column editable="false" title="Modelo" type="java.lang.String"/>
                         <Column editable="false" title="Marca" type="java.lang.String"/>
-                        <Column editable="false" title="Descrip." type="java.lang.String"/>
-                        <Column editable="false" title="Precio compra" type="java.lang.String"/>
-                        <Column editable="false" title="Precio venta" type="java.lang.String"/>
-                        <Column editable="false" title="Id interno" type="java.lang.String"/>
+                        <Column editable="false" title="Talle" type="java.lang.String"/>
+                        <Column editable="false" title="Stock" type="java.lang.String"/>
+                        <Column editable="false" title="Precio alquiler" type="java.lang.String"/>
                       </Table>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -186,7 +186,7 @@
                               <Group type="102" attributes="0">
                                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" max="-2" attributes="0"/>
-                                  <Component id="codigo" max="32767" attributes="0"/>
+                                  <Component id="id" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -194,7 +194,7 @@
                                   <EmptySpace min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="nombre" min="-2" pref="192" max="-2" attributes="0"/>
+                                  <Component id="modelo" min="-2" pref="192" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
@@ -210,11 +210,11 @@
                                   </Group>
                                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="proveedores" max="32767" attributes="0"/>
+                                      <Component id="tipo" max="32767" attributes="0"/>
                                       <Group type="102" attributes="0">
                                           <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="precioCompra" pref="197" max="32767" attributes="0"/>
-                                              <Component id="precioVenta" max="32767" attributes="0"/>
+                                              <Component id="precioAlquiler" pref="197" max="32767" attributes="0"/>
+                                              <Component id="precioCompra" max="32767" attributes="0"/>
                                           </Group>
                                           <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
@@ -228,7 +228,7 @@
                                               <Group type="102" alignment="1" attributes="0">
                                                   <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                                                   <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="stockMinimo" min="-2" pref="77" max="-2" attributes="0"/>
+                                                  <Component id="talle" min="-2" pref="77" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
                                       </Group>
@@ -245,11 +245,11 @@
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="codigo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="id" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="marca" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="nombre" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="modelo" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
@@ -269,24 +269,24 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="precioCompra" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="precioAlquiler" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="stock" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                                          <Component id="precioVenta" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="precioCompra" alignment="3" min="-2" max="-2" attributes="0"/>
                                           <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="stockMinimo" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="talle" alignment="3" min="-2" max="-2" attributes="0"/>
                                           <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="proveedores" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="tipo" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -385,7 +385,7 @@
                     <Property name="text" type="java.lang.String" value="ID"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="codigo">
+                <Component class="javax.swing.JTextField" name="id">
                   <Properties>
                     <Property name="toolTipText" type="java.lang.String" value="C&#xf3;digo del art&#xed;culo"/>
                     <Property name="disabledTextColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -438,7 +438,7 @@
                     </Component>
                   </SubComponents>
                 </Container>
-                <Component class="javax.swing.JTextField" name="precioCompra">
+                <Component class="javax.swing.JTextField" name="precioAlquiler">
                   <Properties>
                     <Property name="toolTipText" type="java.lang.String" value="Precio de compra"/>
                     <Property name="disabledTextColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -459,10 +459,10 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel6">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Precio"/>
+                    <Property name="text" type="java.lang.String" value="Precio Compra"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="precioVenta">
+                <Component class="javax.swing.JTextField" name="precioCompra">
                   <Properties>
                     <Property name="toolTipText" type="java.lang.String" value="Precio de venta"/>
                     <Property name="disabledTextColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -476,7 +476,7 @@
                     <Property name="text" type="java.lang.String" value="Talle"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="proveedores">
+                <Component class="javax.swing.JComboBox" name="tipo">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="0"/>
@@ -494,7 +494,7 @@
                     <Property name="text" type="java.lang.String" value="Marca"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="nombre">
+                <Component class="javax.swing.JTextField" name="modelo">
                   <Properties>
                     <Property name="toolTipText" type="java.lang.String" value="Marca del art&#xed;culo"/>
                     <Property name="disabledTextColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -511,7 +511,7 @@
                     <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="stockMinimo">
+                <Component class="javax.swing.JTextField" name="talle">
                   <Properties>
                     <Property name="disabledTextColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="f5" green="2" red="10" type="rgb"/>

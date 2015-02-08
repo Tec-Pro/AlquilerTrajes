@@ -7,7 +7,6 @@ package busqueda;
 import java.util.List;
 import modelos.Articulo;
 import modelos.Cliente;
-import modelos.Venta;
 import org.javalite.activejdbc.Base;
 
 /**
@@ -53,23 +52,7 @@ public class Busqueda {
         return result;
     }
 
-    /**
-     * @param idcliente,
-     * @param fecha desde (Pasada como string),
-     * @param fecha hasta (Pasada como String). Filtra las ventas de los
-     * clientes que empiezan con idcliente entre las fechas pasadas.
-     * @return lista filtrada de ventas.
-     */
-    public List<Venta> filtroVenta(String idcliente, String desde, String hasta) {
-        List<Venta> result;
-        Base.openTransaction();
-        result = Venta.where("cliente_id like ? and (fecha between ? and ?)", idcliente, desde, hasta);
-        System.out.println(idcliente+ " "+ desde +" "+hasta);
-        Base.commitTransaction();
-        return result;
-    }
-
-        
+         
     /**
      * @param codigo,
      * @param equivalencia_farm Filtra aquellos que empiecen con el código
@@ -84,19 +67,6 @@ public class Busqueda {
         return result;
     }
 
-    public List<Articulo> filtroProducto(String codigo) {
-        Base.openTransaction();
-        List<Articulo> ret=Articulo.where("es_articulo=1 and codigo like ?", "%" + codigo + "%");
-        Base.commitTransaction();
-        return ret;
-    }
-
-    public List<Articulo> filtroProducto2(String fram) {
-        Base.openTransaction();
-        List<Articulo> ret=Articulo.where("es_articulo=1 and equivalencia_fram like ?", "%" + fram + "%");
-        Base.commitTransaction();
-        return ret;
-    }
        
 }
 
