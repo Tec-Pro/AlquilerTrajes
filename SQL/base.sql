@@ -46,6 +46,8 @@ CREATE  TABLE `alquilerTraje`.`bajas` (
   `marca` VARCHAR(45) NULL ,
   `descripcion` VARCHAR(200) NULL ,
   `talle` VARCHAR(45) NULL ,
+  `bajas`DATE NULL,
+  `cobro` FLOAT NULL,
   PRIMARY KEY (`id`));
 
 CREATE  TABLE `alquilerTraje`.`reservas` (

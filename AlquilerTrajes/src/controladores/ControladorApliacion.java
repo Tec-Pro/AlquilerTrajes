@@ -8,7 +8,7 @@ package controladores;
 import interfaz.AplicacionGui;
 import interfaz.ArticuloGui;
 import interfaz.ClienteGui;
-import interfaz.VentaGui;
+import interfaz.RegistroAmboGui;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,7 +33,7 @@ public class ControladorApliacion implements ActionListener {
     private ControladorCliente controladorCliente;
     private File archivoBackup;
     private int selecEnviarBack = 0;
-    private VentaGui ventaGui;
+    private RegistroAmboGui ventaGui;
     
     public ControladorApliacion() throws JRException, ClassNotFoundException, SQLException {
        
@@ -46,7 +46,7 @@ public class ControladorApliacion implements ActionListener {
         aplicacionGui.setExtendedState(JFrame.MAXIMIZED_BOTH);
         articuloGui = new ArticuloGui();       
         clienteGui = new ClienteGui();
-        ventaGui = new VentaGui();
+        ventaGui = new RegistroAmboGui();
         controladorArticulo = new ControladorArticulo(articuloGui);
         controladorCliente = new ControladorCliente(clienteGui, aplicacionGui);
         aplicacionGui.getContenedor().add(articuloGui);        
