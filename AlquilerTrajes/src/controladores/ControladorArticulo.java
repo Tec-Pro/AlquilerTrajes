@@ -48,7 +48,7 @@ public class ControladorArticulo implements ActionListener, FocusListener {
         listArticulos = new LinkedList();        
         abmArticulo = new ABMArticulo();
         Base.openTransaction();
-        listArticulos = Articulo.where("es_articulo =? ", 1);
+        listArticulos = Articulo.findAll();
         Base.commitTransaction();
         actualizarLista();        
         articuloGui.getBusqueda().addKeyListener(new java.awt.event.KeyAdapter() {
@@ -76,13 +76,11 @@ public class ControladorArticulo implements ActionListener, FocusListener {
         listArticulos = Articulo.where("es_articulo = 1 and (modelo like ? or descripcion like ? or marca like ? or id like ? or nombre like ? or id like ?)", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%");
         Base.openTransaction();
         actualizarLista();
-        
-
     }
 
     public void cargarTodos() {
         Base.openTransaction();
-        listArticulos = Articulo.where("es_articulo=?",1);
+        listArticulos = Articulo.findAll();
         if (!listArticulos.isEmpty()) {
             realizarBusqueda();
             System.out.println("cargue todo");

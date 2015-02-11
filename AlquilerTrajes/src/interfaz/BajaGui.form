@@ -344,9 +344,6 @@
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="descripcion">
-                      <Properties>
-                        <Property name="editable" type="boolean" value="false"/>
-                      </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="Monto">
                       <Properties>

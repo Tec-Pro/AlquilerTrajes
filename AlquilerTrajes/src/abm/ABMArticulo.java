@@ -65,7 +65,23 @@ public class ABMArticulo {
                     "descripcion", art.get("descripcion"),
                     "talle", art.get("talle"), 
                     "tipo", art.get("tipo"));
-            viejo.saveIt();
+            ret = viejo.saveIt();
+            Base.commitTransaction();
+        }
+        return ret;
+    }
+    
+    public boolean restarStock(int id){
+        boolean ret = false;
+        Articulo viejo = Articulo.findFirst("id = ?", id);
+        if (viejo != null) {
+            Base.openTransaction();
+            if (viejo.getInteger("stock") > 0){
+            viejo.set("stock", viejo.getInteger("stock")-1);
+            } else {
+                viejo.set("stock", 0);
+            }
+            ret = viejo.saveIt();
             Base.commitTransaction();
         }
         return ret;

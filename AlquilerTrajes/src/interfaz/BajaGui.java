@@ -252,8 +252,6 @@ public class BajaGui extends javax.swing.JInternalFrame {
         labelCliente.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
         labelCliente.setText("Descripcion");
 
-        descripcion.setEditable(false);
-
         Monto.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
         Monto.setText("Cobro");
 
