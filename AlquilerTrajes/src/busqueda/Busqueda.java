@@ -7,6 +7,7 @@ package busqueda;
 import java.util.List;
 import modelos.Articulo;
 import modelos.Cliente;
+import modelos.Remito;
 import org.javalite.activejdbc.Base;
 
 /**
@@ -52,7 +53,6 @@ public class Busqueda {
         return result;
     }
 
-         
     /**
      * @param codigo,
      * @param equivalencia_farm Filtra aquellos que empiecen con el código
@@ -67,6 +67,36 @@ public class Busqueda {
         return result;
     }
 
-       
+    public int ganancia(int numeroMes) {
+        List<Remito> result;
+        switch (numeroMes) {
+            case 0:               
+                return 0;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
+                break;
+            case 9:
+                break;
+            case 10:
+                break;
+            case 11:
+                break;
+            default:
+                break;                
+        }
+        return 0;
+    }
 }
-
