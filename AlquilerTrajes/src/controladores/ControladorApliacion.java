@@ -8,7 +8,6 @@ import interfaz.AplicacionGui;
 import interfaz.ArticuloGui;
 import interfaz.BajaGui;
 import interfaz.ClienteGui;
-import interfaz.RegistroAmboGui;
 import interfaz.VerBajasGui;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
@@ -40,14 +39,7 @@ public class ControladorApliacion implements ActionListener {
     private VerBajasGui VerbajasGui;
 
     public ControladorApliacion() throws JRException, ClassNotFoundException, SQLException {
-        try {
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (!Base.hasConnection()) {
-            Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/alquilerTraje", "tecpro", "tecpro");
-        }
+
         aplicacionGui = new AplicacionGui();
         aplicacionGui.setCursor(Cursor.WAIT_CURSOR);
         aplicacionGui.setActionListener(this);
@@ -67,15 +59,8 @@ public class ControladorApliacion implements ActionListener {
     }
 
     public static void main(String[] args) throws InterruptedException, ClassNotFoundException, SQLException, JRException {
-       if (!Base.hasConnection()) {
-            try {
-                Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/alquilerTraje", "tecpro", "tecpro");
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Ocurrió un error, no se realizó la conexión con el servidor, verifique la conexión \n " + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
-                JOptionPane.showMessageDialog(null, "Se cerrará el programa", null, JOptionPane.ERROR_MESSAGE);
-                System.exit(1);
-            }
-        }
+        Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/alquilerTraje", "tecpro", "tecpro");
+        Base.connection().setAutoCommit(true);
         ControladorApliacion controladorAplicacion = new ControladorApliacion();
     }
 
@@ -90,24 +75,13 @@ public class ControladorApliacion implements ActionListener {
             clienteGui.setVisible(true);
             clienteGui.toFront();
         }
-         if (ae.getSource() == aplicacionGui.getBaja()) {
+        if (ae.getSource() == aplicacionGui.getBaja()) {
             bajaGui.setVisible(true);
             bajaGui.toFront();
         }
-          if (ae.getSource() == aplicacionGui.getVerBajas()) {
+        if (ae.getSource() == aplicacionGui.getVerBajas()) {
             VerbajasGui.setVisible(true);
             VerbajasGui.toFront();
-        }
-    }
-
-    private void abrirBase() {
-        if (!Base.hasConnection()) {
-            try {
-                Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/alquilerTraje", "tecpro", "tecpro");
-                Base.connection().setAutoCommit(true);
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Ocurrió un error, no se realizó la conexión con el servidor, verifique la conexión \n " + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
-            }
         }
     }
 }

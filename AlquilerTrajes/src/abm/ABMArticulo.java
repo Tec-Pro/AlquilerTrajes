@@ -19,7 +19,7 @@ public class ABMArticulo {
     }
 
     public boolean alta(Articulo art) {
-        Base.openTransaction();
+//        Base.openTransaction();
         if (!findArticulo(art)) {
             Articulo nuevo = Articulo.create(
                     "modelo", art.get("modelo"),
@@ -31,16 +31,16 @@ public class ABMArticulo {
                     "talle", art.get("talle"),
                     "tipo", art.get("tipo"));
             nuevo.saveIt();
-            Base.commitTransaction();
+          //  Base.commitTransaction();
             return true;
         } else {
-            Base.commitTransaction();
+           // Base.commitTransaction();
             return false;
         }
     }
 
     public boolean baja(Articulo art) {
-        boolean ret = false;
+        boolean ret = false;        
         Base.openTransaction();
         if (findArticulo(art)) {
             ret = art.delete();
