@@ -14,18 +14,17 @@ import org.javalite.activejdbc.Base;
  */
 public class ABMRemito {
 
+    //Obtengo un remito por su numero
     public Remito getRemito(Remito r) {
         return Remito.first("numero = ?", r.get("numero"));
     }
 
+    //Es True si existe el remito buscado por su numero
     public boolean existRemitoByNum(Remito r) {
         return (Remito.first("numero = ?", r.get("numero")) != null);
     }
-    
-    public boolean existRemitoByIdCliente(Remito r) {
-        return (Remito.first("id_cliente = ?", r.get("is_cliente")) != null);
-    }
 
+    //Da de alta un remito en la BD
     public boolean alta(Remito r) {
         if (!existRemitoByNum(r)) {
             Base.openTransaction();
@@ -40,6 +39,8 @@ public class ABMRemito {
         }
     }
 
+    //Revisar el delete que no rompa toda la base (deleteOnCascade deberia ser)
+    //Da de baja un remito en la BD (lo elimina)
     public boolean baja(Remito r) {
         Remito viejo = Remito.findById(r.getId());
         if (viejo != null) {
@@ -52,6 +53,7 @@ public class ABMRemito {
 
     }
 
+    //Modifica los datos de un remito especifico (remito identificado por su id)
     public boolean modificar(Remito r) {
         Remito viejo = Remito.findById(r.getId());
         if (viejo != null) {
@@ -63,21 +65,6 @@ public class ABMRemito {
             return true;
         }
         return false;
-    }
-
-    public static void main(String[] args) {
-        Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/alquilerTraje", "root", "root");
-        Remito r = new Remito();
-        
-        r.set("numero", 1);
-        r.set("fecha_de_remito", "2015-02-12");
-        r.set("id_cliente", 1);
-        r.set("total",99.99);
-        r.set("senia", 27);
-        ABMRemito abm = new ABMRemito();
-        abm.alta(r);
-
-        Base.close();
     }
 
 }
