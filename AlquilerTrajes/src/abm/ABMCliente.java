@@ -7,57 +7,59 @@ package abm;
 import modelos.Cliente;
 import org.javalite.activejdbc.Base;
 
-
 /**
  *
  * @author jacinto
  */
 public class ABMCliente {
-    
-     public Cliente getCliente(Cliente c) {
+
+    public Cliente getCliente(Cliente c) {
         return Cliente.first("nombre = ?", c.get("nombre"));
+
     }
 
     public boolean findCliente(Cliente c) {
         return (Cliente.first("nombre = ?", c.get("nombre")) != null);
     }
-    
+
     public boolean alta(Cliente c) {
+        Base.openTransaction();
         if (!findCliente(c)) {
-            Base.openTransaction();
             Cliente nuevo = Cliente.create("nombre", c.get("nombre"), "telefono",
                     c.get("telefono"), "celular", c.get("celular"),
-                    "direccion",c.get("direccion"),"dni",c.get("dni"));
+                    "direccion", c.get("direccion"), "dni", c.get("dni"));
             nuevo.saveIt();
             Base.commitTransaction();
             return true;
         } else {
+            Base.commitTransaction();
             return false;
         }
     }
 
     public boolean baja(Cliente c) {
+        Base.openTransaction();
         Cliente viejo = Cliente.findById(c.getId());
         if (viejo != null) {
-            Base.openTransaction();
             viejo.delete();
             Base.commitTransaction();
             return true;
         }
+        Base.commitTransaction();
         return false;
-        
+
     }
 
     public boolean modificar(Cliente c) {
+        Base.openTransaction();
         Cliente viejo = Cliente.findById(c.getId());
         if (viejo != null) {
-            Base.openTransaction();
             viejo.set("nombre", c.get("nombre"), "telefono",
-            c.get("telefono"), "celular", c.get("celular"), "direccion",c.get("direccion"), "dni",c.get("dni")).saveIt();
-           Base.commitTransaction();
+                    c.get("telefono"), "celular", c.get("celular"), "direccion", c.get("direccion"), "dni", c.get("dni")).saveIt();
+            Base.commitTransaction();
             return true;
         }
+        Base.commitTransaction();
         return false;
     }
-    
 }

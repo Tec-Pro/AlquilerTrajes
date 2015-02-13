@@ -37,7 +37,16 @@ public class AplicacionGui extends javax.swing.JFrame {
         this.clientes.addActionListener(lis);        
     }
 
-      
+    public JButton getBaja() {
+        return baja;
+    }
+
+    public JButton getVerBajas() {
+        return verBajas;
+    }
+  
+    
+    
     public JButton getClientes() {
         return clientes;
     }
@@ -54,6 +63,8 @@ public class AplicacionGui extends javax.swing.JFrame {
         panelBotones = new javax.swing.JPanel();
         articulos = new javax.swing.JButton();
         clientes = new javax.swing.JButton();
+        baja = new javax.swing.JButton();
+        verBajas = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         salir = new javax.swing.JMenuItem();
@@ -74,6 +85,14 @@ public class AplicacionGui extends javax.swing.JFrame {
         clientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/clients.png"))); // NOI18N
         clientes.setToolTipText("Gestión de clientes");
         panelBotones.add(clientes);
+
+        baja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/darBaja.png"))); // NOI18N
+        baja.setToolTipText("Dar de baja");
+        panelBotones.add(baja);
+
+        verBajas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/baja.png"))); // NOI18N
+        verBajas.setToolTipText("Gestión de bajas");
+        panelBotones.add(verBajas);
 
         jMenu1.setText("Archivo");
 
@@ -115,7 +134,7 @@ public class AplicacionGui extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 690, Short.MAX_VALUE))
+                .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 666, Short.MAX_VALUE))
         );
 
         pack();
@@ -137,6 +156,7 @@ public class AplicacionGui extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton articulos;
+    private javax.swing.JButton baja;
     private javax.swing.JButton clientes;
     private javax.swing.JDesktopPane contenedor;
     private javax.swing.JMenu jMenu1;
@@ -145,5 +165,6 @@ public class AplicacionGui extends javax.swing.JFrame {
     private javax.swing.JPanel panelBotones;
     private javax.swing.JMenuItem salir;
     private javax.swing.JMenuItem tecPro;
+    private javax.swing.JButton verBajas;
     // End of variables declaration//GEN-END:variables
 }
