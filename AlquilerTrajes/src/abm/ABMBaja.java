@@ -4,7 +4,6 @@
  */
 package abm;
 
-import modelos.Articulo;
 import modelos.Baja;
 import org.javalite.activejdbc.Base;
 
@@ -22,8 +21,8 @@ public class ABMBaja {
 
     
     public boolean alta(Baja art) {
-        if (!findBaja(art)) {   
-            Base.openTransaction();
+        Base.openTransaction();
+        if (!findBaja(art)) { 
             Baja nuevo = Baja.create(
                     "modelo", art.get("modelo"),
                     "marca", art.get("marca"),
@@ -36,27 +35,27 @@ public class ABMBaja {
             Base.commitTransaction();
             return true;
         } else {
-            System.out.println("Existe Baja");
+            Base.commitTransaction();
             return false;
         }
     }
 
     public boolean baja(Baja art) {
         boolean ret = false;
-        if (findBaja(art)) {
-            Base.openTransaction();
+        Base.openTransaction();
+        if (findBaja(art)) {            
             ret = art.delete();
-            art.defrost();
-            Base.commitTransaction();
+            art.defrost();            
         }
+        Base.commitTransaction();
         return ret;
     }
 
     public boolean modificar(Baja art) {
         boolean ret = false;
+        Base.openTransaction(); 
         Baja viejo = Baja.findFirst("id = ?", art.get("id"));
-        if (viejo != null) {
-            Base.openTransaction();            
+        if (viejo != null) {                       
             viejo.set(
                    "modelo", art.get("modelo"),
                     "marca", art.get("marca"),
@@ -65,9 +64,9 @@ public class ABMBaja {
                     "descripcion", art.get("descripcion"),
                     "talle", art.get("talle"), 
                     "tipo", art.get("tipo"));
-            viejo.saveIt();
-            Base.commitTransaction();
+            viejo.saveIt();            
         }
+        Base.commitTransaction();
         return ret;
     }
 }

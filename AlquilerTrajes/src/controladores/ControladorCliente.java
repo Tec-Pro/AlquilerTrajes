@@ -6,16 +6,13 @@ package controladores;
 
 import abm.ABMCliente;
 import busqueda.Busqueda;
-import interfaz.AplicacionGui;
 import interfaz.ClienteGui;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.LinkedList;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -31,48 +28,43 @@ public class ControladorCliente implements ActionListener {
 
     private JTextField nomcli;
     private ClienteGui clienteGui;
-    private AplicacionGui aplicacionGui;
     private DefaultTableModel tablaCliDefault;
     private java.util.List<Cliente> listClientes;
-    private JTable tablaCliente;   
+    private JTable tablaCliente;
     private ABMCliente abmCliente;
     private Boolean isNuevo;
     private Boolean editandoInfo;
     private Cliente cliente;
-    private JComboBox ver;
     Busqueda busqueda;
-    private Color Color;
-   
 
-    public ControladorCliente(ClienteGui clienteGui, AplicacionGui aplicacionGui) {
-            this.aplicacionGui = aplicacionGui;
-            this.clienteGui = clienteGui;
-            this.clienteGui.setActionListener(this);
-            isNuevo = true;
-            editandoInfo = false;
-            busqueda = new Busqueda();
-            tablaCliDefault = clienteGui.getClientes();
-            tablaCliente = clienteGui.getTablaClientes();
-            listClientes = new LinkedList();
-            abmCliente = new ABMCliente();
-            cliente = new Cliente();          
-            Base.openTransaction();
-            listClientes = Cliente.findAll();
-            Base.commitTransaction();
-            actualizarLista();          
-            nomcli = clienteGui.getBusqueda();
-            nomcli.addKeyListener(new java.awt.event.KeyAdapter() {
-                @Override
-                public void keyReleased(java.awt.event.KeyEvent evt) {
-                    busquedaKeyReleased(evt);
-                }
-            });
-            tablaCliente.addMouseListener(new java.awt.event.MouseAdapter() {
-                @Override
-                public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    tablaClienteMouseClicked(evt);
-                }
-            });                  
+    public ControladorCliente(ClienteGui clienteGui) {
+        this.clienteGui = clienteGui;
+        this.clienteGui.setActionListener(this);
+        isNuevo = true;
+        editandoInfo = false;
+        busqueda = new Busqueda();
+        tablaCliDefault = clienteGui.getClientes();
+        tablaCliente = clienteGui.getTablaClientes();
+        listClientes = new LinkedList();
+        abmCliente = new ABMCliente();
+        cliente = new Cliente();
+        Base.openTransaction();
+        listClientes = Cliente.findAll();
+        Base.commitTransaction();
+        actualizarLista();
+        nomcli = clienteGui.getBusqueda();
+        nomcli.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                busquedaKeyReleased(evt);
+            }
+        });
+        tablaCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaClienteMouseClicked(evt);
+            }
+        });
     }
 
     private void busquedaKeyReleased(KeyEvent evt) {
@@ -80,19 +72,7 @@ public class ControladorCliente implements ActionListener {
         realizarBusqueda();
     }
 
-      // Carga todos los clientes
-    public void cargarTodos() {
-        Base.openTransaction();
-     
-        listClientes = Cliente.findAll();
-                Base.commitTransaction();
-
-        if (!listClientes.isEmpty()) {
-            realizarBusqueda();
-        }
-
-    }
-
+   
     // doble click en un cliente = muestra los datos y habilita los botones
     private void tablaClienteMouseClicked(MouseEvent evt) {
         if (evt.getClickCount() == 2) {
@@ -100,7 +80,7 @@ public class ControladorCliente implements ActionListener {
             clienteGui.getBorrar().setEnabled(true);
             clienteGui.getModificar().setEnabled(true);
             clienteGui.getGuardar().setEnabled(false);
-            clienteGui.getNuevo().setEnabled(true);          
+            clienteGui.getNuevo().setEnabled(true);
             System.out.println("hice doble click en un cliente");
             clienteGui.limpiarCampos();
             cliente = busqueda.buscarCliente(tablaCliente.getValueAt(tablaCliente.getSelectedRow(), 0));
@@ -116,7 +96,7 @@ public class ControladorCliente implements ActionListener {
             clienteGui.habilitarCampos(true);
             isNuevo = true;
             editandoInfo = true;
-            clienteGui.getBorrar().setEnabled(false);           
+            clienteGui.getBorrar().setEnabled(false);
             clienteGui.getModificar().setEnabled(false);
             clienteGui.getGuardar().setEnabled(true);
         }
@@ -168,7 +148,7 @@ public class ControladorCliente implements ActionListener {
             isNuevo = false;
             clienteGui.getBorrar().setEnabled(false);
             clienteGui.getGuardar().setEnabled(true);
-            clienteGui.getModificar().setEnabled(false);        
+            clienteGui.getModificar().setEnabled(false);
         }
 
         if (e.getSource() == clienteGui.getGuardar() && editandoInfo && !isNuevo) {
@@ -181,18 +161,17 @@ public class ControladorCliente implements ActionListener {
                     editandoInfo = false;
                     JOptionPane.showMessageDialog(clienteGui, "¡Cliente modificado exitosamente!");
                     clienteGui.getNuevo().setEnabled(true);
-                    clienteGui.getGuardar().setEnabled(false);                    
+                    clienteGui.getGuardar().setEnabled(false);
                 } else {
                     JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error,revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
                 realizarBusqueda();
             }
 
-        }        
+        }
     }
 
     private void actualizarLista() {
-
         tablaCliDefault.setRowCount(0);
         Iterator<Cliente> it = listClientes.iterator();
         while (it.hasNext()) {
@@ -203,7 +182,6 @@ public class ControladorCliente implements ActionListener {
             row[2] = c.getString("telefono");
             row[3] = c.getString("celular");
             tablaCliDefault.addRow(row);
-
         }
     }
 
@@ -235,7 +213,7 @@ public class ControladorCliente implements ActionListener {
         } catch (ClassCastException e) {
             ret = false;
             JOptionPane.showMessageDialog(clienteGui, "Error en el celular", "Error!", JOptionPane.ERROR_MESSAGE);
-        }        
+        }
         try {
             String direccion = TratamientoString.eliminarTildes(clienteGui.getDireccion().getText());
             c.set("direccion", direccion);
@@ -252,5 +230,4 @@ public class ControladorCliente implements ActionListener {
         }
         return ret;
     }
-
 }
