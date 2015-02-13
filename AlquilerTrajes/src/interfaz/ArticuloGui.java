@@ -41,7 +41,6 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
 
     public void habilitarCampos(boolean b) {
         marca.setEnabled(b);
-        id.setEnabled(b);
         modelo.setEnabled(b);
         descripcion.setEnabled(b);
         precioAlquiler.setEnabled(b);
@@ -60,7 +59,6 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
         descripcion.setText("");
         precioAlquiler.setText("");
         precioCompra.setText("");
-        tipo.removeAllItems();
     }
 
 
@@ -291,6 +289,7 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
 
         jLabel1.setText("ID");
 
+        id.setEditable(false);
         id.setToolTipText("Código del artículo");
         id.setDisabledTextColor(new java.awt.Color(16, 2, 245));
         id.setEnabled(false);
@@ -328,6 +327,7 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
 
         jLabel9.setText("Talle");
 
+        tipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "da", "de", "di", "do", "du" }));
         tipo.setEnabled(false);
 
         jLabel10.setText("Tipo");

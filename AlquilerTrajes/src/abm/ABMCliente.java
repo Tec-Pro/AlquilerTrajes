@@ -38,28 +38,24 @@ public class ABMCliente {
     }
 
     public boolean baja(Cliente c) {
-        Base.openTransaction();
         Cliente viejo = Cliente.findById(c.getId());
         if (viejo != null) {
             viejo.delete();
-            Base.commitTransaction();
             return true;
         }
-        Base.commitTransaction();
         return false;
 
     }
 
-    public boolean modificar(Cliente c) {
-        Base.openTransaction();
+    public boolean modificar(Cliente c) {  
         Cliente viejo = Cliente.findById(c.getId());
         if (viejo != null) {
+            Base.openTransaction();
             viejo.set("nombre", c.get("nombre"), "telefono",
                     c.get("telefono"), "celular", c.get("celular"), "direccion", c.get("direccion"), "dni", c.get("dni")).saveIt();
             Base.commitTransaction();
             return true;
         }
-        Base.commitTransaction();
         return false;
     }
 }

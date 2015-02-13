@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 /**
@@ -72,7 +71,7 @@ public class AplicacionGui extends javax.swing.JFrame {
         tecPro = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Lubricentro");
+        setTitle("Alquiler de Trajes Hombre");
         setIconImage(new ImageIcon(getClass().getResource("/interfaz/Icons/logo.jpg")).getImage());
 
         panelBotones.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -91,7 +90,7 @@ public class AplicacionGui extends javax.swing.JFrame {
         panelBotones.add(baja);
 
         verBajas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/baja.png"))); // NOI18N
-        verBajas.setToolTipText("Gestión de bajas");
+        verBajas.setToolTipText("Ver bajas");
         panelBotones.add(verBajas);
 
         jMenu1.setText("Archivo");
@@ -134,7 +133,7 @@ public class AplicacionGui extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 666, Short.MAX_VALUE))
+                .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 674, Short.MAX_VALUE))
         );
 
         pack();
