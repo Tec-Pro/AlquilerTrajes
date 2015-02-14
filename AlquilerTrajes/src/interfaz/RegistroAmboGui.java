@@ -16,10 +16,10 @@ import javax.swing.table.DefaultTableModel;
  */
 public class RegistroAmboGui extends javax.swing.JInternalFrame {
 
-    private DefaultTableModel tablaArticulosDefault;//tabla default de los clientes
+    private DefaultTableModel tablaArticulosDefault;
     private DefaultTableModel tablaFacturaDefault;
 
-    /**
+    /**    
      * Creates new form RegistroAmboGui
      */
     public RegistroAmboGui() {
@@ -28,11 +28,7 @@ public class RegistroAmboGui extends javax.swing.JInternalFrame {
         tablaFacturaDefault = (DefaultTableModel) tablaFactura.getModel();       
     }
 
-    /**
-     * Seteo el actionListener para los botones articulosALafactura,
-     * clienteALafactura, facturaNueva, imprimir realizarVenta,
-     * borrarArticulosSeleccionados, modificar
-     *
+    /**   
      * @param
      * @return
      * @exception
@@ -67,17 +63,6 @@ public class RegistroAmboGui extends javax.swing.JInternalFrame {
         return tablaArticulosDefault;
     }
 
-    /**
-     * Retorno la tabla Clientes con tipo TableModelDefault para pdoer realizar
-     * inserciones y eliminaciones de filas más facilmente
-     *
-     * @param
-     * @return DefaultTableModel
-     * @exception
-     */
-    public DefaultTableModel getTablaclientesDefault() {
-        return tablaArticulosDefault;
-    }
 
     /**
      * Retorno la tabla factura con tipo TableModelDefault para pdoer realizar
@@ -120,13 +105,13 @@ public class RegistroAmboGui extends javax.swing.JInternalFrame {
 
 
     /**
-     * Retorno el campo del cliente de la factura
+     * 
      *
      * @param
      * @return JTextField
      * @exception
      */
-    public JTextField getClienteFactura() {
+    public JTextField getAmbo() {
         return nombre;
     }
 

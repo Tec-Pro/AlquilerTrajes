@@ -8,6 +8,7 @@ import interfaz.AplicacionGui;
 import interfaz.ArticuloGui;
 import interfaz.BajaGui;
 import interfaz.ClienteGui;
+import interfaz.RegistroAmboGui;
 import interfaz.VerBajasGui;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
@@ -37,9 +38,14 @@ public class ControladorApliacion implements ActionListener {
     private BajaGui bajaGui;
     private ControladorVerBajas controladorVerBajas;
     private VerBajasGui VerbajasGui;
+    private RegistroAmboGui registroAmbo;
 
     public ControladorApliacion() throws JRException, ClassNotFoundException, SQLException {
-
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         aplicacionGui = new AplicacionGui();
         aplicacionGui.setCursor(Cursor.WAIT_CURSOR);
         aplicacionGui.setActionListener(this);
@@ -47,13 +53,17 @@ public class ControladorApliacion implements ActionListener {
         articuloGui = new ArticuloGui();
         clienteGui = new ClienteGui();
         bajaGui = new BajaGui();
+        registroAmbo = new RegistroAmboGui();
         VerbajasGui = new VerBajasGui();
         controladorVerBajas = new ControladorVerBajas(VerbajasGui);
         controladorBaja = new ControladorBaja(bajaGui);
-        controladorArticulo = new ControladorArticulo(articuloGui);
+        controladorArticulo = new ControladorArticulo(articuloGui,registroAmbo);
         controladorCliente = new ControladorCliente(clienteGui);
         aplicacionGui.getContenedor().add(articuloGui);
         aplicacionGui.getContenedor().add(clienteGui);
+        aplicacionGui.getContenedor().add(bajaGui);
+        aplicacionGui.getContenedor().add(VerbajasGui);
+        aplicacionGui.getContenedor().add(registroAmbo);
         aplicacionGui.setCursor(Cursor.DEFAULT_CURSOR);
         aplicacionGui.setVisible(true);
     }

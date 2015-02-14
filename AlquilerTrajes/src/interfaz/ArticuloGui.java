@@ -126,6 +126,12 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
         return nuevo;
     }
 
+    public JButton getRegistrarAmbo() {
+        return registrarAmbo;
+    }
+
+    
+    
     public JTextField getPrecioAlquiler() {
         return precioAlquiler;
     }
@@ -186,6 +192,7 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
         modelo = new javax.swing.JTextField();
         stock = new javax.swing.JTextField();
         talle = new javax.swing.JTextField();
+        registrarAmbo = new javax.swing.JButton();
         cantidadArticulos = new javax.swing.JLabel();
 
         setClosable(true);
@@ -344,6 +351,9 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
         talle.setDisabledTextColor(new java.awt.Color(16, 2, 245));
         talle.setEnabled(false);
 
+        registrarAmbo.setText("Registrar Ambo");
+        registrarAmbo.setToolTipText("Crear ambo nuevo");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -374,6 +384,9 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
                             .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(6, 6, 6)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(registrarAmbo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(102, 102, 102))
                             .addComponent(tipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -433,7 +446,9 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(tipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(registrarAmbo, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
             .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
@@ -510,6 +525,7 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
     private javax.swing.JButton nuevo;
     private javax.swing.JTextField precioAlquiler;
     private javax.swing.JTextField precioCompra;
+    private javax.swing.JButton registrarAmbo;
     private javax.swing.JTextField stock;
     private javax.swing.JTextField talle;
     private javax.swing.JComboBox tipo;

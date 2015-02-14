@@ -6,6 +6,7 @@ package controladores;
 
 import abm.ABMArticulo;
 import interfaz.ArticuloGui;
+import interfaz.RegistroAmboGui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -35,11 +36,13 @@ public class ControladorArticulo implements ActionListener, FocusListener {
     private Boolean isNuevo;
     private Boolean editandoInfo;
     private Articulo articulo;
+    private RegistroAmboGui registroAmbo;
 
-    public ControladorArticulo(ArticuloGui articuloGui) throws JRException, ClassNotFoundException, SQLException {
+    public ControladorArticulo(ArticuloGui articuloGui, RegistroAmboGui registroAmbo) throws JRException, ClassNotFoundException, SQLException {
         isNuevo = true; //para saber si es nuevo o no
         editandoInfo = false; // se esta editando la info
         articulo = new Articulo();
+        this.registroAmbo = registroAmbo;
         this.articuloGui = articuloGui;
         this.articuloGui.setActionListener(this);
         tablaArtDefault = articuloGui.getTablaArticulosDefault();
@@ -186,6 +189,10 @@ public class ControladorArticulo implements ActionListener, FocusListener {
                 }
                 realizarBusqueda();
             }
+        }
+        if (e.getSource() == articuloGui.getRegistrarAmbo()) {
+            registroAmbo.show();
+            articuloGui.hide();
         }
     }
 
