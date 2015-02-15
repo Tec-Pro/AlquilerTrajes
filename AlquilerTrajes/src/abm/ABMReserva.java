@@ -16,7 +16,10 @@ public class ABMReserva {
     
     //True si la reserva dada existe ( se busca por fecha de entrega de la reserva)
     public boolean existReserva(Reserva r){
-        return (Reserva.first("fecha_entrega_reserva = ?", r.get("fecha_entrega_reserva")) != null);
+        Base.openTransaction();
+        boolean result = (Reserva.first("fecha_entrega_reserva = ?", r.get("fecha_entrega_reserva")) != null);
+        Base.commitTransaction();
+        return result;
     }
     
     //Da de alta una reserva en la BD

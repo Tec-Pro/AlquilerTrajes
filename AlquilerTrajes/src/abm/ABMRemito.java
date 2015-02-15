@@ -16,12 +16,18 @@ public class ABMRemito {
 
     //Obtengo un remito por su numero
     public Remito getRemito(Remito r) {
-        return Remito.first("numero = ?", r.get("numero"));
+        Base.openTransaction();
+        Remito result = Remito.first("numero = ?", r.get("numero"));
+        Base.commitTransaction();
+        return result;
     }
 
     //Es True si existe el remito buscado por su numero
     public boolean existRemitoByNum(Remito r) {
-        return (Remito.first("numero = ?", r.get("numero")) != null);
+        Base.openTransaction();
+        boolean result =  (Remito.first("numero = ?", r.get("numero")) != null);
+        Base.commitTransaction();
+        return result;
     }
 
     //Da de alta un remito en la BD

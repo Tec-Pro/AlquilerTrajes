@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package abm;
+package controladores;
 
 /**
  *
  * @author eze
  */
-public class ABMArticulosReservas {
+public class ControladorReserva {
     
 }
