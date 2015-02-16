@@ -31,9 +31,14 @@ public class AplicacionGui extends javax.swing.JFrame {
         return articulos;
     }
 
+    public JButton getReservas() {
+        return reservas;
+    }
+
     public void setActionListener(ActionListener lis) {
         this.getArticulos().addActionListener(lis);
-        this.clientes.addActionListener(lis);        
+        this.clientes.addActionListener(lis);
+        this.reservas.addActionListener(lis);
     }
 
     public JButton getBaja() {
@@ -60,6 +65,7 @@ public class AplicacionGui extends javax.swing.JFrame {
 
         contenedor = new javax.swing.JDesktopPane();
         panelBotones = new javax.swing.JPanel();
+        reservas = new javax.swing.JButton();
         articulos = new javax.swing.JButton();
         clientes = new javax.swing.JButton();
         baja = new javax.swing.JButton();
@@ -76,6 +82,9 @@ public class AplicacionGui extends javax.swing.JFrame {
 
         panelBotones.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelBotones.setLayout(new java.awt.GridLayout(1, 0));
+
+        reservas.setText("RESERVAS");
+        panelBotones.add(reservas);
 
         articulos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/productos.png"))); // NOI18N
         articulos.setToolTipText("Gestión de artículos");
@@ -162,6 +171,7 @@ public class AplicacionGui extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel panelBotones;
+    private javax.swing.JButton reservas;
     private javax.swing.JMenuItem salir;
     private javax.swing.JMenuItem tecPro;
     private javax.swing.JButton verBajas;

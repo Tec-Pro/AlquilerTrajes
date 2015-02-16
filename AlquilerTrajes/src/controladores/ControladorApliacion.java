@@ -9,6 +9,7 @@ import interfaz.ArticuloGui;
 import interfaz.BajaGui;
 import interfaz.ClienteGui;
 import interfaz.RegistroAmboGui;
+import interfaz.ReservaGui;
 import interfaz.VerBajasGui;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
@@ -39,6 +40,8 @@ public class ControladorApliacion implements ActionListener {
     private ControladorVerBajas controladorVerBajas;
     private VerBajasGui VerbajasGui;
     private RegistroAmboGui registroAmbo;
+    private ReservaGui reservaGui;
+    private ControladorReserva controladorReserva;
 
     public ControladorApliacion() throws JRException, ClassNotFoundException, SQLException {
         try {
@@ -53,23 +56,33 @@ public class ControladorApliacion implements ActionListener {
         articuloGui = new ArticuloGui();
         clienteGui = new ClienteGui();
         bajaGui = new BajaGui();
+        reservaGui = new ReservaGui();
         registroAmbo = new RegistroAmboGui();
         VerbajasGui = new VerBajasGui();
         controladorVerBajas = new ControladorVerBajas(VerbajasGui);
         controladorBaja = new ControladorBaja(bajaGui);
         controladorArticulo = new ControladorArticulo(articuloGui,registroAmbo);
         controladorCliente = new ControladorCliente(clienteGui);
+        controladorReserva = new ControladorReserva(reservaGui);
+        
+        
+        
+        
+        
         aplicacionGui.getContenedor().add(articuloGui);
         aplicacionGui.getContenedor().add(clienteGui);
         aplicacionGui.getContenedor().add(bajaGui);
         aplicacionGui.getContenedor().add(VerbajasGui);
         aplicacionGui.getContenedor().add(registroAmbo);
+        
+        aplicacionGui.getContenedor().add(reservaGui);
+        
         aplicacionGui.setCursor(Cursor.DEFAULT_CURSOR);
         aplicacionGui.setVisible(true);
     }
 
     public static void main(String[] args) throws InterruptedException, ClassNotFoundException, SQLException, JRException {
-        Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/alquilerTraje", "tecpro", "tecpro");
+        Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/alquilerTraje", "root", "root");
         Base.connection().setAutoCommit(true);
         ControladorApliacion controladorAplicacion = new ControladorApliacion();
     }
@@ -92,6 +105,10 @@ public class ControladorApliacion implements ActionListener {
         if (ae.getSource() == aplicacionGui.getVerBajas()) {
             VerbajasGui.setVisible(true);
             VerbajasGui.toFront();
+        }
+        if (ae.getSource() == aplicacionGui.getReservas()) {
+            reservaGui.setVisible(true);
+            reservaGui.toFront();
         }
     }
 }
