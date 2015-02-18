@@ -15,11 +15,12 @@ import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import modelos.Articulo;
 import modelos.Baja;
-import org.javalite.activejdbc.Base;
 
 /**
  *
@@ -98,7 +99,11 @@ public class ControladorBaja implements ActionListener {
                     "talle", art.get("talle"),
                     "fecha", currentTime,
                     "tipo", art.get("tipo"));
-           abmBaja.alta(b);
+            try {
+                abmBaja.alta(b);
+            } catch (SQLException ex) {
+                Logger.getLogger(ControladorBaja.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }

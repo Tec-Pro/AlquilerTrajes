@@ -4,6 +4,8 @@
  */
 package abm;
 
+import BD.BaseDatos;
+import java.sql.SQLException;
 import modelos.Cliente;
 import org.javalite.activejdbc.Base;
 
@@ -13,48 +15,59 @@ import org.javalite.activejdbc.Base;
  */
 public class ABMCliente {
 
-    public Cliente getCliente(Cliente c) {
-        return Cliente.first("nombre = ?", c.get("nombre"));
+    public Cliente getCliente(Cliente c) throws SQLException { 
+        Cliente c2 = Cliente.first("nombre = ?", c.get("nombre"));
+        return c2;
     }
 
-    public boolean findCliente(Cliente c) {
-        return (Cliente.first("nombre = ?", c.get("nombre")) != null);
+    public boolean findCliente(Cliente c) throws SQLException {
+        boolean ret = false;
+        ret = (Cliente.first("nombre = ?", c.get("nombre")) != null);
+        return ret;
     }
 
-    public boolean alta(Cliente c) {
-        Base.openTransaction();
+    public boolean alta(Cliente c) throws SQLException {
+        boolean ret = false;
+        BaseDatos.abrirBase();
+        BaseDatos.openTransaction();
         if (!findCliente(c)) {
             Cliente nuevo = Cliente.create("nombre", c.get("nombre"), "telefono",
                     c.get("telefono"), "celular", c.get("celular"),
                     "direccion", c.get("direccion"), "dni", c.get("dni"));
-            nuevo.saveIt();
-            Base.commitTransaction();
-            return true;
-        } else {
-            Base.commitTransaction();
-            return false;
+            ret = nuevo.saveIt();
         }
+        BaseDatos.commitTransaction();
+        BaseDatos.cerrarBase();
+        return ret;
     }
 
-    public boolean baja(Cliente c) {
+    public boolean baja(Cliente c) throws SQLException {
+        boolean ret = false;
+        BaseDatos.abrirBase();
+        BaseDatos.openTransaction();
         Cliente viejo = Cliente.findById(c.getId());
         if (viejo != null) {
-            viejo.delete();
-            return true;
+            ret = viejo.delete();
         }
-        return false;
+        BaseDatos.commitTransaction();
+        BaseDatos.cerrarBase();
+        return ret;
 
     }
 
-    public boolean modificar(Cliente c) {  
+    public boolean modificar(Cliente c) throws SQLException {
+        boolean ret = false;
+        BaseDatos.abrirBase();
+        BaseDatos.openTransaction();
         Cliente viejo = Cliente.findById(c.getId());
         if (viejo != null) {
             Base.openTransaction();
-            viejo.set("nombre", c.get("nombre"), "telefono",
+            ret = viejo.set("nombre", c.get("nombre"), "telefono",
                     c.get("telefono"), "celular", c.get("celular"), "direccion", c.get("direccion"), "dni", c.get("dni")).saveIt();
-            Base.commitTransaction();
-            return true;
+
         }
-        return false;
+        BaseDatos.commitTransaction();
+        BaseDatos.cerrarBase();
+        return ret;
     }
 }

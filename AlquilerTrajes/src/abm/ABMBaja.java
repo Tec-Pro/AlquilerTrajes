@@ -4,70 +4,73 @@
  */
 package abm;
 
+import BD.BaseDatos;
+import java.sql.SQLException;
 import modelos.Baja;
-import org.javalite.activejdbc.Base;
 
 /**
  *
  * @author jacinto
  */
 public class ABMBaja {
-    
-   
+
     //existe  el articulo?
-    public boolean findBaja(Baja p) {
-        return (Baja.first("id = ?", p.get("id")) != null);
+    public boolean findBaja(Baja p) throws SQLException {
+        boolean ret = (Baja.first("id = ?", p.get("id")) != null);
+        return ret;
     }
 
-    
-    public boolean alta(Baja art) {
-        Base.openTransaction();
-        if (!findBaja(art)) { 
+    public boolean alta(Baja art) throws SQLException {
+        boolean ret = false;
+        BaseDatos.abrirBase();
+        BaseDatos.openTransaction();
+        if (!findBaja(art)) {
             Baja nuevo = Baja.create(
                     "modelo", art.get("modelo"),
                     "marca", art.get("marca"),
                     "fecha", art.get("fecha"),
                     "cobro", art.get("cobro"),
                     "descripcion", art.get("descripcion"),
-                    "talle", art.get("talle"), 
+                    "talle", art.get("talle"),
                     "tipo", art.get("tipo"));
-            nuevo.saveIt();
-            Base.commitTransaction();
-            return true;
-        } else {
-            Base.commitTransaction();
-            return false;
+            ret = nuevo.saveIt();
         }
-    }
-
-    public boolean baja(Baja art) {
-        boolean ret = false;
-        Base.openTransaction();
-        if (findBaja(art)) {            
-            ret = art.delete();
-            art.defrost();            
-        }
-        Base.commitTransaction();
+        BaseDatos.commitTransaction();
+        BaseDatos.cerrarBase();
         return ret;
     }
 
-    public boolean modificar(Baja art) {
+    public boolean baja(Baja art) throws SQLException {
         boolean ret = false;
-        Base.openTransaction(); 
+        BaseDatos.abrirBase();
+        BaseDatos.openTransaction();
+        if (findBaja(art)) {
+            ret = art.delete();
+            art.defrost();
+        }
+        BaseDatos.commitTransaction();
+        BaseDatos.cerrarBase();
+        return ret;
+    }
+
+    public boolean modificar(Baja art) throws SQLException {
+        boolean ret = false;
+        BaseDatos.abrirBase();
+        BaseDatos.openTransaction();
         Baja viejo = Baja.findFirst("id = ?", art.get("id"));
-        if (viejo != null) {                       
+        if (viejo != null) {
             viejo.set(
-                   "modelo", art.get("modelo"),
+                    "modelo", art.get("modelo"),
                     "marca", art.get("marca"),
                     "fecha", art.get("fecha"),
                     "cobro", art.get("cobro"),
                     "descripcion", art.get("descripcion"),
-                    "talle", art.get("talle"), 
+                    "talle", art.get("talle"),
                     "tipo", art.get("tipo"));
-            viejo.saveIt();            
+            ret = viejo.saveIt();
         }
-        Base.commitTransaction();
+        BaseDatos.commitTransaction();
+        BaseDatos.cerrarBase();
         return ret;
     }
 }
-

@@ -22,8 +22,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import modelos.Articulo;
-import net.sf.jasperreports.engine.JRException;
-import org.javalite.activejdbc.Base;
 
 /**
  *
@@ -41,7 +39,7 @@ public class ControladorArticulo implements ActionListener, FocusListener {
     private Articulo articulo;
     private RegistroAmboGui registroAmbo;
 
-    public ControladorArticulo(ArticuloGui articuloGui, RegistroAmboGui registroAmbo) throws JRException, ClassNotFoundException, SQLException {
+    public ControladorArticulo(ArticuloGui articuloGui, RegistroAmboGui registroAmbo) throws ClassNotFoundException, SQLException {
         isNuevo = true; //para saber si es nuevo o no
         editandoInfo = false; // se esta editando la info
         articulo = new Articulo();
@@ -138,12 +136,6 @@ public class ControladorArticulo implements ActionListener, FocusListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        try {
-            BaseDatos.abrirBase();
-        } catch (SQLException ex) {
-            Logger.getLogger(ControladorArticulo.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        BaseDatos.openTransaction();
         if (e.getSource() == articuloGui.getNuevo()) {
             System.out.println("Boton nuevo pulsado");
             articuloGui.limpiarCampos();
@@ -184,7 +176,12 @@ public class ControladorArticulo implements ActionListener, FocusListener {
             if (articulo.getString("id") != null && !editandoInfo) {
                 Integer resp = JOptionPane.showConfirmDialog(articuloGui, "¿Desea borrar el artículo " + articuloGui.getId().getText(), "Confirmar borrado", JOptionPane.YES_NO_OPTION);
                 if (resp == JOptionPane.YES_OPTION) {
-                    Boolean seBorro = abmArticulo.baja(articulo);
+                    Boolean seBorro = false;
+                    try {
+                        seBorro = abmArticulo.baja(articulo);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ControladorArticulo.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     if (seBorro) {
                         JOptionPane.showMessageDialog(articuloGui, "¡Artículo borrado exitosamente!");
                         articuloGui.limpiarCampos();
@@ -238,17 +235,15 @@ public class ControladorArticulo implements ActionListener, FocusListener {
             }
         }
         if (e.getSource() == articuloGui.getRegistrarAmbo()) {
-            registroAmbo.show();
+            System.out.println("clik crear ambo");
+            registroAmbo.setVisible(true);
+            registroAmbo.toFront();
             articuloGui.hide();
         }
-        BaseDatos.commitTransaction();
-        BaseDatos.cerrarBase();
     }
 
     private boolean cargarDatosProd(Articulo art) throws SQLException {
         boolean ret = true;
-        BaseDatos.abrirBase();
-        BaseDatos.openTransaction();
         try {
             art.set("id", articuloGui.getId().getText());
         } catch (ClassCastException e) {
@@ -313,8 +308,6 @@ public class ControladorArticulo implements ActionListener, FocusListener {
             ret = false;
             JOptionPane.showMessageDialog(articuloGui, "Error en el talle", "Error!", JOptionPane.ERROR_MESSAGE);
         }
-        BaseDatos.commitTransaction();
-        BaseDatos.cerrarBase();
         return ret;
     }
 

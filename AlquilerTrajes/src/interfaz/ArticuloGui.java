@@ -37,6 +37,7 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
         this.borrar.addActionListener(lis);
         this.nuevo.addActionListener(lis);
         this.modificar.addActionListener(lis);
+        this.registrarAmbo.addActionListener(lis);
     }
 
     public void habilitarCampos(boolean b) {
@@ -67,7 +68,7 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
         modelo.setText(art.getString("modelo"));
         marca.setText(art.getString("marca"));
         precioCompra.setText(art.getBigDecimal("precio_compra").setScale(2).toString());
-        stock.setText(art.getString("stock_actual"));
+        stock.setText(art.getString("stock"));
         precioAlquiler.setText(art.getBigDecimal("precio_alquiler").setScale(2).toString());
         talle.setText(art.getString("talle"));
         descripcion.setText(art.getString("descripcion"));

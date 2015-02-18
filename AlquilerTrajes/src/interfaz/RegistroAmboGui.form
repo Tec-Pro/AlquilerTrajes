@@ -186,7 +186,7 @@
                                   <EmptySpace min="-2" max="-2" attributes="0"/>
                                   <Component id="labelBusquedaCodigo" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
-                                  <Component id="busquedaCodigoArticulo" pref="286" max="32767" attributes="0"/>
+                                  <Component id="busquedaCodigoArticulo" pref="275" max="32767" attributes="0"/>
                               </Group>
                               <Component id="jScrollPane6" alignment="0" pref="0" max="32767" attributes="0"/>
                           </Group>
@@ -297,7 +297,7 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane8" alignment="1" pref="0" max="32767" attributes="0"/>
+                          <Component id="jScrollPane8" alignment="1" pref="412" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="labelCliente" min="-2" max="-2" attributes="0"/>
@@ -307,7 +307,7 @@
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <Component id="borrarArticulosSeleccionados" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="155" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Component id="labelTotal" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                               <Component id="totalFactura" min="-2" pref="106" max="-2" attributes="0"/>
@@ -347,9 +347,6 @@
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="nombre">
-                      <Properties>
-                        <Property name="editable" type="boolean" value="false"/>
-                      </Properties>
                     </Component>
                     <Container class="javax.swing.JScrollPane" name="jScrollPane8">
                       <AuxValues>
@@ -437,20 +434,12 @@
                     <Property name="rows" type="int" value="1"/>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JButton" name="facturaNueva">
+                    <Component class="javax.swing.JButton" name="registrar">
                       <Properties>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                           <Image iconType="3" name="/interfaz/Icons/agregar.png"/>
                         </Property>
-                        <Property name="toolTipText" type="java.lang.String" value="Realizar una nueva venta"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JButton" name="realizarVenta">
-                      <Properties>
-                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/interfaz/Icons/vender.png"/>
-                        </Property>
-                        <Property name="toolTipText" type="java.lang.String" value="Solo registrar la venta"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Registrar"/>
                       </Properties>
                     </Component>
                   </SubComponents>

@@ -34,8 +34,7 @@ public class RegistroAmboGui extends javax.swing.JInternalFrame {
      * @exception
      */
     public void setActionListener(ActionListener lis) {
-        this.facturaNueva.addActionListener(lis);
-        this.realizarVenta.addActionListener(lis);
+        this.registrar.addActionListener(lis);
         this.borrarArticulosSeleccionados.addActionListener(lis);
     }
 
@@ -45,7 +44,6 @@ public class RegistroAmboGui extends javax.swing.JInternalFrame {
          tablaFactura.setEnabled(!si);
          busquedaCodigoArticulo.setEnabled(!si);
          borrarArticulosSeleccionados.setEnabled(!si);
-         realizarVenta.setEnabled(!si);
      }
 
      
@@ -111,33 +109,15 @@ public class RegistroAmboGui extends javax.swing.JInternalFrame {
      * @return JTextField
      * @exception
      */
-    public JTextField getAmbo() {
+    public JTextField getNombreAmbo() {
         return nombre;
     }
 
-    /**
-     * Retorno boton facturaNueva en donde limpia los campos de la factura para
-     * iniciar una nueva venta
-     *
-     * @param
-     * @return JButton
-     * @exception
-     */
-    public JButton getFacturaNueva() {
-        return facturaNueva;
+   
+    public JButton getRegistrar() {
+        return registrar;
     }
 
-    /**
-     * Retorno boton realizar venta para confirmar la venta, se debe guardar los
-     * datos en la base de datos
-     *
-     * @param
-     * @return JButton
-     * @exception
-     */
-    public JButton getRealizarVenta() {
-        return realizarVenta;
-    }
 
     /**
      * Retorno tabla articulos con tipo JTable
@@ -212,8 +192,7 @@ public class RegistroAmboGui extends javax.swing.JInternalFrame {
         totalFactura = new javax.swing.JTextField();
         borrarArticulosSeleccionados = new javax.swing.JButton();
         panelControlFactura = new javax.swing.JPanel();
-        facturaNueva = new javax.swing.JButton();
-        realizarVenta = new javax.swing.JButton();
+        registrar = new javax.swing.JButton();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -279,7 +258,7 @@ public class RegistroAmboGui extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(labelBusquedaCodigo)
                 .addGap(54, 54, 54)
-                .addComponent(busquedaCodigoArticulo, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE))
+                .addComponent(busquedaCodigoArticulo, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE))
             .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         panelArticulosLayout.setVerticalGroup(
@@ -309,8 +288,6 @@ public class RegistroAmboGui extends javax.swing.JInternalFrame {
 
         labelCliente.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
         labelCliente.setText("Nombre");
-
-        nombre.setEditable(false);
 
         tablaFactura.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -348,7 +325,7 @@ public class RegistroAmboGui extends javax.swing.JInternalFrame {
         panelFactura.setLayout(panelFacturaLayout);
         panelFacturaLayout.setHorizontalGroup(
             panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jScrollPane8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
             .addGroup(panelFacturaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labelCliente)
@@ -357,7 +334,7 @@ public class RegistroAmboGui extends javax.swing.JInternalFrame {
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFacturaLayout.createSequentialGroup()
                 .addComponent(borrarArticulosSeleccionados)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(labelTotal)
                 .addGap(0, 0, 0)
                 .addComponent(totalFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -381,13 +358,9 @@ public class RegistroAmboGui extends javax.swing.JInternalFrame {
 
         panelControlFactura.setLayout(new java.awt.GridLayout(1, 0));
 
-        facturaNueva.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/agregar.png"))); // NOI18N
-        facturaNueva.setToolTipText("Realizar una nueva venta");
-        panelControlFactura.add(facturaNueva);
-
-        realizarVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/vender.png"))); // NOI18N
-        realizarVenta.setToolTipText("Solo registrar la venta");
-        panelControlFactura.add(realizarVenta);
+        registrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/agregar.png"))); // NOI18N
+        registrar.setToolTipText("Registrar");
+        panelControlFactura.add(registrar);
 
         javax.swing.GroupLayout fondoImagenLayout = new javax.swing.GroupLayout(fondoImagen);
         fondoImagen.setLayout(fondoImagenLayout);
@@ -453,7 +426,6 @@ public class RegistroAmboGui extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton borrarArticulosSeleccionados;
     private javax.swing.JTextField busquedaCodigoArticulo;
-    private javax.swing.JButton facturaNueva;
     private javax.swing.JPanel fondoImagen;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -468,7 +440,7 @@ public class RegistroAmboGui extends javax.swing.JInternalFrame {
     private javax.swing.JPanel panelControlFactura;
     private javax.swing.JPanel panelFactura;
     private org.edisoncor.gui.panel.PanelImage panelTitulo;
-    private javax.swing.JButton realizarVenta;
+    private javax.swing.JButton registrar;
     private javax.swing.JTable tablaArticulos;
     private javax.swing.JTable tablaFactura;
     private javax.swing.JLabel titulo;

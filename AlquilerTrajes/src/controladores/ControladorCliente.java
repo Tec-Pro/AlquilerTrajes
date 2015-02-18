@@ -145,7 +145,12 @@ public class ControladorCliente implements ActionListener {
             if (cliente.getString("id") != null && !editandoInfo) {
                 Integer resp = JOptionPane.showConfirmDialog(clienteGui, "¿Desea borrar el cliente " + clienteGui.getNombre().getText(), "Confirmar borrado", JOptionPane.YES_NO_OPTION);
                 if (resp == JOptionPane.YES_OPTION) {
-                    Boolean seBorro = abmCliente.baja(cliente);
+                    Boolean seBorro = false;
+                    try {
+                        seBorro = abmCliente.baja(cliente);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ControladorCliente.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     if (seBorro) {
                         JOptionPane.showMessageDialog(clienteGui, "¡Cliente borrado exitosamente!");
                         clienteGui.limpiarCampos();

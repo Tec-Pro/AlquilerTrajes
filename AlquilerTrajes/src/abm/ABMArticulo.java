@@ -4,8 +4,9 @@
  */
 package abm;
 
+import BD.BaseDatos;
+import java.sql.SQLException;
 import modelos.Articulo;
-import org.javalite.activejdbc.Base;
 
 /**
  *
@@ -14,12 +15,15 @@ import org.javalite.activejdbc.Base;
 public class ABMArticulo {
 
     //existe  el articulo?
-    public boolean findArticulo(Articulo p) {
-        return (Articulo.first("id = ?", p.get("id")) != null);
+    public boolean findArticulo(Articulo p) throws SQLException {
+        boolean ret = (Articulo.first("id = ?", p.get("id")) != null);
+        return ret;
     }
 
-    public boolean alta(Articulo art) {
-//        Base.openTransaction();
+    public boolean alta(Articulo art) throws SQLException {
+        boolean ret = false;
+        BaseDatos.abrirBase();
+        BaseDatos.openTransaction();
         if (!findArticulo(art)) {
             Articulo nuevo = Articulo.create(
                     "modelo", art.get("modelo"),
@@ -30,29 +34,30 @@ public class ABMArticulo {
                     "descripcion", art.get("descripcion"),
                     "talle", art.get("talle"),
                     "tipo", art.get("tipo"));
-            nuevo.saveIt();
-          //  Base.commitTransaction();
-            return true;
-        } else {
-           // Base.commitTransaction();
-            return false;
+            ret = nuevo.saveIt();
         }
+        BaseDatos.commitTransaction();
+        BaseDatos.cerrarBase();
+        return ret;
     }
 
-    public boolean baja(Articulo art) {
-        boolean ret = false;        
-        Base.openTransaction();
+    public boolean baja(Articulo art) throws SQLException {
+        boolean ret = false;
+        BaseDatos.abrirBase();
+        BaseDatos.openTransaction();
         if (findArticulo(art)) {
             ret = art.delete();
             art.defrost();
         }
-        Base.commitTransaction();
+        BaseDatos.commitTransaction();
+        BaseDatos.cerrarBase();
         return ret;
     }
 
-    public boolean modificar(Articulo art) {
+    public boolean modificar(Articulo art) throws SQLException {
         boolean ret = false;
-        Base.openTransaction();
+        BaseDatos.abrirBase();
+        BaseDatos.openTransaction();
         Articulo viejo = Articulo.findFirst("id = ?", art.get("id"));
         if (viejo != null) {
             viejo.set(
@@ -66,13 +71,15 @@ public class ABMArticulo {
                     "tipo", art.get("tipo"));
             ret = viejo.saveIt();
         }
-        Base.commitTransaction();
+        BaseDatos.commitTransaction();
+        BaseDatos.cerrarBase();
         return ret;
     }
 
-    public boolean restarStock(int id) {
+    public boolean restarStock(int id) throws SQLException {
         boolean ret = false;
-        Base.openTransaction();
+        BaseDatos.abrirBase();
+        BaseDatos.openTransaction();
         Articulo viejo = Articulo.findFirst("id = ?", id);
         if (viejo != null) {
             if (viejo.getInteger("stock") > 0) {
@@ -82,7 +89,8 @@ public class ABMArticulo {
             }
             ret = viejo.saveIt();
         }
-        Base.commitTransaction();
+        BaseDatos.commitTransaction();
+        BaseDatos.cerrarBase();
         return ret;
     }
 }

@@ -53,7 +53,7 @@ CREATE  TABLE `alquilerTraje`.`bajas` (
 CREATE  TABLE `alquilerTraje`.`reservas` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `fecha_reserva` DATE NOT NULL ,
-  `fecha_de_reserva` DATE NOT NULL ,
+  `fecha_entrega_reserva` DATE NOT NULL ,
   `id_cliente` INT NOT NULL,
   PRIMARY KEY (`id`));
 
@@ -69,7 +69,7 @@ CREATE  TABLE `alquilerTraje`.`remitos` (
   `fecha_de_remito` DATE NOT NULL ,
   `id_cliente` INT NOT NULL,
   `total` FLOAT NOT NULL,
-  `seña` FLOAT NOT NULL,    
+  `senia` FLOAT NOT NULL,    
   PRIMARY KEY (`id`));
 
 CREATE  TABLE `alquilerTraje`.`articulos_remitos` (
