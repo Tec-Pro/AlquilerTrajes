@@ -15,7 +15,6 @@ public class ABMCliente {
 
     public Cliente getCliente(Cliente c) {
         return Cliente.first("nombre = ?", c.get("nombre"));
-
     }
 
     public boolean findCliente(Cliente c) {

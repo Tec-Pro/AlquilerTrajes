@@ -4,6 +4,7 @@
  */
 package controladores;
 
+import BD.BaseDatos;
 import abm.ABMArticulo;
 import interfaz.ArticuloGui;
 import interfaz.RegistroAmboGui;
@@ -15,6 +16,8 @@ import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -49,38 +52,50 @@ public class ControladorArticulo implements ActionListener, FocusListener {
         tablaArticulos = articuloGui.getArticulos();
         listArticulos = new LinkedList();
         abmArticulo = new ABMArticulo();
-        Base.openTransaction();
+        BaseDatos.abrirBase();
+        BaseDatos.openTransaction();
         listArticulos = Articulo.findAll();
-        Base.commitTransaction();
+        BaseDatos.commitTransaction();
+        BaseDatos.cerrarBase();
         actualizarLista();
         articuloGui.getBusqueda().addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                busquedaKeyReleased(evt);
+                try {
+                    busquedaKeyReleased(evt);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ControladorArticulo.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         articuloGui.getArticulos().addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaMouseClicked(evt);
+                try {
+                    tablaMouseClicked(evt);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ControladorArticulo.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
 
     }
 
-    public void busquedaKeyReleased(java.awt.event.KeyEvent evt) {
+    public void busquedaKeyReleased(java.awt.event.KeyEvent evt) throws SQLException {
         System.out.println("apreté el caracter: " + evt.getKeyChar());
         realizarBusqueda();
     }
 
-    private void realizarBusqueda() {
-        Base.openTransaction();
+    private void realizarBusqueda() throws SQLException {
+        BaseDatos.abrirBase();
+        BaseDatos.openTransaction();
         listArticulos = Articulo.where("(modelo like ? or descripcion like ? or marca like ? or id like ? or tipo like ? or talle like ?)", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%");
-        Base.openTransaction();
+        BaseDatos.openTransaction();
+        BaseDatos.cerrarBase();
         actualizarLista();
     }
 
-    public void tablaMouseClicked(java.awt.event.MouseEvent evt) {
+    public void tablaMouseClicked(java.awt.event.MouseEvent evt) throws SQLException {
         if (evt.getClickCount() == 2) {
             //bloqueo los campos y habilito botones
             articuloGui.habilitarCampos(false);
@@ -90,14 +105,18 @@ public class ControladorArticulo implements ActionListener, FocusListener {
             articuloGui.getNuevo().setEnabled(true);
             editandoInfo = false;
             articuloGui.limpiarCampos();
-            Base.openTransaction();
+            BaseDatos.abrirBase();
+            BaseDatos.openTransaction();
             articulo = Articulo.findFirst("id = ?", tablaArticulos.getValueAt(tablaArticulos.getSelectedRow(), 0));
-            Base.commitTransaction();
+            BaseDatos.commitTransaction();
+            BaseDatos.cerrarBase();
             articuloGui.CargarCampos(articulo);
         }
     }
 
-    private void actualizarLista() {
+    private void actualizarLista() throws SQLException {
+        BaseDatos.abrirBase();
+        BaseDatos.openTransaction();
         tablaArtDefault.setRowCount(0);
         Iterator<Articulo> it = listArticulos.iterator();
         while (it.hasNext()) {
@@ -112,11 +131,19 @@ public class ControladorArticulo implements ActionListener, FocusListener {
             row[6] = art.getBigDecimal("precio_alquiler").setScale(2, RoundingMode.CEILING).toString();
             tablaArtDefault.addRow(row);
         }
+        BaseDatos.commitTransaction();
+        BaseDatos.cerrarBase();
         articuloGui.getCantidadArticulos().setText(String.valueOf(tablaArticulos.getRowCount()));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        try {
+            BaseDatos.abrirBase();
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorArticulo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        BaseDatos.openTransaction();
         if (e.getSource() == articuloGui.getNuevo()) {
             System.out.println("Boton nuevo pulsado");
             articuloGui.limpiarCampos();
@@ -129,18 +156,26 @@ public class ControladorArticulo implements ActionListener, FocusListener {
         }
         if (e.getSource() == articuloGui.getGuardar() && editandoInfo && isNuevo) {
             System.out.println("Boton guardar pulsado");
-            if (cargarDatosProd(articulo)) {
-                if (abmArticulo.alta(articulo)) {
-                    articuloGui.habilitarCampos(false);
-                    articuloGui.limpiarCampos();
-                    editandoInfo = false;
-                    JOptionPane.showMessageDialog(articuloGui, "¡Artículo guardado exitosamente!");
-                    articuloGui.getNuevo().setEnabled(true);
-                    articuloGui.getGuardar().setEnabled(false);
-                } else {
-                    JOptionPane.showMessageDialog(articuloGui, "codigo repetido, no se guardó el artículo", "Error!", JOptionPane.ERROR_MESSAGE);
+            try {
+                if (cargarDatosProd(articulo)) {
+                    if (abmArticulo.alta(articulo)) {
+                        articuloGui.habilitarCampos(false);
+                        articuloGui.limpiarCampos();
+                        editandoInfo = false;
+                        JOptionPane.showMessageDialog(articuloGui, "¡Artículo guardado exitosamente!");
+                        articuloGui.getNuevo().setEnabled(true);
+                        articuloGui.getGuardar().setEnabled(false);
+                    } else {
+                        JOptionPane.showMessageDialog(articuloGui, "codigo repetido, no se guardó el artículo", "Error!", JOptionPane.ERROR_MESSAGE);
+                    }
+                    try {
+                        realizarBusqueda();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ControladorArticulo.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-                realizarBusqueda();
+            } catch (SQLException ex) {
+                Logger.getLogger(ControladorArticulo.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         if (e.getSource() == articuloGui.getBorrar()) {
@@ -153,7 +188,11 @@ public class ControladorArticulo implements ActionListener, FocusListener {
                     if (seBorro) {
                         JOptionPane.showMessageDialog(articuloGui, "¡Artículo borrado exitosamente!");
                         articuloGui.limpiarCampos();
-                        realizarBusqueda();
+                        try {
+                            realizarBusqueda();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(ControladorArticulo.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         articuloGui.getBorrar().setEnabled(false);
                         articuloGui.getModificar().setEnabled(false);
                     } else {
@@ -176,28 +215,40 @@ public class ControladorArticulo implements ActionListener, FocusListener {
         }
         if (e.getSource() == articuloGui.getGuardar() && editandoInfo && !isNuevo) {
             System.out.println("Boton guardar pulsado");
-            if (cargarDatosProd(articulo)) {
-                if (abmArticulo.modificar(articulo)) {
-                    articuloGui.habilitarCampos(false);
-                    articuloGui.limpiarCampos();
-                    editandoInfo = false;
-                    JOptionPane.showMessageDialog(articuloGui, "¡Artículo modificado exitosamente!");
-                    articuloGui.getNuevo().setEnabled(true);
-                    articuloGui.getGuardar().setEnabled(false);
-                } else {
-                    JOptionPane.showMessageDialog(articuloGui, "Ocurrió un error,revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
+            try {
+                if (cargarDatosProd(articulo)) {
+                    if (abmArticulo.modificar(articulo)) {
+                        articuloGui.habilitarCampos(false);
+                        articuloGui.limpiarCampos();
+                        editandoInfo = false;
+                        JOptionPane.showMessageDialog(articuloGui, "¡Artículo modificado exitosamente!");
+                        articuloGui.getNuevo().setEnabled(true);
+                        articuloGui.getGuardar().setEnabled(false);
+                    } else {
+                        JOptionPane.showMessageDialog(articuloGui, "Ocurrió un error,revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
+                    }
+                    try {
+                        realizarBusqueda();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ControladorArticulo.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-                realizarBusqueda();
+            } catch (SQLException ex) {
+                Logger.getLogger(ControladorArticulo.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         if (e.getSource() == articuloGui.getRegistrarAmbo()) {
             registroAmbo.show();
             articuloGui.hide();
         }
+        BaseDatos.commitTransaction();
+        BaseDatos.cerrarBase();
     }
 
-    private boolean cargarDatosProd(Articulo art) {
+    private boolean cargarDatosProd(Articulo art) throws SQLException {
         boolean ret = true;
+        BaseDatos.abrirBase();
+        BaseDatos.openTransaction();
         try {
             art.set("id", articuloGui.getId().getText());
         } catch (ClassCastException e) {
@@ -262,7 +313,8 @@ public class ControladorArticulo implements ActionListener, FocusListener {
             ret = false;
             JOptionPane.showMessageDialog(articuloGui, "Error en el talle", "Error!", JOptionPane.ERROR_MESSAGE);
         }
-
+        BaseDatos.commitTransaction();
+        BaseDatos.cerrarBase();
         return ret;
     }
 

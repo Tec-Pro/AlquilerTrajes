@@ -4,6 +4,7 @@
  */
 package controladores;
 
+import BD.BaseDatos;
 import abm.ABMCliente;
 import busqueda.Busqueda;
 import interfaz.ClienteGui;
@@ -11,8 +12,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -37,7 +41,7 @@ public class ControladorCliente implements ActionListener {
     private Cliente cliente;
     Busqueda busqueda;
 
-    public ControladorCliente(ClienteGui clienteGui) {
+    public ControladorCliente(ClienteGui clienteGui) throws SQLException {
         this.clienteGui = clienteGui;
         this.clienteGui.setActionListener(this);
         isNuevo = true;
@@ -48,33 +52,42 @@ public class ControladorCliente implements ActionListener {
         listClientes = new LinkedList();
         abmCliente = new ABMCliente();
         cliente = new Cliente();
+        BaseDatos.abrirBase();
         Base.openTransaction();
         listClientes = Cliente.findAll();
         Base.commitTransaction();
+        BaseDatos.cerrarBase();
         actualizarLista();
         nomcli = clienteGui.getBusqueda();
         nomcli.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                busquedaKeyReleased(evt);
+                try {
+                    busquedaKeyReleased(evt);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ControladorCliente.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         tablaCliente.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaClienteMouseClicked(evt);
+                try {
+                    tablaClienteMouseClicked(evt);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ControladorCliente.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
-    private void busquedaKeyReleased(KeyEvent evt) {
+    private void busquedaKeyReleased(KeyEvent evt) throws SQLException {
         System.out.println("apreté el caracter: " + evt.getKeyChar());
         realizarBusqueda();
     }
 
-   
     // doble click en un cliente = muestra los datos y habilita los botones
-    private void tablaClienteMouseClicked(MouseEvent evt) {
+    private void tablaClienteMouseClicked(MouseEvent evt) throws SQLException {
         if (evt.getClickCount() == 2) {
             clienteGui.habilitarCampos(false);
             clienteGui.getBorrar().setEnabled(true);
@@ -103,20 +116,27 @@ public class ControladorCliente implements ActionListener {
         if (e.getSource() == clienteGui.getGuardar() && editandoInfo && isNuevo) { //Guardar
             System.out.println("Boton guardar pulsado");
 
-            if (cargarDatosCliente(cliente)) {
-                if (abmCliente.alta(cliente)) {
-                    clienteGui.habilitarCampos(false);
-                    clienteGui.limpiarCampos();
-                    editandoInfo = false;
-                    JOptionPane.showMessageDialog(clienteGui, "¡Cliente guardado exitosamente!");
-                    clienteGui.getNuevo().setEnabled(true);
-                    clienteGui.getGuardar().setEnabled(false);
-                } else {
-                    JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
+            try {
+                if (cargarDatosCliente(cliente)) {
+                    if (abmCliente.alta(cliente)) {
+                        clienteGui.habilitarCampos(false);
+                        clienteGui.limpiarCampos();
+                        editandoInfo = false;
+                        JOptionPane.showMessageDialog(clienteGui, "¡Cliente guardado exitosamente!");
+                        clienteGui.getNuevo().setEnabled(true);
+                        clienteGui.getGuardar().setEnabled(false);
+                    } else {
+                        JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
+                    }
+                    try {
+                        realizarBusqueda();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ControladorCliente.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-                realizarBusqueda();
+            } catch (SQLException ex) {
+                Logger.getLogger(ControladorCliente.class.getName()).log(Level.SEVERE, null, ex);
             }
-
 
         }
         if (e.getSource() == clienteGui.getBorrar()) { //borrar cliente 
@@ -129,7 +149,11 @@ public class ControladorCliente implements ActionListener {
                     if (seBorro) {
                         JOptionPane.showMessageDialog(clienteGui, "¡Cliente borrado exitosamente!");
                         clienteGui.limpiarCampos();
-                        realizarBusqueda();
+                        try {
+                            realizarBusqueda();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(ControladorCliente.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         clienteGui.getBorrar().setEnabled(false);
                         clienteGui.getModificar().setEnabled(false);
                     } else {
@@ -154,24 +178,34 @@ public class ControladorCliente implements ActionListener {
         if (e.getSource() == clienteGui.getGuardar() && editandoInfo && !isNuevo) {
             System.out.println("Boton guardar pulsado");
 
-            if (cargarDatosCliente(cliente)) {
-                if (abmCliente.modificar(cliente)) {
-                    clienteGui.habilitarCampos(false);
-                    clienteGui.limpiarCampos();
-                    editandoInfo = false;
-                    JOptionPane.showMessageDialog(clienteGui, "¡Cliente modificado exitosamente!");
-                    clienteGui.getNuevo().setEnabled(true);
-                    clienteGui.getGuardar().setEnabled(false);
-                } else {
-                    JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error,revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
+            try {
+                if (cargarDatosCliente(cliente)) {
+                    if (abmCliente.modificar(cliente)) {
+                        clienteGui.habilitarCampos(false);
+                        clienteGui.limpiarCampos();
+                        editandoInfo = false;
+                        JOptionPane.showMessageDialog(clienteGui, "¡Cliente modificado exitosamente!");
+                        clienteGui.getNuevo().setEnabled(true);
+                        clienteGui.getGuardar().setEnabled(false);
+                    } else {
+                        JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error,revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
+                    }
+                    try {
+                        realizarBusqueda();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ControladorCliente.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-                realizarBusqueda();
+            } catch (SQLException ex) {
+                Logger.getLogger(ControladorCliente.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
     }
 
-    private void actualizarLista() {
+    private void actualizarLista() throws SQLException {
+        BaseDatos.abrirBase();
+        Base.openTransaction();
         tablaCliDefault.setRowCount(0);
         Iterator<Cliente> it = listClientes.iterator();
         while (it.hasNext()) {
@@ -183,15 +217,19 @@ public class ControladorCliente implements ActionListener {
             row[3] = c.getString("celular");
             tablaCliDefault.addRow(row);
         }
+        BaseDatos.commitTransaction();
+        BaseDatos.cerrarBase();
     }
 
-    private void realizarBusqueda() {
+    private void realizarBusqueda() throws SQLException {
         listClientes = busqueda.buscarCliente(nomcli.getText());
         actualizarLista();
     }
 
-    private boolean cargarDatosCliente(Cliente c) {
+    private boolean cargarDatosCliente(Cliente c) throws SQLException {
         boolean ret = true;
+        BaseDatos.abrirBase();
+        Base.openTransaction();
         try {
             String nombre = TratamientoString.eliminarTildes(clienteGui.getNombre().getText());
             System.out.println(nombre);
@@ -228,6 +266,8 @@ public class ControladorCliente implements ActionListener {
             ret = false;
             JOptionPane.showMessageDialog(clienteGui, "Error en el dni", "Error!", JOptionPane.ERROR_MESSAGE);
         }
+        BaseDatos.commitTransaction();
+        BaseDatos.cerrarBase();
         return ret;
     }
 }

@@ -4,6 +4,7 @@
  */
 package controladores;
 
+import BD.BaseDatos;
 import abm.ABMArticulo;
 import abm.ABMBaja;
 import interfaz.BajaGui;
@@ -11,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.math.RoundingMode;
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import javax.swing.JTable;
@@ -33,7 +35,7 @@ public class ControladorBaja implements ActionListener {
     private ABMArticulo abmArticulo;
     private ABMBaja abmBaja;
 
-    public ControladorBaja(BajaGui bajaGui) {
+    public ControladorBaja(BajaGui bajaGui) throws SQLException {
         this.bajaGui = bajaGui;
         articulo = new Articulo();
         this.bajaGui.setActionListener(this);
@@ -42,9 +44,11 @@ public class ControladorBaja implements ActionListener {
         listArticulos = new LinkedList();
         abmBaja = new ABMBaja();
         abmArticulo = new ABMArticulo();
-        Base.openTransaction();
+        BaseDatos.abrirBase();
+        BaseDatos.openTransaction();
         listArticulos = Articulo.where("stock >? ", 0);
-        Base.commitTransaction();
+        BaseDatos.commitTransaction();
+        BaseDatos.cerrarBase();
         actualizarLista();
         bajaGui.getBusquedaCodigoArticulo().addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -58,7 +62,9 @@ public class ControladorBaja implements ActionListener {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    private void actualizarLista() {
+    private void actualizarLista() throws SQLException {
+        BaseDatos.abrirBase();
+        BaseDatos.openTransaction();
         tablaArtDefault.setRowCount(0);
         Iterator<Articulo> it = listArticulos.iterator();
         while (it.hasNext()) {
@@ -72,6 +78,8 @@ public class ControladorBaja implements ActionListener {
             row[5] = art.getBigDecimal("precio_compra").setScale(2, RoundingMode.CEILING).toString();
             tablaArtDefault.addRow(row);
         }
+        BaseDatos.commitTransaction();
+        BaseDatos.cerrarBase();
     }
 
     @Override

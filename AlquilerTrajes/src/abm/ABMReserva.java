@@ -5,6 +5,8 @@
  */
 package abm;
 
+import BD.BaseDatos;
+import java.sql.SQLException;
 import modelos.Reserva;
 import org.javalite.activejdbc.Base;
 
@@ -15,25 +17,25 @@ import org.javalite.activejdbc.Base;
 public class ABMReserva {
     
     //True si la reserva dada existe ( se busca por fecha de entrega de la reserva)
-    public boolean existReserva(Reserva r){
-        Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/alquilerTraje", "root", "root");
-        //Base.openTransaction();
+    public boolean existReserva(Reserva r) throws SQLException{
+        BaseDatos.abrirBase();
+        BaseDatos.openTransaction();
         boolean result = (Reserva.first("fecha_entrega_reserva = ?", r.get("fecha_entrega_reserva")) != null);
-        //Base.commitTransaction();
-        Base.close();
+        BaseDatos.commitTransaction();
+        BaseDatos.cerrarBase();
         return result;
     }
     
     //Da de alta una reserva en la BD
-    public boolean alta(Reserva r) {
+    public boolean alta(Reserva r) throws SQLException {
         //if (!existReserva(r)) {
-            Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/alquilerTraje", "root", "root");
-            //Base.openTransaction();
+            BaseDatos.abrirBase();
+            BaseDatos.openTransaction();
             Reserva nuevo = Reserva.create("fecha_reserva", r.get("fecha_reserva"), "fecha_entrega_reserva",
                     r.get("fecha_entrega_reserva"), "id_cliente", r.get("id_cliente"));
             nuevo.saveIt();
-            //Base.commitTransaction();
-            Base.close();
+            BaseDatos.commitTransaction();
+            BaseDatos.cerrarBase();
             return true;
         //} else {
           //  return false;
@@ -42,14 +44,14 @@ public class ABMReserva {
 
     //Revisar el delete que no rompa toda la base (deleteOnCascade deberia ser)
     //Da de baja una reserva en la BD (lo elimina)
-    public boolean baja(Reserva r) {
+    public boolean baja(Reserva r) throws SQLException {
         Reserva viejo = Reserva.findById(r.getId());
         if (viejo != null) {
-            Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/alquilerTraje", "root", "root");
-            //Base.openTransaction();
+            BaseDatos.abrirBase();
+            BaseDatos.openTransaction();
             viejo.delete();
-            //Base.commitTransaction();
-            Base.close();
+            BaseDatos.commitTransaction();
+            BaseDatos.cerrarBase();
             return true;
         }
         return false;
@@ -57,15 +59,15 @@ public class ABMReserva {
     }
 
     //Modifica los datos de una reserva especifica (reserva identificada por su id)
-    public boolean modificar(Reserva r) {
+    public boolean modificar(Reserva r) throws SQLException {
         Reserva viejo = Reserva.findById(r.getId());
         if (viejo != null) {
-            Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/alquilerTraje", "root", "root");
-            //Base.openTransaction();
+            BaseDatos.abrirBase();
+            BaseDatos.openTransaction();
             viejo.set("fecha_reserva", r.get("fecha_reserva"), "fecha_entrega_reserva",
                     r.get("fecha_entrega_reserva"), "id_cliente", r.get("id_cliente")).saveIt();
-            //Base.commitTransaction();
-            Base.close();
+            BaseDatos.commitTransaction();
+            BaseDatos.cerrarBase();
             return true;
         }
         return false;
