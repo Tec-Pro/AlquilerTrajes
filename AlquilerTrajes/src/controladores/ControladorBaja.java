@@ -47,20 +47,51 @@ public class ControladorBaja implements ActionListener {
         abmArticulo = new ABMArticulo();
         BaseDatos.abrirBase();
         BaseDatos.openTransaction();
-        listArticulos = Articulo.where("stock >? ", 0);
+        listArticulos = Articulo.findAll();
         BaseDatos.commitTransaction();
         BaseDatos.cerrarBase();
         actualizarLista();
         bajaGui.getBusquedaCodigoArticulo().addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                busquedaKeyReleased(evt);
+                try {
+                    busquedaKeyReleased(evt);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ControladorBaja.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        tablaArticulos.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                try {
+                    tablaMouseClicked(evt);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ControladorRegistroAmbo.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
-    private void busquedaKeyReleased(KeyEvent evt) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void tablaMouseClicked(java.awt.event.MouseEvent evt) throws SQLException {
+        if (tablaArticulos.getSelectedRow() > -1) {
+            if (tablaArticulos.getValueAt(tablaArticulos.getSelectedRow(), 0) != bajaGui.getArticuloBaja().getText()) {
+                bajaGui.getArticuloBaja().setText((String) tablaArticulos.getValueAt(tablaArticulos.getSelectedRow(), 0));
+            }
+        }
+    }
+
+    private void busquedaKeyReleased(KeyEvent evt) throws SQLException {
+        realizarBusqueda();
+    }
+
+    private void realizarBusqueda() throws SQLException {
+        BaseDatos.abrirBase();
+        BaseDatos.openTransaction();
+        listArticulos = Articulo.where("modelo like ? or descripcion like ? or marca like ? or id like ? or tipo like ? or talle like ?", "%" + bajaGui.getBusquedaCodigoArticulo().getText() + "%", "%" + bajaGui.getBusquedaCodigoArticulo().getText() + "%", "%" + bajaGui.getBusquedaCodigoArticulo().getText() + "%", "%" + bajaGui.getBusquedaCodigoArticulo().getText() + "%", "%" + bajaGui.getBusquedaCodigoArticulo().getText() + "%", "%" + bajaGui.getBusquedaCodigoArticulo().getText() + "%");
+        BaseDatos.commitTransaction();
+        BaseDatos.cerrarBase();
+        actualizarLista();
     }
 
     private void actualizarLista() throws SQLException {
@@ -86,8 +117,7 @@ public class ControladorBaja implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == bajaGui.getDarBaja()) {
-            tablaArticulos.getValueAt(tablaArticulos.getSelectedRow(), 0);
-            Articulo art = Articulo.findById(tablaArticulos.getValueAt(tablaArticulos.getSelectedRow(), 0));
+            Articulo art = Articulo.findById(bajaGui.getArticuloBaja().getText());
             Baja b = new Baja();
             java.util.Date dt = new java.util.Date();
             java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");

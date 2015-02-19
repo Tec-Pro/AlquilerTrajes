@@ -46,6 +46,10 @@ public class BajaGui extends javax.swing.JInternalFrame {
          busquedaCodigoArticulo.setEnabled(!si);
      }
 
+    public JTextField getArticuloBaja() {
+        return articuloBaja;
+    }
+
      
     
     /**
@@ -154,6 +158,8 @@ public class BajaGui extends javax.swing.JInternalFrame {
         descripcion = new javax.swing.JTextField();
         Monto = new javax.swing.JLabel();
         cobro = new javax.swing.JTextField();
+        Monto1 = new javax.swing.JLabel();
+        articuloBaja = new javax.swing.JTextField();
         panelControlFactura = new javax.swing.JPanel();
         darBaja = new javax.swing.JButton();
 
@@ -255,6 +261,9 @@ public class BajaGui extends javax.swing.JInternalFrame {
         Monto.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
         Monto.setText("Cobro");
 
+        Monto1.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
+        Monto1.setText("Articulo");
+
         javax.swing.GroupLayout panelFacturaLayout = new javax.swing.GroupLayout(panelFactura);
         panelFactura.setLayout(panelFacturaLayout);
         panelFacturaLayout.setHorizontalGroup(
@@ -262,28 +271,38 @@ public class BajaGui extends javax.swing.JInternalFrame {
             .addGroup(panelFacturaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelCliente)
-                    .addComponent(Monto))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelFacturaLayout.createSequentialGroup()
-                        .addComponent(descripcion)
-                        .addContainerGap())
+                        .addComponent(Monto)
+                        .addGap(50, 50, 50)
+                        .addComponent(cobro, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+                        .addGap(70, 70, 70))
                     .addGroup(panelFacturaLayout.createSequentialGroup()
-                        .addComponent(cobro, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
-                        .addGap(70, 70, 70))))
+                        .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelCliente)
+                            .addComponent(Monto1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelFacturaLayout.createSequentialGroup()
+                                .addComponent(articuloBaja, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+                                .addGap(27, 27, 27))
+                            .addComponent(descripcion)))))
         );
         panelFacturaLayout.setVerticalGroup(
             panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelFacturaLayout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Monto1)
+                    .addComponent(articuloBaja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelCliente)
                     .addComponent(descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Monto)
                     .addComponent(cobro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(47, 47, 47))
+                .addContainerGap())
         );
 
         panelControlFactura.setLayout(new java.awt.GridLayout(1, 0));
@@ -296,7 +315,7 @@ public class BajaGui extends javax.swing.JInternalFrame {
         fondoImagen.setLayout(fondoImagenLayout);
         fondoImagenLayout.setHorizontalGroup(
             fondoImagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 825, Short.MAX_VALUE)
+            .addComponent(panelTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(fondoImagenLayout.createSequentialGroup()
                 .addComponent(panelClientesAarticulos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -355,6 +374,8 @@ public class BajaGui extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Monto;
+    private javax.swing.JLabel Monto1;
+    private javax.swing.JTextField articuloBaja;
     private javax.swing.JTextField busquedaCodigoArticulo;
     private javax.swing.JTextField cobro;
     private javax.swing.JButton darBaja;

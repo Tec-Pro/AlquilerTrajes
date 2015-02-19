@@ -46,6 +46,7 @@ public class ControladorApliacion implements ActionListener {
     private final RegistroAmboGui registroAmbo;
     private final GestionReservasGui gestResGui;
     private final ReservaGui reservaGui;
+    private final ControladorRegistroAmbo controladorRegistroAmbo;
     
 
     public ControladorApliacion() throws JRException, ClassNotFoundException, SQLException, PropertyVetoException {
@@ -69,6 +70,7 @@ public class ControladorApliacion implements ActionListener {
         controladorArticulo = new ControladorArticulo(articuloGui, registroAmbo);
         controladorCliente = new ControladorCliente(clienteGui);
         controladorGestReserv = new ControladorGestionReservas(gestResGui,reservaGui);
+        controladorRegistroAmbo = new ControladorRegistroAmbo(registroAmbo);
         aplicacionGui.getContenedor().add(articuloGui);
         aplicacionGui.getContenedor().add(clienteGui);
         aplicacionGui.getContenedor().add(bajaGui);

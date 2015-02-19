@@ -40,7 +40,7 @@ public class ControladorRegistroAmbo implements ActionListener {
         this.registroAmboGui.setActionListener(this);
         tablaArtDefault = registroAmboGui.getTablaArticulosDefault();
         tablaArticulos = registroAmboGui.getTablaArticulos();
-        tablaAmboDefault = registroAmboGui.getTablaFacturaDefault();        
+        tablaAmboDefault = registroAmboGui.getTablaFacturaDefault();
         tablaAmbo = registroAmboGui.getTablaFactura();
         abmAmbo = new ABMAmbo();
         listArticulos = new LinkedList();
@@ -54,7 +54,7 @@ public class ControladorRegistroAmbo implements ActionListener {
             @Override
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 try {
-                     realizarBusqueda();
+                    realizarBusqueda();
                 } catch (SQLException ex) {
                     Logger.getLogger(ControladorArticulo.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -69,10 +69,12 @@ public class ControladorRegistroAmbo implements ActionListener {
                     Logger.getLogger(ControladorRegistroAmbo.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        });        
+        });
     }
 
     private void actualizarLista() throws SQLException {
+        BaseDatos.abrirBase();
+        BaseDatos.openTransaction();
         tablaArtDefault.setRowCount(0);
         Iterator<Articulo> it = listArticulos.iterator();
         while (it.hasNext()) {
@@ -86,11 +88,15 @@ public class ControladorRegistroAmbo implements ActionListener {
             row[5] = art.getString("descripcion");
             tablaArtDefault.addRow(row);
         }
+        BaseDatos.commitTransaction();
+        BaseDatos.cerrarBase();
     }
 
     public void tablaMouseClicked(java.awt.event.MouseEvent evt) throws SQLException {
-        BaseDatos.abrirBase();
-        BaseDatos.openTransaction();
+        if (!BaseDatos.hasConnection()) {
+            BaseDatos.abrirBase();
+            BaseDatos.openTransaction();
+        }
         int[] rows = tablaArticulos.getSelectedRows();
         if (rows.length > 0) {
             for (int i = 0; i < rows.length; i++) {
@@ -103,7 +109,7 @@ public class ControladorRegistroAmbo implements ActionListener {
                     cols[3] = p.get("tipo");
                     cols[4] = p.get("talle");
                     cols[5] = p.getFloat("precio_alquiler");
-                    tablaArtDefault.addRow(cols);
+                    tablaAmboDefault.addRow(cols);
                     actualizarPrecio();
                 } else {
                     System.out.println("que hace guacho");
@@ -143,7 +149,7 @@ public class ControladorRegistroAmbo implements ActionListener {
         if (e.getSource() == registroAmboGui.getRegistrar()) {
             Ambo am = new Ambo();
             am.set("nombre", registroAmboGui.getNombreAmbo().getText());
-            am.set("precio_alquiler", registroAmboGui.getNombreAmbo().getText());
+            am.set("precio_alquiler", Float.valueOf(registroAmboGui.getTotalFactura().getText()));
             String marca = "";
             String talle = "";
             int stock = 0;
@@ -202,10 +208,16 @@ public class ControladorRegistroAmbo implements ActionListener {
                     }
                     i = 0;
                 }
-                actualizarPrecio();
+                if (tablaAmbo.getRowCount() == 0) {
+                    registroAmboGui.getTotalFactura().setText("0");
+                }
+                } else {
+                    actualizarPrecio();
+                }
             }
         }
-    }
+
+    
 
     public void actualizarPrecio() {
         float total = 0;

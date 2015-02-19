@@ -17,11 +17,7 @@ public class ABMAmbo {
  int ultimoId;
     //existe  el articulo?
     public boolean findArticulo(Ambo p) throws SQLException {
-        BaseDatos.abrirBase();
-        BaseDatos.openTransaction();
         boolean ret = (Articulo.first("id = ?", p.get("id")) != null);
-        BaseDatos.commitTransaction();
-        BaseDatos.cerrarBase();
         return ret;
 
     }
