@@ -29,9 +29,9 @@ public class Busqueda {
      */
     public Cliente buscarCliente(Object id) throws SQLException {
         BaseDatos.abrirBase();
-        Base.openTransaction();
+        BaseDatos.openTransaction();
         Cliente result = Cliente.findById(id);
-        Base.commitTransaction();
+        BaseDatos.commitTransaction();
         BaseDatos.cerrarBase();
         return result;
     }

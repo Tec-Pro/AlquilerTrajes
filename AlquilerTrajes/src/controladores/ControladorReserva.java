@@ -8,12 +8,14 @@ package controladores;
 import BD.BaseDatos;
 import abm.ABMReserva;
 import busqueda.Busqueda;
+import com.toedter.calendar.JDateChooser;
 import interfaz.ReservaGui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -32,23 +34,31 @@ import modelos.Reserva;
  */
 public class ControladorReserva implements ActionListener {
 
-    private final ABMReserva abmReserva;
+    private  ABMReserva abmReserva;
     private final ReservaGui reservaGui;
-    private final Reserva reserva;
+    private  Reserva reserva;
     private final Busqueda busqueda;
+    private final boolean isNuevaReserva;
     private String fechaReserva; //fecha en que se realiza la reserva
     private String fechaEntregaReserva; //fecha en que se debe entregar la reserva
     private Integer idCliente; //ID del cliente que realizo la reserva
 
-    public ControladorReserva(ReservaGui reservaGui) {
-        this.fechaEntregaReserva = null;
-        this.fechaReserva = null;
-        this.idCliente = null;
+    public ControladorReserva(ReservaGui reservaGui, Reserva r) throws SQLException {
         this.reservaGui = reservaGui;
-        this.reserva = new Reserva();
-        this.abmReserva = new ABMReserva();
         this.busqueda = new Busqueda();
         this.reservaGui.setActionListener(this);
+        if(r!= null){
+            this.isNuevaReserva = false;
+            this.reserva = r;
+            cargarReserva(this.reserva);
+        }else{
+            this.isNuevaReserva = true;
+            this.fechaEntregaReserva = null;
+            this.fechaReserva = null;
+            this.idCliente = null;
+            this.reserva = new Reserva();
+            this.abmReserva = new ABMReserva();
+        }
         this.reservaGui.getBusquedaCliente().addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -117,9 +127,16 @@ public class ControladorReserva implements ActionListener {
         BaseDatos.cerrarBase();
     }
 
+    private void cargarReserva(Reserva r) throws SQLException {
+        Cliente c = busqueda.buscarCliente(r.get("id_cliente"));
+        reservaGui.setBusquedaCliente(c.getId()+" - "+c.getString("nombre")+" "+c.getString("dni"));
+        // FALTA CARGAR EL RESTO DE LOS DATOS DE LA RESERVA PASADA POR
+        // PARAMETRO EN LA GUI
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource().equals(reservaGui.getConfirmarReserva())) {
+        if (e.getSource().equals(reservaGui.getConfirmarReserva()) && isNuevaReserva) {
             fechaReserva = reservaGui.getFechaReserva();
             fechaEntregaReserva = reservaGui.getFechaEntregaReserva();
             if (idCliente != null && fechaEntregaReserva != null && fechaReserva != null) {
