@@ -12,12 +12,17 @@ import interfaz.ReservaGui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import modelos.Cliente;
 import modelos.Reserva;
 
@@ -31,8 +36,14 @@ public class ControladorReserva implements ActionListener {
     private final ReservaGui reservaGui;
     private final Reserva reserva;
     private final Busqueda busqueda;
+    private String fechaReserva; //fecha en que se realiza la reserva
+    private String fechaEntregaReserva; //fecha en que se debe entregar la reserva
+    private Integer idCliente; //ID del cliente que realizo la reserva
 
     public ControladorReserva(ReservaGui reservaGui) {
+        this.fechaEntregaReserva = null;
+        this.fechaReserva = null;
+        this.idCliente = null;
         this.reservaGui = reservaGui;
         this.reserva = new Reserva();
         this.abmReserva = new ABMReserva();
@@ -45,7 +56,7 @@ public class ControladorReserva implements ActionListener {
                 try {
                     listaClientes = busquedaClientes(evt);
                     if (listaClientes != null) {
-                        actualizarListaClientes(listaClientes);
+                        actualizarTablaClientes(listaClientes);
                     }
                 } catch (SQLException ex) {
                     Logger.getLogger(ControladorReserva.class.getName()).log(Level.SEVERE, null, ex);
@@ -54,33 +65,54 @@ public class ControladorReserva implements ActionListener {
             }
 
         });
+        reservaGui.getTablaClienteReserva().addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaMouseClicked(evt);
+            }
+        });
+    }
+
+    private void tablaMouseClicked(MouseEvent evt) {
+        int selectedRow = reservaGui.getTablaClienteReserva().getSelectedRow();
+        DefaultTableModel modelo = ((DefaultTableModel) reservaGui.getTablaClienteReserva().getModel());
+        reservaGui.getBusquedaCliente().setText(modelo.getValueAt(selectedRow, 0) + " - "
+                + modelo.getValueAt(selectedRow, 1) + "  " + modelo.getValueAt(selectedRow, 2));
+        idCliente = (Integer) modelo.getValueAt(selectedRow, 0);
     }
 
     private List<Cliente> busquedaClientes(KeyEvent evt) throws SQLException {
-        String cliente = reservaGui.getBusquedaCliente().getText();
+        String textBusquedaCliente = reservaGui.getBusquedaCliente().getText();
         List<Cliente> listClientes;
-        //Si la busqueda empieza con un numero, busco al/los clientes por el id
-        if (cliente.startsWith("1") || cliente.startsWith("2") || cliente.startsWith("3") || cliente.startsWith("4") || 
-                cliente.startsWith("5") || cliente.startsWith("6") || cliente.startsWith("7") || cliente.startsWith("8") || 
-                cliente.startsWith("9") ){
-            listClientes = busqueda.buscarClientes(Integer.parseInt(cliente));
-        //Sino, busco los clientes por su nombre
-        }else{
-            listClientes = busqueda.buscarCliente(cliente);
-        }   
+        //Si la busqueda empieza con un numero, busco al/los clientes por el id y dni simultaneamente
+        if (textBusquedaCliente.startsWith("0") || textBusquedaCliente.startsWith("1") || textBusquedaCliente.startsWith("2") || textBusquedaCliente.startsWith("3") || textBusquedaCliente.startsWith("4")
+                || textBusquedaCliente.startsWith("5") || textBusquedaCliente.startsWith("6") || textBusquedaCliente.startsWith("7") || textBusquedaCliente.startsWith("8")
+                || textBusquedaCliente.startsWith("9")) {
+            listClientes = busqueda.buscarClientesPorIDyDni(Integer.parseInt(textBusquedaCliente));
+
+            //Sino, busco los clientes por su nombre
+        } else {
+            listClientes = busqueda.buscarCliente(textBusquedaCliente);
+        }
         return listClientes;
     }
 
-    private void actualizarListaClientes(List<Cliente> lista) throws SQLException {
-        DefaultListModel modelo = new DefaultListModel();
+    private void actualizarTablaClientes(List<Cliente> lista) throws SQLException {
+        DefaultTableModel modelo = ((DefaultTableModel) reservaGui.getTablaClienteReserva().getModel());
+        modelo.setRowCount(0);
         BaseDatos.abrirBase();
         BaseDatos.openTransaction();
         Iterator<Cliente> itr = lista.iterator();
+        Cliente c;
+        Object[] o = new Object[3];
         while (itr.hasNext()) {
-            Cliente c = itr.next();
-            modelo.addElement(c.getId() + " " + c.getString("nombre"));
+            c = itr.next();
+            o[0] = (c.getId());
+            o[1] = (c.getString("nombre"));
+            o[2] = (c.getString("dni"));
+            modelo.addRow(o);
+
         }
-        reservaGui.getListClientes().setModel(modelo);
         BaseDatos.commitTransaction();
         BaseDatos.cerrarBase();
     }
@@ -88,20 +120,24 @@ public class ControladorReserva implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(reservaGui.getConfirmarReserva())) {
-            if (!"".equals(reservaGui.getFechaReserva()) && reservaGui.getFechaEntregaReserva() != "" && reservaGui.getBusquedaCliente().getText() != "") {
-                System.out.println(reservaGui.getFechaReserva() + "  " + reservaGui.getFechaEntregaReserva()
-                        + "  " + reservaGui.getBusquedaCliente());
-                reserva.set("fecha_reserva", reservaGui.getFechaReserva());
-                reserva.set("fecha_entrega_reserva", reservaGui.getFechaEntregaReserva());
-                reserva.set("id_cliente", reservaGui.getBusquedaCliente());
+            fechaReserva = reservaGui.getFechaReserva();
+            fechaEntregaReserva = reservaGui.getFechaEntregaReserva();
+            if (idCliente != null && fechaEntregaReserva != null && fechaReserva != null) {
+                reserva.set("fecha_reserva", fechaReserva);
+                reserva.set("fecha_entrega_reserva", fechaEntregaReserva);
+                reserva.set("id_cliente", idCliente);
                 try {
                     abmReserva.alta(reserva);
                     //}
                 } catch (SQLException ex) {
                     Logger.getLogger(ControladorReserva.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                JOptionPane.showMessageDialog(reservaGui, "La Reserva ha sido realizada con éxito!.");
+            } else {
+                JOptionPane.showMessageDialog(reservaGui, "La informacion es insuficiente o erronea, por favor complete todos los campos.", "Error!", JOptionPane.ERROR_MESSAGE);
             }
         }
+
     }
 
 }

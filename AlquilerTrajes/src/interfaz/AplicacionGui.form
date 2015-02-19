@@ -87,7 +87,9 @@
   <SubComponents>
     <Container class="javax.swing.JDesktopPane" name="contenedor">
 
-      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout"/>
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
+        <Property name="useNullLayout" type="boolean" value="true"/>
+      </Layout>
     </Container>
     <Container class="javax.swing.JPanel" name="panelBotones">
       <Properties>
@@ -106,6 +108,7 @@
         <Component class="javax.swing.JButton" name="reservas">
           <Properties>
             <Property name="text" type="java.lang.String" value="RESERVAS"/>
+            <Property name="toolTipText" type="java.lang.String" value="Gesti&#xf3;n de Reservas y Alquileres"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="articulos">

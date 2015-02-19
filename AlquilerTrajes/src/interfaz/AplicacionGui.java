@@ -80,12 +80,13 @@ public class AplicacionGui extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Alquiler de Trajes Hombre");
-        setIconImage(new ImageIcon(getClass().getResource("/interfaz/Icons/logo.png")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("/interfaz/Icons/logo.jpg")).getImage());
 
         panelBotones.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelBotones.setLayout(new java.awt.GridLayout(1, 0));
 
         reservas.setText("RESERVAS");
+        reservas.setToolTipText("Gestión de Reservas y Alquileres");
         panelBotones.add(reservas);
 
         articulos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/productos.png"))); // NOI18N
@@ -144,7 +145,7 @@ public class AplicacionGui extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 674, Short.MAX_VALUE))
+                .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 678, Short.MAX_VALUE))
         );
 
         pack();

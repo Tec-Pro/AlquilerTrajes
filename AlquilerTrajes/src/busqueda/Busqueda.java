@@ -60,7 +60,20 @@ public class Busqueda {
         return result;
     }
     
-    
+    /*
+    *Busqueda de clientes
+    *Retorna una lista con los clientes que contengan en alguna parte de su dni
+    *o de su id, el numero pasado por parametro
+    */
+    public List<Cliente> buscarClientesPorIDyDni(Object num) throws SQLException {
+        BaseDatos.abrirBase();
+        Base.openTransaction();
+        List<Cliente> result;
+        result = Cliente.where("id like ? or dni like ?", "%" + num + "%","%" + num + "%");
+        Base.commitTransaction();
+        BaseDatos.cerrarBase();
+        return result;
+    }
 
     /**
      * @param nombre,
