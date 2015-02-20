@@ -8,6 +8,7 @@ package controladores;
 import BD.BaseDatos;
 import abm.ABMReserva;
 import busqueda.Busqueda;
+import interfaz.RemitoGui;
 import interfaz.ReservaGui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

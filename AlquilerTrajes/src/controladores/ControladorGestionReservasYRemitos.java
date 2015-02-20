@@ -9,6 +9,7 @@ import BD.BaseDatos;
 import busqueda.Busqueda;
 import busqueda.BusquedaReserva;
 import interfaz.GestionReservasGui;
+import interfaz.RemitoGui;
 import interfaz.ReservaGui;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -21,28 +22,34 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelos.Cliente;
+import modelos.Remito;
 import modelos.Reserva;
 
 /**
  *
  * @author eze
  */
-public class ControladorGestionReservas implements ActionListener {
+public class ControladorGestionReservasYRemitos implements ActionListener {
 
     private final GestionReservasGui gestionReservasGui; //gui de la gestion de reservas y facturas
+    private final RemitoGui remitoGui; //gui de la gestion de remitos
     private final ReservaGui reservaGui; // gui de una reserva
     private ControladorReserva controladorReserva; //controlador de la gui de una reserva
+    private ControladorRemito controladorRemito; //controlador de la gui de un remito
     private final Busqueda busqueda;
     private final BusquedaReserva busquedaReserva;
     private Reserva reserva; //Resultado de la busqueda en la tabla de reservas
+    private Remito remito; //Resultado de la busqueda en la tabla de remitos
+    
 
-    public ControladorGestionReservas(GestionReservasGui gestionReservasGui, ReservaGui resGui) throws SQLException {
+    public ControladorGestionReservasYRemitos(GestionReservasGui gestionReservasGui, ReservaGui resGui, RemitoGui remGui) throws SQLException {
         this.gestionReservasGui = gestionReservasGui;
         this.reservaGui = resGui;
+        this.remitoGui = remGui;
         this.reserva = null;
+        this.remito = null;
         this.gestionReservasGui.setActionListener(this);
         this.busqueda = new Busqueda();
         this.busquedaReserva = new BusquedaReserva();
@@ -57,7 +64,7 @@ public class ControladorGestionReservas implements ActionListener {
                         actualizarTablaReservas(listaReservas);
                     }
                 } catch (SQLException ex) {
-                    Logger.getLogger(ControladorGestionReservas.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ControladorGestionReservasYRemitos.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
 
@@ -69,7 +76,7 @@ public class ControladorGestionReservas implements ActionListener {
                 try {
                     tablaBuscarReservaMouseClicked(evt); //si se clickea alguna fila, saco el id de la reserva seleccionada
                 } catch (SQLException ex) {
-                    Logger.getLogger(ControladorGestionReservas.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ControladorGestionReservasYRemitos.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -149,9 +156,21 @@ public class ControladorGestionReservas implements ActionListener {
                 reservaGui.toFront();
                 reservaGui.setMaximum(true);
             } catch (SQLException ex) {
-                Logger.getLogger(ControladorGestionReservas.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ControladorGestionReservasYRemitos.class.getName()).log(Level.SEVERE, null, ex);
             } catch (PropertyVetoException ex) {
-                Logger.getLogger(ControladorGestionReservas.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ControladorGestionReservasYRemitos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+        //Si presiono el boton de crear un Nuevo Remito
+        if (ae.getSource() == gestionReservasGui.getBttnNuevoRemito()) {
+            try {    
+                this.controladorRemito = new ControladorRemito(remitoGui, null);
+                remitoGui.setVisible(true);
+                remitoGui.toFront();
+                remitoGui.setMaximum(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(ControladorGestionReservasYRemitos.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
@@ -163,9 +182,9 @@ public class ControladorGestionReservas implements ActionListener {
                 reservaGui.toFront();
                 reservaGui.setMaximum(true);
             } catch (SQLException ex) {
-                Logger.getLogger(ControladorGestionReservas.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ControladorGestionReservasYRemitos.class.getName()).log(Level.SEVERE, null, ex);
             } catch (PropertyVetoException ex) {
-                Logger.getLogger(ControladorGestionReservas.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ControladorGestionReservasYRemitos.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

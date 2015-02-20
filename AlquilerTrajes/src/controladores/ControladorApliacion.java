@@ -10,6 +10,7 @@ import interfaz.BajaGui;
 import interfaz.ClienteGui;
 import interfaz.GestionReservasGui;
 import interfaz.RegistroAmboGui;
+import interfaz.RemitoGui;
 import interfaz.ReservaGui;
 import interfaz.VerBajasGui;
 import java.awt.Cursor;
@@ -36,7 +37,9 @@ public class ControladorApliacion implements ActionListener {
     private final ControladorArticulo controladorArticulo;
     private final ClienteGui clienteGui;
     private final ControladorCliente controladorCliente;
-    private final ControladorGestionReservas controladorGestReserv;
+    private final ControladorGestionReservasYRemitos controladorGestReserv;
+    private ControladorReserva controladorReserva; //controlador de la gui de una reserva
+    private ControladorRemito controladorRemito; //controlador de la gui de un remito
     private File archivoBackup;
     private int selecEnviarBack = 0;
     private final ControladorBaja controladorBaja;
@@ -46,6 +49,7 @@ public class ControladorApliacion implements ActionListener {
     private final RegistroAmboGui registroAmbo;
     private final GestionReservasGui gestResGui;
     private final ReservaGui reservaGui;
+    private final RemitoGui remitoGui;
     private final ControladorRegistroAmbo controladorRegistroAmbo;
     
 
@@ -65,11 +69,12 @@ public class ControladorApliacion implements ActionListener {
         VerbajasGui = new VerBajasGui();
         gestResGui = new GestionReservasGui();
         reservaGui = new ReservaGui();
+        remitoGui = new RemitoGui();
         controladorVerBajas = new ControladorVerBajas(VerbajasGui);
         controladorBaja = new ControladorBaja(bajaGui);
         controladorArticulo = new ControladorArticulo(articuloGui, registroAmbo);
         controladorCliente = new ControladorCliente(clienteGui);
-        controladorGestReserv = new ControladorGestionReservas(gestResGui,reservaGui);
+        controladorGestReserv = new ControladorGestionReservasYRemitos(gestResGui,reservaGui,remitoGui);
         controladorRegistroAmbo = new ControladorRegistroAmbo(registroAmbo);
         aplicacionGui.getContenedor().add(articuloGui);
         aplicacionGui.getContenedor().add(clienteGui);
@@ -78,6 +83,7 @@ public class ControladorApliacion implements ActionListener {
         aplicacionGui.getContenedor().add(registroAmbo);
         aplicacionGui.getContenedor().add(gestResGui);
         aplicacionGui.getContenedor().add(reservaGui);
+        aplicacionGui.getContenedor().add(remitoGui);
         aplicacionGui.setCursor(Cursor.DEFAULT_CURSOR);
         aplicacionGui.setVisible(true);
     }
