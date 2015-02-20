@@ -106,9 +106,10 @@ public class ControladorApliacion implements ActionListener {
             VerbajasGui.toFront();
         }
         if (ae.getSource() == aplicacionGui.getReservas()) {
-            gestResGui.setVisible(true);
-            gestResGui.toFront();
             try {
+                gestResGui.limpiarComponentes();
+                gestResGui.setVisible(true);
+                gestResGui.toFront();
                 gestResGui.setMaximum(true);
             } catch (PropertyVetoException ex) {
                 Logger.getLogger(ControladorApliacion.class.getName()).log(Level.SEVERE, null, ex);

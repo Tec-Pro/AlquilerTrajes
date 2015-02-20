@@ -3,6 +3,7 @@
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
   <Properties>
     <Property name="closable" type="boolean" value="true"/>
+    <Property name="defaultCloseOperation" type="int" value="1"/>
     <Property name="iconifiable" type="boolean" value="true"/>
     <Property name="maximizable" type="boolean" value="true"/>
     <Property name="title" type="java.lang.String" value="Gesti&#xf3;n de Reservas y Facturaci&#xf3;n"/>
@@ -198,7 +199,7 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="bttnReservaEncontrada" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="jScrollPane2" alignment="0" min="-2" pref="736" max="-2" attributes="0"/>
+                              <Component id="jScrollPane2" min="-2" pref="736" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
@@ -221,8 +222,11 @@
               <SubComponents>
                 <Component class="javax.swing.JTextField" name="jTxtBuscarReserva">
                   <Properties>
-                    <Property name="toolTipText" type="java.lang.String" value="Buscar por Fecha de Entrega de la Reserva(AAAA-MM-DD) o Cliente."/>
+                    <Property name="toolTipText" type="java.lang.String" value="Buscar por Fecha de Entrega de la Reserva(AAAA-MM-DD) o Cliente (Nombre)."/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTxtBuscarReservaActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="bttnReservaEncontrada">
                   <Properties>

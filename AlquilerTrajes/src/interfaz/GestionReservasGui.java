@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -54,6 +55,15 @@ public class GestionReservasGui extends javax.swing.JInternalFrame {
     public JTable getTablaBuscarReserva() {
         return tablaBuscarReserva;
     }
+    
+    public void limpiarComponentes(){
+        ((DefaultTableModel)this.tablaBuscarRemito.getModel()).setRowCount(0);
+        ((DefaultTableModel)this.tablaBuscarReserva.getModel()).setRowCount(0);
+        this.jTxtBuscarReserva.setText("");
+        this.jTxtBuscarRemito.setText("");
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -80,6 +90,7 @@ public class GestionReservasGui extends javax.swing.JInternalFrame {
         bttnNuevaReserva = new javax.swing.JButton();
 
         setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setIconifiable(true);
         setMaximizable(true);
         setTitle("Gestión de Reservas y Facturación");
@@ -136,7 +147,12 @@ public class GestionReservasGui extends javax.swing.JInternalFrame {
 
         panelBusquedaReserva.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Buscar Reserva", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Schoolbook L", 3, 18))); // NOI18N
 
-        jTxtBuscarReserva.setToolTipText("Buscar por Fecha de Entrega de la Reserva(AAAA-MM-DD) o Cliente.");
+        jTxtBuscarReserva.setToolTipText("Buscar por Fecha de Entrega de la Reserva(AAAA-MM-DD) o Cliente (Nombre).");
+        jTxtBuscarReserva.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTxtBuscarReservaActionPerformed(evt);
+            }
+        });
 
         bttnReservaEncontrada.setText("Aceptar");
 
@@ -248,6 +264,10 @@ public class GestionReservasGui extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jTxtBuscarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtBuscarReservaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTxtBuscarReservaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

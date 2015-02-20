@@ -85,7 +85,13 @@ public class ReservaGui extends javax.swing.JInternalFrame {
         this.busquedaCliente.setText( busquedaCliente);
     }
     
-    
+    public void limpiarComponentes(){
+        this.busquedaCliente.setText("");
+        this.fechaEntregaReserva.setCalendar(null);
+        this.fechaReserva.setCalendar(null);
+        ((DefaultTableModel)this.tablaClienteReserva.getModel()).setRowCount(0);
+        //falta limpiar parte de ariculos
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -115,6 +121,7 @@ public class ReservaGui extends javax.swing.JInternalFrame {
         fechaReserva = new com.toedter.calendar.JDateChooser();
 
         setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setIconifiable(true);
         setMaximizable(true);
         setTitle("Reserva");

@@ -38,10 +38,10 @@ public class Busqueda {
 
     public List<Cliente> buscarCliente(String nombre) throws SQLException {
         BaseDatos.abrirBase();
-        Base.openTransaction();
+        BaseDatos.openTransaction();
         List<Cliente> result;
         result = Cliente.where("nombre like ?", "%" + nombre + "%");
-        Base.commitTransaction();
+        BaseDatos.commitTransaction();
         BaseDatos.cerrarBase();
         return result;
     }
@@ -52,10 +52,10 @@ public class Busqueda {
     */
     public List<Cliente> buscarClientes(Object id) throws SQLException {
         BaseDatos.abrirBase();
-        Base.openTransaction();
+        BaseDatos.openTransaction();
         List<Cliente> result;
         result = Cliente.where("id like ?", "%" + id + "%");
-        Base.commitTransaction();
+        BaseDatos.commitTransaction();
         BaseDatos.cerrarBase();
         return result;
     }
@@ -67,10 +67,10 @@ public class Busqueda {
     */
     public List<Cliente> buscarClientesPorIDyDni(Object num) throws SQLException {
         BaseDatos.abrirBase();
-        Base.openTransaction();
+        BaseDatos.openTransaction();
         List<Cliente> result;
         result = Cliente.where("id like ? or dni like ?", "%" + num + "%","%" + num + "%");
-        Base.commitTransaction();
+        BaseDatos.commitTransaction();
         BaseDatos.cerrarBase();
         return result;
     }
@@ -84,9 +84,9 @@ public class Busqueda {
     public List<Cliente> filtroCliente(String nombre, String codigo) throws SQLException {
         List<Cliente> result;
         BaseDatos.abrirBase();
-        Base.openTransaction();
+        BaseDatos.openTransaction();
         result = Cliente.where("nombre like ? and id like ?", "%" + nombre + "%", codigo + "%");
-        Base.commitTransaction();
+        BaseDatos.commitTransaction();
         BaseDatos.cerrarBase();
         return result;
     }
@@ -101,9 +101,9 @@ public class Busqueda {
     public List<Articulo> filtroProducto(String codigo, String fram) throws SQLException {
         List<Articulo> result;
         BaseDatos.abrirBase();
-        Base.openTransaction();
+        BaseDatos.openTransaction();
         result = Articulo.where("es_articulo=1 and codigo like ? and equivalencia_fram like?", "%" + codigo + "%", "%" + fram + "%");
-        Base.commitTransaction();
+        BaseDatos.commitTransaction();
         BaseDatos.cerrarBase();
         return result;
     }
