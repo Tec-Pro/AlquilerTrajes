@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import modelos.Articulo;
@@ -117,22 +118,39 @@ public class ControladorBaja implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == bajaGui.getDarBaja()) {
-            Articulo art = Articulo.findById(bajaGui.getArticuloBaja().getText());
-            Baja b = new Baja();
-            java.util.Date dt = new java.util.Date();
-            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
-            String currentTime = sdf.format(dt);
-            b.set("cobro", Float.valueOf(bajaGui.getCobro().getText()),
-                    "descripcion", bajaGui.getDescripcion(),
-                    "modelo", art.get("modelo"),
-                    "marca", art.get("marca"),
-                    "talle", art.get("talle"),
-                    "fecha", currentTime,
-                    "tipo", art.get("tipo"));
-            try {
-                abmBaja.alta(b);
-            } catch (SQLException ex) {
-                Logger.getLogger(ControladorBaja.class.getName()).log(Level.SEVERE, null, ex);
+            if (bajaGui.getCobro().getText().isEmpty()) {
+                JOptionPane.showMessageDialog(bajaGui, "Baja sin cobro, no se guardó la baja", "Error!", JOptionPane.ERROR_MESSAGE);
+            } else {
+                try {
+                    BaseDatos.abrirBase();
+                } catch (SQLException ex) {
+                    Logger.getLogger(ControladorBaja.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                BaseDatos.openTransaction();
+                Articulo art = Articulo.findById(bajaGui.getArticuloBaja().getText());
+                BaseDatos.commitTransaction();
+                BaseDatos.cerrarBase();
+                Baja b = new Baja();
+                java.util.Date dt = new java.util.Date();
+                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                String currentTime = sdf.format(dt);
+                b.set("cobro", Float.valueOf(bajaGui.getCobro().getText()),
+                        "descripcion", bajaGui.getDescripcion().getText(),
+                        "modelo", art.get("modelo"),
+                        "marca", art.get("marca"),
+                        "talle", art.get("talle"),
+                        "fecha", currentTime,
+                        "tipo", art.get("tipo"));
+                try {
+                    if (abmBaja.alta(b)) {
+                        JOptionPane.showMessageDialog(bajaGui, "¡Baja guardada exitosamente!");
+                    } else {
+                        JOptionPane.showMessageDialog(bajaGui, "No se guardó la baja", "Error!", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(ControladorBaja.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                //FALTA SACAR STOCK Y SI PERTENCE A UN AMBO CAMIBARLE EL STCOK AL AMBO
             }
         }
     }

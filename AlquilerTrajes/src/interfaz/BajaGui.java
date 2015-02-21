@@ -7,6 +7,7 @@ package interfaz;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
@@ -41,11 +42,6 @@ public class BajaGui extends javax.swing.JInternalFrame {
     }
 
  
-     public void paraVerVenta(boolean si){
-         tablaArticulos.setEnabled(!si);
-         busquedaCodigoArticulo.setEnabled(!si);
-     }
-
     public JTextField getArticuloBaja() {
         return articuloBaja;
     }
@@ -78,17 +74,11 @@ public class BajaGui extends javax.swing.JInternalFrame {
         return busquedaCodigoArticulo;
     }
 
-  
-    /**
-     * Retorno el campo del cliente de la factura
-     *
-     * @param
-     * @return JTextField
-     * @exception
-     */
-    public JTextField getDescripcion() {
+    public JTextArea getDescripcion() {
         return descripcion;
     }
+
+  
 
     /**
      * Retorno boton facturaNueva en donde limpia los campos de la factura para
@@ -155,11 +145,12 @@ public class BajaGui extends javax.swing.JInternalFrame {
         busquedaCodigoArticulo = new javax.swing.JTextField();
         panelFactura = new javax.swing.JPanel();
         labelCliente = new javax.swing.JLabel();
-        descripcion = new javax.swing.JTextField();
         Monto = new javax.swing.JLabel();
         cobro = new javax.swing.JTextField();
         Monto1 = new javax.swing.JLabel();
         articuloBaja = new javax.swing.JTextField();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        descripcion = new javax.swing.JTextArea();
         panelControlFactura = new javax.swing.JPanel();
         darBaja = new javax.swing.JButton();
 
@@ -198,7 +189,7 @@ public class BajaGui extends javax.swing.JInternalFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false
@@ -237,7 +228,7 @@ public class BajaGui extends javax.swing.JInternalFrame {
                     .addComponent(labelBusquedaCodigo)
                     .addComponent(busquedaCodigoArticulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE))
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelClientesAarticulosLayout = new javax.swing.GroupLayout(panelClientesAarticulos);
@@ -264,6 +255,14 @@ public class BajaGui extends javax.swing.JInternalFrame {
         Monto1.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
         Monto1.setText("Articulo");
 
+        jScrollPane3.setPreferredSize(new java.awt.Dimension(210, 100));
+
+        descripcion.setColumns(10);
+        descripcion.setRows(10);
+        descripcion.setToolTipText("Descripción del artículo");
+        descripcion.setDisabledTextColor(new java.awt.Color(16, 2, 245));
+        jScrollPane3.setViewportView(descripcion);
+
         javax.swing.GroupLayout panelFacturaLayout = new javax.swing.GroupLayout(panelFactura);
         panelFactura.setLayout(panelFacturaLayout);
         panelFacturaLayout.setHorizontalGroup(
@@ -276,16 +275,17 @@ public class BajaGui extends javax.swing.JInternalFrame {
                         .addGap(50, 50, 50)
                         .addComponent(cobro, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
                         .addGap(70, 70, 70))
-                    .addGroup(panelFacturaLayout.createSequentialGroup()
-                        .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelCliente)
-                            .addComponent(Monto1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFacturaLayout.createSequentialGroup()
+                        .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(panelFacturaLayout.createSequentialGroup()
-                                .addComponent(articuloBaja, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
-                                .addGap(27, 27, 27))
-                            .addComponent(descripcion)))))
+                                .addComponent(labelCliente)
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(panelFacturaLayout.createSequentialGroup()
+                                .addComponent(Monto1)
+                                .addGap(35, 35, 35)
+                                .addComponent(articuloBaja, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)))
+                        .addGap(27, 27, 27))))
         );
         panelFacturaLayout.setVerticalGroup(
             panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -294,11 +294,15 @@ public class BajaGui extends javax.swing.JInternalFrame {
                 .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Monto1)
                     .addComponent(articuloBaja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelCliente)
-                    .addComponent(descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelFacturaLayout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
+                        .addGap(28, 28, 28))
+                    .addGroup(panelFacturaLayout.createSequentialGroup()
+                        .addGap(88, 88, 88)
+                        .addComponent(labelCliente)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Monto)
                     .addComponent(cobro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -379,10 +383,11 @@ public class BajaGui extends javax.swing.JInternalFrame {
     private javax.swing.JTextField busquedaCodigoArticulo;
     private javax.swing.JTextField cobro;
     private javax.swing.JButton darBaja;
-    private javax.swing.JTextField descripcion;
+    private javax.swing.JTextArea descripcion;
     private javax.swing.JPanel fondoImagen;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JLabel labelBusquedaCodigo;
     private javax.swing.JLabel labelCliente;

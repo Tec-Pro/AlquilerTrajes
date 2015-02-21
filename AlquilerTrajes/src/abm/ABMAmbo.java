@@ -17,10 +17,17 @@ public class ABMAmbo {
  int ultimoId;
     //existe  el articulo?
     public boolean findArticulo(Ambo p) throws SQLException {
-        boolean ret = (Articulo.first("id = ?", p.get("id")) != null);
+        boolean ret = (Ambo.first("id = ?", p.get("id")) != null);
         return ret;
 
     }
+    
+    public boolean findNombre(String nombre) throws SQLException {
+        boolean ret = (Ambo.first("nombre = ?", nombre) != null);
+        return ret;
+
+    }
+
 
     public String getUltimoId() {
         return String.valueOf(ultimoId);
@@ -40,7 +47,7 @@ public class ABMAmbo {
                     "precio_alquiler", art.get("precio_alquiler"),
                     "talle", art.get("talle"));
             ret = nuevo.saveIt();
-            ultimoId = (int) nuevo.getId();
+            ultimoId = nuevo.getInteger("id");
         }
         BaseDatos.commitTransaction();
         BaseDatos.cerrarBase();
@@ -64,12 +71,13 @@ public class ABMAmbo {
         boolean ret = false;
         BaseDatos.abrirBase();
         BaseDatos.openTransaction();
-        Articulo viejo = Articulo.findFirst("id = ?", art.get("id"));
+        Ambo viejo = Ambo.findFirst("id = ?", art.get("id"));
         if (viejo != null) {
             viejo.set(
                     "nombre", art.get("nombre"),
                     "marca", art.get("marca"),
                     "stock", art.get("stock"),
+                    "descripcion", art.get("descripcion"),
                     "precio_alquiler", art.get("precio_alquiler"),
                     "talle", art.get("talle"));
             ret = viejo.saveIt();

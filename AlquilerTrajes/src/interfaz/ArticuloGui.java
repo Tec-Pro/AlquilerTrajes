@@ -13,6 +13,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import modelos.Ambo;
 import modelos.Articulo;
 
 /**
@@ -23,6 +24,7 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
 
     private DefaultTableModel tablaArticulosDefault; //Tabla Default para tener las opciones de instar y elimnar filas
 
+    
     /**
      * Creates new form ArticuloGui
      */
@@ -72,10 +74,20 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
         precioAlquiler.setText(art.getBigDecimal("precio_alquiler").setScale(2).toString());
         talle.setText(art.getString("talle"));
         descripcion.setText(art.getString("descripcion"));
-        tipo.addItem(art.getString("tipo"));
         tipo.setSelectedItem(art.getString("tipo"));
    }
-
+   
+        public void CargarCampos(Ambo art) {  
+        id.setText(art.getString("id"));
+        modelo.setText(art.getString("nombre"));
+        marca.setText(art.getString("marca"));
+        precioCompra.setText("-");
+        stock.setText(art.getString("stock"));
+        precioAlquiler.setText(art.getBigDecimal("precio_alquiler").setScale(2).toString());
+        talle.setText(art.getString("talle"));
+        descripcion.setText(art.getString("descripcion"));
+        tipo.setSelectedItem("Ambo");
+   }
   
     public DefaultTableModel getTablaArticulosDefault() {
         return tablaArticulosDefault;
@@ -224,7 +236,7 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -335,7 +347,8 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
 
         jLabel9.setText("Talle");
 
-        tipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "da", "de", "di", "do", "du" }));
+        tipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Ambo", "Camisa", "Corbata", "Chaleco", "Cinto", "Pantalón", "Saco", "Zapato" }));
+        tipo.setSelectedIndex(1);
         tipo.setEnabled(false);
 
         jLabel10.setText("Tipo");

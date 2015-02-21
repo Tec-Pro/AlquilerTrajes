@@ -29,7 +29,7 @@ CREATE  TABLE `alquilerTraje`.`ambos` (
   `marca` VARCHAR(45) NULL ,
   `stock` INT NULL DEFAULT 0 ,
   `precio_alquiler` FLOAT NULL DEFAULT 0 ,
-  `descripcion` VARCHAR(200) NULL ,
+  `descripcion` VARCHAR(200) NULL DEFAULT '-' ,
   `talle` VARCHAR(45) NULL ,
   PRIMARY KEY (`id`));
 

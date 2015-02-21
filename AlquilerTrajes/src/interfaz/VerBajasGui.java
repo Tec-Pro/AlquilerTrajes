@@ -89,14 +89,14 @@ public class VerBajasGui extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Id", "Tipo", "Modelo", "Marca", "Talle", "Stock", "Precio alquiler"
+                "Id", "Tipo", "Modelo", "Marca", "Talle", "Fecha", "Cobro"
             }
         ) {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {

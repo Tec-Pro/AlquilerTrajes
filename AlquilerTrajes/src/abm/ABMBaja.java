@@ -28,12 +28,12 @@ public class ABMBaja {
             Baja nuevo = Baja.create(
                     "modelo", art.get("modelo"),
                     "marca", art.get("marca"),
-                    "fecha", art.get("fecha"),
-                    "cobro", art.get("cobro"),
-                    "descripcion", art.get("descripcion"),
+                    "fecha", art.getDate("fecha"),
+                    "cobro", art.getFloat("cobro"),
+                    "descripcion", art.getString("descripcion"),
                     "talle", art.get("talle"),
                     "tipo", art.get("tipo"));
-            ret = nuevo.saveIt();
+                ret = nuevo.saveIt();
         }
         BaseDatos.commitTransaction();
         BaseDatos.cerrarBase();
@@ -62,8 +62,8 @@ public class ABMBaja {
             viejo.set(
                     "modelo", art.get("modelo"),
                     "marca", art.get("marca"),
-                    "fecha", art.get("fecha"),
-                    "cobro", art.get("cobro"),
+                    "fecha", art.getDate("fecha"),
+                    "cobro", art.getFloat("cobro"),
                     "descripcion", art.get("descripcion"),
                     "talle", art.get("talle"),
                     "tipo", art.get("tipo"));

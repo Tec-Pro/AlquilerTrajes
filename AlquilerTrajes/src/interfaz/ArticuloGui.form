@@ -110,7 +110,7 @@
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="7" rowCount="0">
                         <Column editable="false" title="Id" type="java.lang.String"/>
-                        <Column editable="true" title="Tipo" type="java.lang.String"/>
+                        <Column editable="false" title="Tipo" type="java.lang.String"/>
                         <Column editable="false" title="Modelo" type="java.lang.String"/>
                         <Column editable="false" title="Marca" type="java.lang.String"/>
                         <Column editable="false" title="Talle" type="java.lang.String"/>
@@ -486,14 +486,18 @@
                 <Component class="javax.swing.JComboBox" name="tipo">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="5">
-                        <StringItem index="0" value="da"/>
-                        <StringItem index="1" value="de"/>
-                        <StringItem index="2" value="di"/>
-                        <StringItem index="3" value="do"/>
-                        <StringItem index="4" value="du"/>
+                      <StringArray count="8">
+                        <StringItem index="0" value="Ambo"/>
+                        <StringItem index="1" value="Camisa"/>
+                        <StringItem index="2" value="Corbata"/>
+                        <StringItem index="3" value="Chaleco"/>
+                        <StringItem index="4" value="Cinto"/>
+                        <StringItem index="5" value="Pantal&#xf3;n"/>
+                        <StringItem index="6" value="Saco"/>
+                        <StringItem index="7" value="Zapato"/>
                       </StringArray>
                     </Property>
+                    <Property name="selectedIndex" type="int" value="1"/>
                     <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </Component>

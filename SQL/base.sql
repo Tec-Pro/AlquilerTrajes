@@ -19,7 +19,7 @@ CREATE  TABLE `alquilerTraje`.`articulos` (
   `stock` INT NULL DEFAULT 0 ,
   `precio_compra` FLOAT NULL DEFAULT 0 ,
   `precio_alquiler` FLOAT NULL DEFAULT 0 ,
-  `descripcion` VARCHAR(200) NULL ,
+  `descripcion` VARCHAR(1000) NULL ,
   `talle` VARCHAR(45) NULL ,
   PRIMARY KEY (`id`));
 
@@ -29,7 +29,7 @@ CREATE  TABLE `alquilerTraje`.`ambos` (
   `marca` VARCHAR(45) NULL ,
   `stock` INT NULL DEFAULT 0 ,
   `precio_alquiler` FLOAT NULL DEFAULT 0 ,
-  `descripcion` VARCHAR(200) NULL DEFAULT '-' ,
+  `descripcion` VARCHAR(1000) NULL DEFAULT '-' ,
   `talle` VARCHAR(45) NULL ,
   PRIMARY KEY (`id`));
 
@@ -44,7 +44,7 @@ CREATE  TABLE `alquilerTraje`.`bajas` (
   `tipo` VARCHAR(45) NOT NULL ,
   `modelo` VARCHAR(120) NULL ,
   `marca` VARCHAR(45) NULL ,
-  `descripcion` VARCHAR(200) NULL ,
+  `descripcion` VARCHAR(1000) NULL ,
   `talle` VARCHAR(45) NULL ,
   `fecha`DATE NULL,
   `cobro` FLOAT NULL,
