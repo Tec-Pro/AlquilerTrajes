@@ -41,6 +41,7 @@ public class AplicacionGui extends javax.swing.JFrame {
         this.reservas.addActionListener(lis);
         this.baja.addActionListener(lis);
         this.verBajas.addActionListener(lis);
+        this.ganancia.addActionListener(lis);
     }
 
     public JButton getBaja() {
@@ -50,9 +51,11 @@ public class AplicacionGui extends javax.swing.JFrame {
     public JButton getVerBajas() {
         return verBajas;
     }
-  
-    
-    
+
+    public JButton getGanancia() {
+        return ganancia;
+    }
+          
     public JButton getClientes() {
         return clientes;
     }
@@ -72,6 +75,7 @@ public class AplicacionGui extends javax.swing.JFrame {
         clientes = new javax.swing.JButton();
         baja = new javax.swing.JButton();
         verBajas = new javax.swing.JButton();
+        ganancia = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         salir = new javax.swing.JMenuItem();
@@ -80,7 +84,7 @@ public class AplicacionGui extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Alquiler de Trajes Hombre");
-        setIconImage(new ImageIcon(getClass().getResource("/interfaz/Icons/logo.png")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("/interfaz/Icons/logo.jpg")).getImage());
 
         panelBotones.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelBotones.setLayout(new java.awt.GridLayout(1, 0));
@@ -104,6 +108,10 @@ public class AplicacionGui extends javax.swing.JFrame {
         verBajas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/baja.png"))); // NOI18N
         verBajas.setToolTipText("Ver bajas");
         panelBotones.add(verBajas);
+
+        ganancia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/ganancia.png"))); // NOI18N
+        ganancia.setToolTipText("Ganancias");
+        panelBotones.add(ganancia);
 
         jMenu1.setText("Archivo");
 
@@ -145,7 +153,7 @@ public class AplicacionGui extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 678, Short.MAX_VALUE))
+                .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 682, Short.MAX_VALUE))
         );
 
         pack();
@@ -170,6 +178,7 @@ public class AplicacionGui extends javax.swing.JFrame {
     private javax.swing.JButton baja;
     private javax.swing.JButton clientes;
     private javax.swing.JDesktopPane contenedor;
+    private javax.swing.JButton ganancia;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;

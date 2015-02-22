@@ -8,6 +8,7 @@ import interfaz.AplicacionGui;
 import interfaz.ArticuloGui;
 import interfaz.BajaGui;
 import interfaz.ClienteGui;
+import interfaz.GananciaGui;
 import interfaz.GestionReservasGui;
 import interfaz.RegistroAmboGui;
 import interfaz.RemitoGui;
@@ -51,7 +52,7 @@ public class ControladorApliacion implements ActionListener {
     private final ReservaGui reservaGui;
     private final RemitoGui remitoGui;
     private final ControladorRegistroAmbo controladorRegistroAmbo;
-    
+    private final GananciaGui gananciaGui;
 
     public ControladorApliacion() throws JRException, ClassNotFoundException, SQLException, PropertyVetoException {
         try {
@@ -70,11 +71,12 @@ public class ControladorApliacion implements ActionListener {
         gestResGui = new GestionReservasGui();
         reservaGui = new ReservaGui();
         remitoGui = new RemitoGui();
+        gananciaGui = new GananciaGui();
         controladorVerBajas = new ControladorVerBajas(VerbajasGui);
         controladorBaja = new ControladorBaja(bajaGui);
         controladorArticulo = new ControladorArticulo(articuloGui, registroAmbo);
         controladorCliente = new ControladorCliente(clienteGui);
-        controladorGestReserv = new ControladorGestionReservasYRemitos(gestResGui,reservaGui,remitoGui);
+        controladorGestReserv = new ControladorGestionReservasYRemitos(gestResGui, reservaGui, remitoGui);
         controladorRegistroAmbo = new ControladorRegistroAmbo(registroAmbo);
         aplicacionGui.getContenedor().add(articuloGui);
         aplicacionGui.getContenedor().add(clienteGui);
@@ -84,6 +86,7 @@ public class ControladorApliacion implements ActionListener {
         aplicacionGui.getContenedor().add(gestResGui);
         aplicacionGui.getContenedor().add(reservaGui);
         aplicacionGui.getContenedor().add(remitoGui);
+        aplicacionGui.getContenedor().add(gananciaGui);
         aplicacionGui.setCursor(Cursor.DEFAULT_CURSOR);
         aplicacionGui.setVisible(true);
     }
@@ -106,6 +109,10 @@ public class ControladorApliacion implements ActionListener {
         if (ae.getSource() == aplicacionGui.getBaja()) {
             bajaGui.setVisible(true);
             bajaGui.toFront();
+        }
+        if (ae.getSource() == aplicacionGui.getGanancia()) {
+            gananciaGui.setVisible(true);
+            gananciaGui.toFront();
         }
         if (ae.getSource() == aplicacionGui.getVerBajas()) {
             VerbajasGui.setVisible(true);

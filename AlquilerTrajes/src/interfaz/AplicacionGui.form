@@ -79,7 +79,7 @@
           <Group type="102" alignment="0" attributes="0">
               <Component id="panelBotones" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-              <Component id="contenedor" pref="678" max="32767" attributes="0"/>
+              <Component id="contenedor" pref="682" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -87,9 +87,7 @@
   <SubComponents>
     <Container class="javax.swing.JDesktopPane" name="contenedor">
 
-      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
-        <Property name="useNullLayout" type="boolean" value="true"/>
-      </Layout>
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout"/>
     </Container>
     <Container class="javax.swing.JPanel" name="panelBotones">
       <Properties>
@@ -141,6 +139,14 @@
               <Image iconType="3" name="/interfaz/Icons/baja.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Ver bajas"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="ganancia">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/interfaz/Icons/ganancia.png"/>
+            </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Ganancias"/>
           </Properties>
         </Component>
       </SubComponents>
