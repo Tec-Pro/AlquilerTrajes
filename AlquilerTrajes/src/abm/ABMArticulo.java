@@ -6,7 +6,12 @@ package abm;
 
 import BD.BaseDatos;
 import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.LinkedList;
+import modelos.Ambo;
 import modelos.Articulo;
+import modelos.ArticulosAmbos;
+import org.javalite.activejdbc.Model;
 
 /**
  *
@@ -88,7 +93,7 @@ public class ABMArticulo {
                 viejo.set("stock", 0);
             }
             ret = viejo.saveIt();
-        }
+        }        
         BaseDatos.commitTransaction();
         BaseDatos.cerrarBase();
         return ret;

@@ -19,7 +19,7 @@ public class GananciaGui extends javax.swing.JInternalFrame {
     public GananciaGui() {
         initComponents();
     }
-
+    
     public JLabel getGanancia() {
         return ganancia;
     }
@@ -31,10 +31,6 @@ public class GananciaGui extends javax.swing.JInternalFrame {
     public JDateChooser getFechaHasta() {
         return fechaHasta;
     }
-
-
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -52,7 +48,10 @@ public class GananciaGui extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         fechaHasta = new com.toedter.calendar.JDateChooser();
 
+        setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        setMaximizable(true);
+        setResizable(true);
         setTitle("Ganancia");
 
         jLabel1.setText("Ganancia");
@@ -68,15 +67,15 @@ public class GananciaGui extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(ganancia)
-                        .addContainerGap(125, Short.MAX_VALUE))
+                        .addContainerGap(137, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 0, 0)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(fechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -98,7 +97,7 @@ public class GananciaGui extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(fechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(ganancia))
@@ -107,7 +106,6 @@ public class GananciaGui extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JDateChooser fechaDesde;
     private com.toedter.calendar.JDateChooser fechaHasta;

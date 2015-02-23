@@ -273,7 +273,6 @@ public class ControladorArticulo implements ActionListener, FocusListener {
             articuloGui.getModificar().setEnabled(false);
         }
         if (e.getSource() == articuloGui.getGuardar() && editandoInfo && !isNuevo) {
-            System.out.println("Boton guardar pulsado");
             if (articuloGui.getTipo().getSelectedItem().toString().equals("Ambo")) {
                 try {
                     if (cargarDatosProd(ambo)) {
@@ -295,12 +294,16 @@ public class ControladorArticulo implements ActionListener, FocusListener {
                 try {
                     if (cargarDatosProd(articulo)) {
                         if (abmArticulo.modificar(articulo)) {
-                            articuloGui.habilitarCampos(false);
-                            articuloGui.limpiarCampos();
-                            editandoInfo = false;
-                            JOptionPane.showMessageDialog(articuloGui, "¡Artículo modificado exitosamente!");
-                            articuloGui.getNuevo().setEnabled(true);
-                            articuloGui.getGuardar().setEnabled(false);
+                            if (abmAmbo.revisarStock(articulo.getInteger("id"))) {
+                                articuloGui.habilitarCampos(false);
+                                articuloGui.limpiarCampos();
+                                editandoInfo = false;
+                                JOptionPane.showMessageDialog(articuloGui, "¡Artículo modificado exitosamente!");
+                                articuloGui.getNuevo().setEnabled(true);
+                                articuloGui.getGuardar().setEnabled(false);
+                            } else {
+                                JOptionPane.showMessageDialog(articuloGui, "Ocurrió un error,revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
+                            }
                         } else {
                             JOptionPane.showMessageDialog(articuloGui, "Ocurrió un error,revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
                         }

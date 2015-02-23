@@ -5,6 +5,7 @@
 package controladores;
 
 import BD.BaseDatos;
+import abm.ABMAmbo;
 import abm.ABMArticulo;
 import abm.ABMBaja;
 import interfaz.BajaGui;
@@ -36,6 +37,7 @@ public class ControladorBaja implements ActionListener {
     private java.util.List<Articulo> listArticulos;
     private ABMArticulo abmArticulo;
     private ABMBaja abmBaja;
+    private ABMAmbo abmAmbo;
 
     public ControladorBaja(BajaGui bajaGui) throws SQLException {
         this.bajaGui = bajaGui;
@@ -46,6 +48,7 @@ public class ControladorBaja implements ActionListener {
         listArticulos = new LinkedList();
         abmBaja = new ABMBaja();
         abmArticulo = new ABMArticulo();
+        abmAmbo = new ABMAmbo();
         BaseDatos.abrirBase();
         BaseDatos.openTransaction();
         listArticulos = Articulo.findAll();
@@ -143,14 +146,21 @@ public class ControladorBaja implements ActionListener {
                         "tipo", art.get("tipo"));
                 try {
                     if (abmBaja.alta(b)) {
-                        JOptionPane.showMessageDialog(bajaGui, "¡Baja guardada exitosamente!");
+                        if (abmArticulo.restarStock(art.getInteger("id"))) {
+                            if (abmAmbo.revisarStock(art.getInteger("id"))) {
+                                JOptionPane.showMessageDialog(bajaGui, "¡Baja guardada exitosamente!");
+                            } else {
+                                JOptionPane.showMessageDialog(bajaGui, "No se guardó la baja", "Error!", JOptionPane.ERROR_MESSAGE);
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(bajaGui, "No se guardó la baja", "Error!", JOptionPane.ERROR_MESSAGE);
+                        }
                     } else {
                         JOptionPane.showMessageDialog(bajaGui, "No se guardó la baja", "Error!", JOptionPane.ERROR_MESSAGE);
                     }
                 } catch (SQLException ex) {
                     Logger.getLogger(ControladorBaja.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                //FALTA SACAR STOCK Y SI PERTENCE A UN AMBO CAMIBARLE EL STCOK AL AMBO
             }
         }
     }
