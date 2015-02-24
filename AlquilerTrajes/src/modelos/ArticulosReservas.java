@@ -8,7 +8,7 @@ import org.javalite.activejdbc.Model;
 
 /**
  *
- * @author jacinto
+ * @author eze
  */
 public class ArticulosReservas extends Model{
     

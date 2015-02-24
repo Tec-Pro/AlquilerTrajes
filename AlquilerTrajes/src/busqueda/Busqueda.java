@@ -10,7 +10,6 @@ import java.util.List;
 import modelos.Articulo;
 import modelos.Cliente;
 import modelos.Remito;
-import org.javalite.activejdbc.Base;
 
 /**
  *

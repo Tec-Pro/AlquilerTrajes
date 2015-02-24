@@ -8,6 +8,7 @@ package controladores;
 import BD.BaseDatos;
 import abm.ABMReserva;
 import busqueda.Busqueda;
+import busqueda.BusquedaArticulo;
 import interfaz.RemitoGui;
 import interfaz.ReservaGui;
 import java.awt.event.ActionEvent;
@@ -22,6 +23,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import modelos.Ambo;
+import modelos.Articulo;
+import modelos.ArticulosReservas;
 import modelos.Cliente;
 import modelos.Reserva;
 
@@ -39,17 +43,19 @@ public class ControladorReserva implements ActionListener {
     private String fechaReserva; //fecha en que se realiza la reserva
     private String fechaEntregaReserva; //fecha en que se debe entregar la reserva
     private Integer idCliente; //ID del cliente que realizo la reserva
+    private final BusquedaArticulo busquedaArticulo;//busqueda de articulos
 
     public ControladorReserva(ReservaGui reservaGui, Reserva r) throws SQLException {
         this.reservaGui = reservaGui;
         this.busqueda = new Busqueda();
+        this.busquedaArticulo = new BusquedaArticulo();
         this.reservaGui.setActionListener(this);
         // si r es distinto de null, tenemos una reserva a modificar
         if (r != null) {
             this.isNuevaReserva = false; //la reserva no es nueva
             this.reserva = r; // le asigno a la reserva, que pasada por parametro para modificar
             this.abmReserva = new ABMReserva();
-            this.idCliente = (Integer)reserva.get("id_cliente");
+            this.idCliente = (Integer) reserva.get("id_cliente");
             cargarReserva(this.reserva); //cargo la reserva en la gui
             // sino creamos una nueva reserva
         } else {
@@ -77,11 +83,47 @@ public class ControladorReserva implements ActionListener {
             }
 
         });
-        //reviso si se clickea alguna fila de la tabla
+        //escucho en el JText lo que se va ingresando para buscar un articulo
+        this.reservaGui.getBusquedaCodigoArticulo().addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                try {
+                    List<Articulo> listaArticulos;
+                    List<Ambo> listaAmbos;
+                    listaArticulos = busquedaArticulos(evt);
+                    listaAmbos = busquedaAmbos(evt);
+                    if (listaArticulos != null || listaAmbos != null) { //si hay articulos o ambos los cargo en la gui
+                        actualizarTablaArticulos(listaArticulos, listaAmbos);
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(ControladorReserva.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+
+        });
+
+        //reviso si se clickea alguna fila de la tabla clientes
         this.reservaGui.getTablaClienteReserva().addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaMouseClicked(evt); //si se clickea alguna fila, saco el id del cliente seleccionado
+                tablaMouseClickedClientes(evt); //si se clickea alguna fila, saco el id del cliente seleccionado
+            }
+        });
+        //reviso si se clickea alguna fila de la tabla de busqueda de articulos
+        this.reservaGui.getTablaBusquedaArticulosReserva().addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaMouseClickedBusquedaArticulos(evt); //si se clickea alguna fila, saco el id del cliente seleccionado
+            }
+        });
+        //reviso si se clickea alguna fila de la tabla de articulos para la reserva (Doble click sobre el articulo lo elimina de la tabla)
+        this.reservaGui.getTablaArticulosReserva().addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (evt.getClickCount() == 2) {
+                    eliminarFilaArticulosReserva();
+                }
             }
         });
     }
@@ -89,12 +131,30 @@ public class ControladorReserva implements ActionListener {
     /*Saca el id del cliente seleccionado en la tabla de busqueda de clientes
      * y setea el JText de busqueda con el cliente seleccionado
      */
-    private void tablaMouseClicked(MouseEvent evt) {
+    private void tablaMouseClickedClientes(MouseEvent evt) {
         int selectedRow = reservaGui.getTablaClienteReserva().getSelectedRow();
         DefaultTableModel modelo = ((DefaultTableModel) reservaGui.getTablaClienteReserva().getModel());
         reservaGui.getBusquedaCliente().setText(modelo.getValueAt(selectedRow, 0) + " - "
                 + modelo.getValueAt(selectedRow, 1) + "  " + modelo.getValueAt(selectedRow, 2));
         idCliente = (Integer) modelo.getValueAt(selectedRow, 0);
+    }
+
+    /* Inserto las filas seleccionadas en la tabla Busqueda de Articulos en la 
+     * tabla Articulos reservas.
+     */
+    private void tablaMouseClickedBusquedaArticulos(MouseEvent evt) {
+        /*Por defecto se utiliza la seleccion de filas individuales en la tabla*/
+        int selectedRow = reservaGui.getTablaBusquedaArticulosReserva().getSelectedRow();
+        DefaultTableModel modeloBusqueda = ((DefaultTableModel) reservaGui.getTablaBusquedaArticulosReserva().getModel());
+        Object[] row;
+        DefaultTableModel modeloReserva = ((DefaultTableModel) reservaGui.getTablaArticulosReserva().getModel());
+        row = new Object[5];
+        row[0] = (modeloBusqueda.getValueAt(selectedRow, 0));
+        row[1] = (modeloBusqueda.getValueAt(selectedRow, 1));
+        row[2] = (modeloBusqueda.getValueAt(selectedRow, 2));
+        row[3] = (modeloBusqueda.getValueAt(selectedRow, 3));
+        row[4] = (modeloBusqueda.getValueAt(selectedRow, 4));
+        modeloReserva.addRow(row);
     }
 
     //Busco los clientes a partir de los datos ingresados en el JText de busqueda
@@ -135,6 +195,66 @@ public class ControladorReserva implements ActionListener {
         BaseDatos.cerrarBase();
     }
 
+    //Busco los articulos a partir de los datos ingresados en el JText de busqueda
+    private List<Articulo> busquedaArticulos(KeyEvent evt) throws SQLException {
+        String textBusquedaArticulo = reservaGui.getBusquedaCodigoArticulo().getText();
+        List<Articulo> listArticulo = busquedaArticulo.buscarArticulos(textBusquedaArticulo);
+        return listArticulo;
+    }
+
+    //Busco los ambos a partir de los datos ingresados en el JText de busqueda
+    private List<Ambo> busquedaAmbos(KeyEvent evt) throws SQLException {
+        String textBusquedaAmbo = reservaGui.getBusquedaCodigoArticulo().getText();
+        List<Ambo> listAmbo = busquedaArticulo.buscarAmbos(textBusquedaAmbo);
+        return listAmbo;
+    }
+
+    //Carga la lista de articulos y ambos encontrados en la tabla busqueda de articulos
+    private void actualizarTablaArticulos(List<Articulo> listaArticulos, List<Ambo> listaAmbos) throws SQLException {
+        DefaultTableModel modelo = ((DefaultTableModel) reservaGui.getTablaBusquedaArticulosReserva().getModel());
+        modelo.setRowCount(0);
+        BaseDatos.abrirBase();
+        BaseDatos.openTransaction();
+        Iterator<Articulo> itrArticulo = listaArticulos.iterator();
+        Iterator<Ambo> itrAmbo = listaAmbos.iterator();
+        Articulo ar;
+        Ambo am;
+        Object[] o = new Object[7];
+        while (itrArticulo.hasNext()) {
+            ar = itrArticulo.next();
+            o[0] = (ar.getId());
+            o[1] = (ar.getString("modelo"));
+            o[2] = (ar.getString("marca"));
+            o[3] = (ar.getString("tipo"));
+            o[4] = (ar.getString("talle"));
+            o[5] = (ar.getString("descripcion"));
+            modelo.addRow(o);
+
+        }
+        while (itrAmbo.hasNext()) {
+            am = itrAmbo.next();
+            o[0] = (am.getId());
+            o[1] = (am.get("nombre"));
+            o[2] = (am.getString("marca"));
+            o[3] = ("ambo");
+            o[4] = (am.getString("talle"));
+            o[5] = (am.getString("descripcion"));
+            modelo.addRow(o);
+
+        }
+        BaseDatos.commitTransaction();
+        BaseDatos.cerrarBase();
+    }
+
+    /*
+     * Elimino el articulo de la tabla de productos de una reserva, si se hace doble click sobre el
+     */
+    private void eliminarFilaArticulosReserva() {
+        int selectedRow = reservaGui.getTablaArticulosReserva().getSelectedRow();
+        DefaultTableModel modeloReserva = ((DefaultTableModel) reservaGui.getTablaArticulosReserva().getModel());
+        modeloReserva.removeRow(selectedRow);
+    }
+
     //Carga una reserva en la gui
     private void cargarReserva(Reserva r) throws SQLException {
         Cliente c = busqueda.buscarCliente(r.get("id_cliente"));
@@ -154,12 +274,35 @@ public class ControladorReserva implements ActionListener {
         if (e.getSource().equals(reservaGui.getConfirmarReserva()) && isNuevaReserva) {
             fechaReserva = reservaGui.getFechaReserva();
             fechaEntregaReserva = reservaGui.getFechaEntregaReserva();
-            if (idCliente != null && fechaEntregaReserva != null && fechaReserva != null) {
+            DefaultTableModel modeloArticulos = (DefaultTableModel) reservaGui.getTablaArticulosReserva().getModel();
+            if (idCliente != null && fechaEntregaReserva != null && fechaReserva != null && modeloArticulos.getRowCount() != 0) {
                 reserva.set("fecha_reserva", fechaReserva);
                 reserva.set("fecha_entrega_reserva", fechaEntregaReserva);
                 reserva.set("id_cliente", idCliente);
                 try {
-                    abmReserva.alta(reserva);
+                    if (abmReserva.alta(reserva)){//si la reserva pudo ser creada, procedo a guardar la demas informacion
+                    reserva.set("id",abmReserva.getUltimoId());
+                    //Saco los articulos de la reserva, de la tabla correspondiente y los guardo en la BD
+                    BaseDatos.abrirBase();
+                    BaseDatos.openTransaction();
+                    Articulo artAux = null;
+                    Ambo amboAux = null;
+                    for (int i = 0; i < modeloArticulos.getRowCount(); i++) {
+                        //si es un ambo lo busco por su id en la base
+                        if (modeloArticulos.getValueAt(i, 3).equals("ambo")) {
+                            amboAux = Ambo.findById(modeloArticulos.getValueAt(i, 0));
+                            this.reserva.add(amboAux);
+                            //si no es un ambo, es un articulo
+                        } else {
+                            artAux = Articulo.findById(modeloArticulos.getValueAt(i, 0));
+                            this.reserva.add(artAux);
+                            
+                        }
+                    }
+                    BaseDatos.commitTransaction();
+                    BaseDatos.cerrarBase();
+                    
+                    }
                 } catch (SQLException ex) {
                     Logger.getLogger(ControladorReserva.class.getName()).log(Level.SEVERE, null, ex);
                 }

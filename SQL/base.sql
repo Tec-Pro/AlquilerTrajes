@@ -35,8 +35,8 @@ CREATE  TABLE `alquilerTraje`.`ambos` (
 
 CREATE  TABLE `alquilerTraje`.`articulos_ambos` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-    `id_ambo` INT NOT NULL,
-    `id_articulo` INT NOT NULL,
+    `ambo_id` INT NOT NULL,
+    `articulo_id` INT NOT NULL,
   PRIMARY KEY (`id`));
 
 CREATE  TABLE `alquilerTraje`.`bajas` (
@@ -59,8 +59,14 @@ CREATE  TABLE `alquilerTraje`.`reservas` (
 
 CREATE  TABLE `alquilerTraje`.`articulos_reservas` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `id_articulo` INT NOT NULL,
-  `id_reserva` INT NOT NULL,
+  `articulo_id` INT NOT NULL,
+  `reserva_id` INT NOT NULL,
+  PRIMARY KEY (`id`));
+
+CREATE  TABLE `alquilerTraje`.`ambos_reservas` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `ambo_id` INT NOT NULL,
+  `reserva_id` INT NOT NULL,
   PRIMARY KEY (`id`));
 
 CREATE  TABLE `alquilerTraje`.`remitos` (
@@ -74,8 +80,14 @@ CREATE  TABLE `alquilerTraje`.`remitos` (
 
 CREATE  TABLE `alquilerTraje`.`articulos_remitos` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `id_articulo` INT NOT NULL,
-  `id_remito` INT NOT NULL,
+  `articulo_id` INT NOT NULL,
+  `remito_id` INT NOT NULL,
+  PRIMARY KEY (`id`));
+
+CREATE  TABLE `alquilerTraje`.`ambos_remitos` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `ambo_id` INT NOT NULL,
+  `remito_id` INT NOT NULL,
   PRIMARY KEY (`id`));
 
  GRANT ALL PRIVILEGES ON *.* TO 'tecpro'@'%'  IDENTIFIED BY 'tecpro'; 

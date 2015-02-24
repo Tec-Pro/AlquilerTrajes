@@ -19,23 +19,20 @@ import javax.swing.table.DefaultTableModel;
  * @author eze
  */
 public class ReservaGui extends javax.swing.JInternalFrame {
-
-    private final DefaultTableModel tablaArticulosDefault;
     
     /**
      * Creates new form Reserva
      */
     public ReservaGui() {
         initComponents();
-        this.tablaArticulosDefault = (DefaultTableModel) tablaBusquedaArticulosReserva.getModel();//conveirto la tabla
     }
 
     public JTextField getBusquedaCliente() {
         return busquedaCliente;
     }
 
-    public String getBusquedaCodigoArticulo() {
-        return busquedaCodigoArticulo.getText();
+    public JTextField getBusquedaCodigoArticulo() {
+        return busquedaCodigoArticulo;
     }
 
     public String getFechaEntregaReserva() {
@@ -58,10 +55,6 @@ public class ReservaGui extends javax.swing.JInternalFrame {
         }else{
             return null;
         }
-    }
-
-    public DefaultTableModel getTablaArticulosDefault() {
-        return tablaArticulosDefault;
     }
 
     public JTable getTablaClienteReserva() {
@@ -95,10 +88,12 @@ public class ReservaGui extends javax.swing.JInternalFrame {
     
     public void limpiarComponentes(){
         this.busquedaCliente.setText("");
+        this.busquedaCodigoArticulo.setText("");
         this.fechaEntregaReserva.setCalendar(null);
         this.fechaReserva.setCalendar(null);
         ((DefaultTableModel)this.tablaClienteReserva.getModel()).setRowCount(0);
-        //falta limpiar parte de ariculos
+        ((DefaultTableModel)this.tablaArticulosReserva.getModel()).setRowCount(0);
+        ((DefaultTableModel)this.tablaBusquedaArticulosReserva.getModel()).setRowCount(0);
     }
 
     /**
@@ -171,7 +166,7 @@ public class ReservaGui extends javax.swing.JInternalFrame {
         labelBusquedaCodigo.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
         labelBusquedaCodigo.setText("Código");
 
-        busquedaCodigoArticulo.setToolTipText("Filtrar por código");
+        busquedaCodigoArticulo.setToolTipText("Buscar por Modelo, Marca,Tipo,Talle o Nombre de Ambo.");
 
         javax.swing.GroupLayout panelBusquedaArticulosReservaLayout = new javax.swing.GroupLayout(panelBusquedaArticulosReserva);
         panelBusquedaArticulosReserva.setLayout(panelBusquedaArticulosReservaLayout);
@@ -317,22 +312,22 @@ public class ReservaGui extends javax.swing.JInternalFrame {
                 "Id", "Modelo", "Marca", "Tipo", "Talle"
             }
         ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false
             };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
         jScrollPane3.setViewportView(tablaArticulosReserva);
-        if (tablaArticulosReserva.getColumnModel().getColumnCount() > 0) {
-            tablaArticulosReserva.getColumnModel().getColumn(0).setResizable(false);
-            tablaArticulosReserva.getColumnModel().getColumn(1).setResizable(false);
-            tablaArticulosReserva.getColumnModel().getColumn(2).setResizable(false);
-            tablaArticulosReserva.getColumnModel().getColumn(3).setResizable(false);
-            tablaArticulosReserva.getColumnModel().getColumn(4).setResizable(false);
-        }
 
         javax.swing.GroupLayout panelArticulosReservaLayout = new javax.swing.GroupLayout(panelArticulosReserva);
         panelArticulosReserva.setLayout(panelArticulosReservaLayout);
