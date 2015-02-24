@@ -44,12 +44,16 @@ public class ControladorReserva implements ActionListener {
     private String fechaEntregaReserva; //fecha en que se debe entregar la reserva
     private Integer idCliente; //ID del cliente que realizo la reserva
     private final BusquedaArticulo busquedaArticulo;//busqueda de articulos
+    private List<Ambo> listaAmbos; //lista de Ambos de una Reserva a modificar
+    private List<Articulo> listaArticulos; //lista de Articulos de una Reserva a modificar
 
     public ControladorReserva(ReservaGui reservaGui, Reserva r) throws SQLException {
         this.reservaGui = reservaGui;
         this.busqueda = new Busqueda();
         this.busquedaArticulo = new BusquedaArticulo();
         this.reservaGui.setActionListener(this);
+        this.listaAmbos = null;
+        this.listaArticulos = null;
         // si r es distinto de null, tenemos una reserva a modificar
         if (r != null) {
             this.isNuevaReserva = false; //la reserva no es nueva
@@ -264,8 +268,8 @@ public class ControladorReserva implements ActionListener {
         reservaGui.setFechaReserva(dateFR);
         reservaGui.setFechaEntregaReserva(dateFER);
         //Saco todos los articulos y ambos de la reserva a cargar
-        List<Ambo> listaAmbos = r.getAll(Ambo.class);
-        List<Articulo> listaArticulos = r.getAll(Articulo.class);
+        listaAmbos = r.getAll(Ambo.class);
+        listaArticulos = r.getAll(Articulo.class);
 
         DefaultTableModel modeloArticulos = ((DefaultTableModel) reservaGui.getTablaArticulosReserva().getModel());
         modeloArticulos.setRowCount(0);
@@ -356,24 +360,71 @@ public class ControladorReserva implements ActionListener {
         if (e.getSource().equals(reservaGui.getConfirmarReserva()) && !isNuevaReserva) {
             fechaReserva = reservaGui.getFechaReserva();
             fechaEntregaReserva = reservaGui.getFechaEntregaReserva();
-            if (idCliente != null && fechaEntregaReserva != null && fechaReserva != null) {
+            DefaultTableModel modeloArticulos = (DefaultTableModel) reservaGui.getTablaArticulosReserva().getModel();
+            if (idCliente != null && fechaEntregaReserva != null && fechaReserva != null && modeloArticulos.getRowCount() != 0) {
                 this.reserva.set("fecha_reserva", fechaReserva);
                 this.reserva.set("fecha_entrega_reserva", fechaEntregaReserva);
                 this.reserva.set("id_cliente", idCliente);
                 try {
-                    if(abmReserva.modificar(reserva)){
-                        //FALTA ACTUALIZAR LOS ARTICULOS DE LA RESERVA
+                    if (abmReserva.modificar(reserva)) {
+                        try {
+                            BaseDatos.abrirBase();
+
+                            BaseDatos.openTransaction();
+                            //Elimino los Ambos y articulos de la reserva, en la base de datos
+                            if (listaAmbos != null || listaArticulos != null) {
+                                if (listaArticulos != null) {
+                                    Articulo ar;
+                                    Iterator<Articulo> itrArticulo = listaArticulos.iterator();
+                                    while (itrArticulo.hasNext()) {
+                                        ar = itrArticulo.next();
+                                        this.reserva.remove(ar);
+
+                                    }
+                                }
+                                if (listaAmbos != null) {
+                                    Ambo am;
+                                    Iterator<Ambo> itrAmbo = listaAmbos.iterator();
+                                    while (itrAmbo.hasNext()) {
+                                        am = itrAmbo.next();
+                                        this.reserva.remove(am);
+                                    }
+                                }
+                                //Saco los articulos nuevos del remito, de la tabla correspondiente y los guardo en la BD
+                                Articulo artAux = null;
+                                Ambo amboAux = null;
+                                for (int i = 0; i < modeloArticulos.getRowCount(); i++) {
+                                    //si es un ambo lo busco por su id en la base
+                                    if (modeloArticulos.getValueAt(i, 3).equals("ambo")) {
+                                        amboAux = Ambo.findById(modeloArticulos.getValueAt(i, 0));
+                                        this.reserva.add(amboAux);
+                                        //si no es un ambo, es un articulo
+                                    } else {
+                                        artAux = Articulo.findById(modeloArticulos.getValueAt(i, 0));
+                                        this.reserva.add(artAux);
+
+                                    }
+                                }
+                                BaseDatos.commitTransaction();
+                                BaseDatos.cerrarBase();
+                            } else {
+                                JOptionPane.showMessageDialog(reservaGui, "No se encontraron Artículos ni Ambos en esta Reserva.", "Error!", JOptionPane.ERROR_MESSAGE);
+                            }
+                            JOptionPane.showMessageDialog(reservaGui, "La Reserva ha sido modificada con éxito!.");
+                            this.reservaGui.limpiarComponentes();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(ControladorReserva.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(reservaGui, "La Reserva no pudo ser modificada.", "Error!", JOptionPane.ERROR_MESSAGE);
                     }
                 } catch (SQLException ex) {
                     Logger.getLogger(ControladorReserva.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                JOptionPane.showMessageDialog(reservaGui, "La Reserva ha sido modificada con éxito!.");
-                this.reservaGui.limpiarComponentes();
+
             } else {
                 JOptionPane.showMessageDialog(reservaGui, "La informacion es insuficiente o erronea, por favor complete todos los campos.", "Error!", JOptionPane.ERROR_MESSAGE);
             }
         }
-
     }
-
 }

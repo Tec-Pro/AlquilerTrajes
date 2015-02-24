@@ -44,13 +44,16 @@ public class ControladorRemito implements ActionListener {
     private Integer numeroRemito;//numero de remito
     private Double señaRemito;//seña del remito
     private Double totalRemito;//total del remito
-    
-    
+    private List<Ambo> listaAmbos; //lista de Ambos de un Remito a modificar
+    private List<Articulo> listaArticulos; //lista de Articulos de un remito a modificar
+
     ControladorRemito(RemitoGui remitoGui, Remito r) throws SQLException {
         this.remitoGui = remitoGui;
         this.busqueda = new Busqueda();
         this.busquedaArticulo = new BusquedaArticulo();
         this.remitoGui.setActionListener(this);
+        this.listaAmbos = null;
+        this.listaArticulos = null;
         // si r es distinto de null, tenemos un remito a modificar
         if (r != null) {
             this.isNuevoRemito = false; //el remito no es nuevo
@@ -61,7 +64,7 @@ public class ControladorRemito implements ActionListener {
             // sino creamos una nueva remito
         } else {
             this.isNuevoRemito = true; // el remito es nuevo
-            this.fechaRemito= null;
+            this.fechaRemito = null;
             this.idCliente = null;
             this.señaRemito = null;
             this.totalRemito = null;
@@ -130,7 +133,7 @@ public class ControladorRemito implements ActionListener {
             }
         });
     }
-    
+
     /*Saca el id del cliente seleccionado en la tabla de busqueda de clientes
      * y setea el JText de busqueda con el cliente seleccionado
      */
@@ -268,8 +271,8 @@ public class ControladorRemito implements ActionListener {
         remitoGui.setjTextSeñaRemito(r.getString("senia"));
         remitoGui.setjTextTotalRemito(r.getString("total"));
         //Saco todos los articulos y ambos de la remito a cargar
-        List<Ambo> listaAmbos = r.getAll(Ambo.class);
-        List<Articulo> listaArticulos = r.getAll(Articulo.class);
+        this.listaAmbos = r.getAll(Ambo.class);
+        this.listaArticulos = r.getAll(Articulo.class);
 
         DefaultTableModel modeloArticulos = ((DefaultTableModel) remitoGui.getTablaArticulosRemito().getModel());
         modeloArticulos.setRowCount(0);
@@ -307,11 +310,10 @@ public class ControladorRemito implements ActionListener {
         BaseDatos.cerrarBase();
 
     }
-    
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-    /*Si presiono el boton de agregar un remito, y ademas el remito es nuevo,
+        /*Si presiono el boton de agregar un remito, y ademas el remito es nuevo,
          * lo doy de alta en la base de datos.
          */
         if (ae.getSource().equals(remitoGui.getBttnGuardarRemito()) && isNuevoRemito) {
@@ -330,7 +332,7 @@ public class ControladorRemito implements ActionListener {
                 try {
                     if (abmRemito.alta(remito)) {//si el remito pudo ser creado, procedo a guardar la demas informacion
                         remito.set("id", abmRemito.getUltimoId());
-                        //Saco los articulos de la remito, de la tabla correspondiente y los guardo en la BD
+                        //Saco los articulos del remito, de la tabla correspondiente y los guardo en la BD
                         BaseDatos.abrirBase();
                         BaseDatos.openTransaction();
                         Articulo artAux = null;
@@ -377,8 +379,49 @@ public class ControladorRemito implements ActionListener {
                 remito.set("numero", numeroRemito);
                 remito.set("id_cliente", idCliente);
                 try {
-                    if(abmRemito.modificar(remito)){
-                     //FALTA ACTUALIZAR LOS ARTICULOS DEL REMITO
+                    if (abmRemito.modificar(remito)) {
+                        BaseDatos.abrirBase();
+                        BaseDatos.openTransaction();
+                        //Elimino los Ambos y articulos del remito, en la base de datos
+                        if (listaAmbos != null || listaArticulos != null) {
+                            if (listaArticulos != null) {
+                                Articulo ar;
+                                Iterator<Articulo> itrArticulo = listaArticulos.iterator();
+                                while (itrArticulo.hasNext()) {
+                                    ar = itrArticulo.next();
+                                    this.remito.remove(ar);
+
+                                }
+                            }
+                            if (listaAmbos != null) {
+                                Ambo am;
+                                Iterator<Ambo> itrAmbo = listaAmbos.iterator();
+                                while (itrAmbo.hasNext()) {
+                                    am = itrAmbo.next();
+                                    this.remito.remove(am);
+                                }
+                            }
+                            //Saco los articulos nuevos del remito, de la tabla correspondiente y los guardo en la BD
+                            Articulo artAux = null;
+                            Ambo amboAux = null;
+                            for (int i = 0; i < modeloArticulos.getRowCount(); i++) {
+                                //si es un ambo lo busco por su id en la base
+                                if (modeloArticulos.getValueAt(i, 3).equals("ambo")) {
+                                    amboAux = Ambo.findById(modeloArticulos.getValueAt(i, 0));
+                                    this.remito.add(amboAux);
+                                    //si no es un ambo, es un articulo
+                                } else {
+                                    artAux = Articulo.findById(modeloArticulos.getValueAt(i, 0));
+                                    this.remito.add(artAux);
+
+                                }
+                            }
+                            BaseDatos.commitTransaction();
+                            BaseDatos.cerrarBase();
+                        } else {
+                            JOptionPane.showMessageDialog(remitoGui, "No se encontraron Artículos ni Ambos en este Remito.", "Error!", JOptionPane.ERROR_MESSAGE);
+                        }
+
                     }
                 } catch (SQLException ex) {
                     Logger.getLogger(ControladorReserva.class.getName()).log(Level.SEVERE, null, ex);
@@ -390,5 +433,5 @@ public class ControladorRemito implements ActionListener {
             }
         }
     }
-    
+
 }
