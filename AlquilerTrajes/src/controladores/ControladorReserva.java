@@ -219,7 +219,7 @@ public class ControladorReserva implements ActionListener {
         Iterator<Ambo> itrAmbo = listaAmbos.iterator();
         Articulo ar;
         Ambo am;
-        Object[] o = new Object[7];
+        Object[] o = new Object[6];
         while (itrArticulo.hasNext()) {
             ar = itrArticulo.next();
             o[0] = (ar.getId());
@@ -255,7 +255,7 @@ public class ControladorReserva implements ActionListener {
         modeloReserva.removeRow(selectedRow);
     }
 
-    //Carga una reserva en la gui
+    //Carga una reserva en la gui (Reserva guardada previamente a modificar)
     private void cargarReserva(Reserva r) throws SQLException {
         Cliente c = busqueda.buscarCliente(r.get("id_cliente"));
         reservaGui.setBusquedaCliente(c.getId() + " - " + c.getString("nombre") + " " + c.getString("dni"));
@@ -263,7 +263,45 @@ public class ControladorReserva implements ActionListener {
         Date dateFER = r.getDate("fecha_entrega_reserva");
         reservaGui.setFechaReserva(dateFR);
         reservaGui.setFechaEntregaReserva(dateFER);
-        // FALTA CARGAR los articulos
+        //Saco todos los articulos y ambos de la reserva a cargar
+        List<Ambo> listaAmbos = r.getAll(Ambo.class);
+        List<Articulo> listaArticulos = r.getAll(Articulo.class);
+
+        DefaultTableModel modeloArticulos = ((DefaultTableModel) reservaGui.getTablaArticulosReserva().getModel());
+        modeloArticulos.setRowCount(0);
+        BaseDatos.abrirBase();
+        BaseDatos.openTransaction();
+        Object[] o = new Object[5];
+        if (listaArticulos != null) {
+            Articulo ar;
+            Iterator<Articulo> itrArticulo = listaArticulos.iterator();
+            while (itrArticulo.hasNext()) {
+                ar = itrArticulo.next();
+                o[0] = (ar.getId());
+                o[1] = (ar.getString("modelo"));
+                o[2] = (ar.getString("marca"));
+                o[3] = (ar.getString("tipo"));
+                o[4] = (ar.getString("talle"));
+                modeloArticulos.addRow(o);
+
+            }
+        }
+        if (listaAmbos != null) {
+            Ambo am;
+            Iterator<Ambo> itrAmbo = listaAmbos.iterator();
+            while (itrAmbo.hasNext()) {
+                am = itrAmbo.next();
+                o[0] = (am.getId());
+                o[1] = (am.get("nombre"));
+                o[2] = (am.getString("marca"));
+                o[3] = ("ambo");
+                o[4] = (am.getString("talle"));
+                modeloArticulos.addRow(o);
+            }
+        }
+        BaseDatos.commitTransaction();
+        BaseDatos.cerrarBase();
+
     }
 
     @Override
@@ -280,33 +318,34 @@ public class ControladorReserva implements ActionListener {
                 reserva.set("fecha_entrega_reserva", fechaEntregaReserva);
                 reserva.set("id_cliente", idCliente);
                 try {
-                    if (abmReserva.alta(reserva)){//si la reserva pudo ser creada, procedo a guardar la demas informacion
-                    reserva.set("id",abmReserva.getUltimoId());
-                    //Saco los articulos de la reserva, de la tabla correspondiente y los guardo en la BD
-                    BaseDatos.abrirBase();
-                    BaseDatos.openTransaction();
-                    Articulo artAux = null;
-                    Ambo amboAux = null;
-                    for (int i = 0; i < modeloArticulos.getRowCount(); i++) {
-                        //si es un ambo lo busco por su id en la base
-                        if (modeloArticulos.getValueAt(i, 3).equals("ambo")) {
-                            amboAux = Ambo.findById(modeloArticulos.getValueAt(i, 0));
-                            this.reserva.add(amboAux);
-                            //si no es un ambo, es un articulo
-                        } else {
-                            artAux = Articulo.findById(modeloArticulos.getValueAt(i, 0));
-                            this.reserva.add(artAux);
-                            
+                    if (abmReserva.alta(reserva)) {//si la reserva pudo ser creada, procedo a guardar la demas informacion
+                        reserva.set("id", abmReserva.getUltimoId());
+                        //Saco los articulos de la reserva, de la tabla correspondiente y los guardo en la BD
+                        BaseDatos.abrirBase();
+                        BaseDatos.openTransaction();
+                        Articulo artAux = null;
+                        Ambo amboAux = null;
+                        for (int i = 0; i < modeloArticulos.getRowCount(); i++) {
+                            //si es un ambo lo busco por su id en la base
+                            if (modeloArticulos.getValueAt(i, 3).equals("ambo")) {
+                                amboAux = Ambo.findById(modeloArticulos.getValueAt(i, 0));
+                                this.reserva.add(amboAux);
+                                //si no es un ambo, es un articulo
+                            } else {
+                                artAux = Articulo.findById(modeloArticulos.getValueAt(i, 0));
+                                this.reserva.add(artAux);
+
+                            }
                         }
-                    }
-                    BaseDatos.commitTransaction();
-                    BaseDatos.cerrarBase();
-                    
+                        BaseDatos.commitTransaction();
+                        BaseDatos.cerrarBase();
+
                     }
                 } catch (SQLException ex) {
                     Logger.getLogger(ControladorReserva.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 JOptionPane.showMessageDialog(reservaGui, "La Reserva ha sido realizada con éxito!.");
+                this.reservaGui.limpiarComponentes();
             } else {
                 JOptionPane.showMessageDialog(reservaGui, "La informacion es insuficiente o erronea, por favor complete todos los campos.", "Error!", JOptionPane.ERROR_MESSAGE);
             }
@@ -326,7 +365,8 @@ public class ControladorReserva implements ActionListener {
                 } catch (SQLException ex) {
                     Logger.getLogger(ControladorReserva.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                JOptionPane.showMessageDialog(reservaGui, "La Reserva ha sido realizada con éxito!.");
+                JOptionPane.showMessageDialog(reservaGui, "La Reserva ha sido modificada con éxito!.");
+                this.reservaGui.limpiarComponentes();
             } else {
                 JOptionPane.showMessageDialog(reservaGui, "La informacion es insuficiente o erronea, por favor complete todos los campos.", "Error!", JOptionPane.ERROR_MESSAGE);
             }

@@ -5,7 +5,6 @@
  */
 package interfaz;
 
-import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
 import java.util.Date;
