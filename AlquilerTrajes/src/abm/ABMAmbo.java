@@ -7,7 +7,6 @@ package abm;
 import BD.BaseDatos;
 import java.sql.SQLException;
 import java.util.Iterator;
-import java.util.LinkedList;
 import modelos.Ambo;
 import modelos.Articulo;
 import modelos.ArticulosAmbos;
@@ -95,19 +94,20 @@ public class ABMAmbo {
         BaseDatos.abrirBase();
         BaseDatos.openTransaction();
         int stock = Articulo.findById(id).getInteger("stock");
-        Iterator it = ArticulosAmbos.find("id_articulo = ?",  id ).iterator();
+        Iterator it = ArticulosAmbos.find("articulo_id = ?",  id ).iterator();
         while (it.hasNext()) {
             ArticulosAmbos artAmb = (ArticulosAmbos) it.next();
-            Iterator it2 = ArticulosAmbos.find("id = ?", artAmb.get("id_ambo")).iterator();
+            Iterator it2 = ArticulosAmbos.find("id = ?", artAmb.get("ambo_id")).iterator();
             while (it2.hasNext()){
                 ArticulosAmbos artAmb2 = (ArticulosAmbos) it2.next();
-                if (id != artAmb2.getInteger("id_articulo")) {
-                    if (stock > Articulo.findById(artAmb2.get("id_articulo")).getInteger("stock")){
-                        stock = Articulo.findById(artAmb2.get("id_articulo")).getInteger("stock");
+                if (id != artAmb2.getInteger("articulo_id")) {
+                    Articulo a = Articulo.findById(artAmb2.get("articulo_id"));
+                    if (stock > a.getInteger("stock")){
+                        stock = a.getInteger("stock");
                     }
                 }
             }
-            Ambo a = Ambo.findById(artAmb.get("id_ambo"));
+            Ambo a = Ambo.findById(artAmb.get("ambo_id"));
             a.set("stock",stock);
             ret = a.saveIt();            
         }

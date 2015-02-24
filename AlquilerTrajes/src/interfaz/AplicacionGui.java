@@ -84,7 +84,7 @@ public class AplicacionGui extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Alquiler de Trajes Hombre");
-        setIconImage(new ImageIcon(getClass().getResource("/interfaz/Icons/logo.jpg")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("/interfaz/Icons/logo.png")).getImage());
 
         panelBotones.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelBotones.setLayout(new java.awt.GridLayout(1, 0));

@@ -271,6 +271,9 @@ public class ControladorArticulo implements ActionListener, FocusListener {
             articuloGui.getBorrar().setEnabled(false);
             articuloGui.getGuardar().setEnabled(true);
             articuloGui.getModificar().setEnabled(false);
+            if (articuloGui.getTipo().getSelectedItem().equals("Ambo")) {
+                articuloGui.getStock().setEnabled(false);
+            }
         }
         if (e.getSource() == articuloGui.getGuardar() && editandoInfo && !isNuevo) {
             if (articuloGui.getTipo().getSelectedItem().toString().equals("Ambo")) {
@@ -294,7 +297,8 @@ public class ControladorArticulo implements ActionListener, FocusListener {
                 try {
                     if (cargarDatosProd(articulo)) {
                         if (abmArticulo.modificar(articulo)) {
-                            if (abmAmbo.revisarStock(articulo.getInteger("id"))) {
+                            int idInt = Integer.valueOf(articulo.getString("id"));
+                            if (abmAmbo.revisarStock(idInt)) {
                                 articuloGui.habilitarCampos(false);
                                 articuloGui.limpiarCampos();
                                 editandoInfo = false;

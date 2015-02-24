@@ -54,7 +54,7 @@ public class ControladorBaja implements ActionListener {
         listArticulos = Articulo.findAll();
         BaseDatos.commitTransaction();
         BaseDatos.cerrarBase();
-        actualizarLista();
+        actualizarLista();        
         bajaGui.getBusquedaCodigoArticulo().addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -99,7 +99,7 @@ public class ControladorBaja implements ActionListener {
     }
 
     private void actualizarLista() throws SQLException {
-        BaseDatos.abrirBase();
+         BaseDatos.abrirBase();
         BaseDatos.openTransaction();
         tablaArtDefault.setRowCount(0);
         Iterator<Articulo> it = listArticulos.iterator();

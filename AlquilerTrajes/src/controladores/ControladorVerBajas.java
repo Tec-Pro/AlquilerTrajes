@@ -12,6 +12,8 @@ import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import modelos.Baja;
@@ -41,19 +43,24 @@ public class ControladorVerBajas implements ActionListener {
         verBajasGui.getBusqueda().addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                busquedaKeyReleased(evt);
+                try {
+                    busquedaKeyReleased(evt);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ControladorVerBajas.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
-    public void busquedaKeyReleased(java.awt.event.KeyEvent evt) {
+    public void busquedaKeyReleased(java.awt.event.KeyEvent evt) throws SQLException {
         System.out.println("apreté el caracter: " + evt.getKeyChar());
         realizarBusqueda();
     }
 
-    private void realizarBusqueda() {
+    private void realizarBusqueda() throws SQLException {
+        BaseDatos.abrirBase();
         Base.openTransaction();
-        listArticulos = Baja.where("(modelo like ? or descripcion like ? or marca like ? or id like ? or nombre like ? or id like ?)", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%");
+        listArticulos = Baja.where("(modelo like ? or descripcion like ? or marca like ? or id like ? or modelo like ? or id like ?)", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%");
         Base.openTransaction();
         actualizarLista();
     }

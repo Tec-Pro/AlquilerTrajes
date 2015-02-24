@@ -6,12 +6,7 @@ package abm;
 
 import BD.BaseDatos;
 import java.sql.SQLException;
-import java.util.Iterator;
-import java.util.LinkedList;
-import modelos.Ambo;
 import modelos.Articulo;
-import modelos.ArticulosAmbos;
-import org.javalite.activejdbc.Model;
 
 /**
  *

@@ -186,23 +186,23 @@ public class ControladorRegistroAmbo implements ActionListener {
                         am.set("marca", marca);
                         am.set("talle", talle);
                         am.set("stock", stock);
-                        try {
-                            abmAmbo.alta(am);
-                        } catch (SQLException ex) {
-                            Logger.getLogger(ControladorRegistroAmbo.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        for (int i = 0; i < tablaAmbo.getRowCount(); i++) {
-                            try {
-                                BaseDatos.abrirBase();
-                            } catch (SQLException ex) {
-                                Logger.getLogger(ControladorRegistroAmbo.class.getName()).log(Level.SEVERE, null, ex);
+                        if (abmAmbo.alta(am)) {
+                            for (int i = 0; i < tablaAmbo.getRowCount(); i++) {
+                                try {
+                                    BaseDatos.abrirBase();
+                                } catch (SQLException ex) {
+                                    Logger.getLogger(ControladorRegistroAmbo.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                BaseDatos.openTransaction();
+                                Ambo b = Ambo.findById(abmAmbo.getUltimoId());
+                                Articulo a = Articulo.findById(tablaAmbo.getValueAt(i, 0));
+                                b.add(a);
+                                BaseDatos.commitTransaction();
+                                BaseDatos.cerrarBase();
                             }
-                            BaseDatos.openTransaction();
-                            ArticulosAmbos artAmb = ArticulosAmbos.create("id_ambo", abmAmbo.getUltimoId(), "id_articulo", tablaAmbo.getValueAt(i, 0));
-                            artAmb.saveIt();
-                            BaseDatos.commitTransaction();
-                            BaseDatos.cerrarBase();
                             JOptionPane.showMessageDialog(registroAmboGui, "¡Ambo guardado exitosamente!");
+                        } else {
+                            JOptionPane.showMessageDialog(registroAmboGui, "Error, no se guardó el ambo", "Error!", JOptionPane.ERROR_MESSAGE);
                         }
                     }
                 } catch (SQLException ex) {
