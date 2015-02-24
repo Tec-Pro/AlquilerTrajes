@@ -5,8 +5,9 @@
  */
 package abm;
 
+import BD.BaseDatos;
+import java.sql.SQLException;
 import modelos.Remito;
-import org.javalite.activejdbc.Base;
 
 /**
  *
@@ -14,63 +15,69 @@ import org.javalite.activejdbc.Base;
  */
 public class ABMRemito {
 
-    //Obtengo un remito por su numero
-    public Remito getRemito(Remito r) {
-        Base.openTransaction();
-        Remito result = Remito.first("numero = ?", r.get("numero"));
-        Base.commitTransaction();
-        return result;
-    }
+    private Integer ultimoId; //id del ultimo remito creado
 
-    //Es True si existe el remito buscado por su numero
-    public boolean existRemitoByNum(Remito r) {
-        Base.openTransaction();
-        boolean result =  (Remito.first("numero = ?", r.get("numero")) != null);
-        Base.commitTransaction();
-        return result;
+    public Integer getUltimoId() {
+        return ultimoId;
     }
 
     //Da de alta un remito en la BD
-    public boolean alta(Remito r) {
-        if (!existRemitoByNum(r)) {
-            Base.openTransaction();
+    public boolean alta(Remito r) throws SQLException {
+        BaseDatos.abrirBase();
+        BaseDatos.openTransaction();
+        //Si el remito no existe, lo creo
+        if (Remito.first("numero = ?", r.get("numero")) == null) {
             Remito nuevo = Remito.create("numero", r.get("numero"), "fecha_de_remito",
                     r.get("fecha_de_remito"), "id_cliente", r.get("id_cliente"),
                     "total", r.get("total"), "senia", r.get("senia"));
             nuevo.saveIt();
-            Base.commitTransaction();
+            ultimoId = nuevo.getInteger("id");
+            BaseDatos.commitTransaction();
+            BaseDatos.cerrarBase();
             return true;
         } else {
+            BaseDatos.commitTransaction();
+            BaseDatos.cerrarBase();
             return false;
         }
     }
 
     //Revisar el delete que no rompa toda la base (deleteOnCascade deberia ser)
     //Da de baja un remito en la BD (lo elimina)
-    public boolean baja(Remito r) {
+    public boolean baja(Remito r) throws SQLException {
+        BaseDatos.abrirBase();
+        BaseDatos.openTransaction();
         Remito viejo = Remito.findById(r.getId());
         if (viejo != null) {
-            Base.openTransaction();
             viejo.delete();
-            Base.commitTransaction();
+            BaseDatos.commitTransaction();
+            BaseDatos.cerrarBase();
             return true;
+        } else {
+            BaseDatos.commitTransaction();
+            BaseDatos.cerrarBase();
+            return false;
         }
-        return false;
-
     }
 
     //Modifica los datos de un remito especifico (remito identificado por su id)
-    public boolean modificar(Remito r) {
+    public boolean modificar(Remito r) throws SQLException {
+        BaseDatos.abrirBase();
+        BaseDatos.openTransaction();
         Remito viejo = Remito.findById(r.getId());
         if (viejo != null) {
-            Base.openTransaction();
+
             viejo.set("numero", r.get("numero"), "fecha_de_remito",
                     r.get("fecha_de_remito"), "id_cliente", r.get("id_cliente"),
                     "total", r.get("total"), "senia", r.get("senia")).saveIt();
-            Base.commitTransaction();
+            BaseDatos.commitTransaction();
+            BaseDatos.cerrarBase();
             return true;
+        } else {
+            BaseDatos.commitTransaction();
+            BaseDatos.cerrarBase();
+            return false;
         }
-        return false;
     }
 
 }

@@ -361,7 +361,9 @@ public class ControladorReserva implements ActionListener {
                 this.reserva.set("fecha_entrega_reserva", fechaEntregaReserva);
                 this.reserva.set("id_cliente", idCliente);
                 try {
-                    abmReserva.modificar(reserva);
+                    if(abmReserva.modificar(reserva)){
+                        //FALTA ACTUALIZAR LOS ARTICULOS DE LA RESERVA
+                    }
                 } catch (SQLException ex) {
                     Logger.getLogger(ControladorReserva.class.getName()).log(Level.SEVERE, null, ex);
                 }

@@ -5,6 +5,15 @@
  */
 package interfaz;
 
+import com.toedter.calendar.JDateChooser;
+import java.awt.event.ActionListener;
+import java.util.Calendar;
+import java.util.Date;
+import javax.swing.JButton;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author eze
@@ -18,6 +27,89 @@ public class RemitoGui extends javax.swing.JInternalFrame {
         initComponents();
     }
 
+    public JButton getBttnCancelarRemito() {
+        return bttnCancelarRemito;
+    }
+
+    public JButton getBttnGuardarRemito() {
+        return bttnGuardarRemito;
+    }
+
+    public JTextField getBusquedaClienteRemito() {
+        return busquedaClienteRemito;
+    }
+
+    public JTextField getBusquedaCodigoArticulo() {
+        return busquedaCodigoArticulo;
+    }
+
+    public String getFechaRemito() {
+        if( jDateFechaRemito.getCalendar() !=null){
+            int año = jDateFechaRemito.getCalendar().get(Calendar.YEAR);
+            int mes = jDateFechaRemito.getCalendar().get(Calendar.MONTH) + 1;
+            int dia = jDateFechaRemito.getCalendar().get(Calendar.DAY_OF_MONTH);
+            return año+"-"+mes+"-"+dia;
+        }else{
+            return null;
+        }
+    }
+
+    public JTextField getjTextNumeroRemito() {
+        return jTextNumeroRemito;
+    }
+
+    public JTextField getjTextSeñaRemito() {
+        return jTextSeñaRemito;
+    }
+
+    public JTextField getjTextTotalRemito() {
+        return jTextTotalRemito;
+    }
+
+    public JTable getTablaArticulosRemito() {
+        return tablaArticulosRemito;
+    }
+
+    public JTable getTablaBusquedaArticulosRemito() {
+        return tablaBusquedaArticulosRemito;
+    }
+
+    public JTable getTablaClienteRemito() {
+        return tablaClienteRemito;
+    }
+
+    public void setBusquedaClienteRemito(String busquedaClienteRemito) {
+        this.busquedaClienteRemito.setText(busquedaClienteRemito);
+    }
+
+    public void setjDateFechaRemito(Date dateFechaRemito) {
+        this.jDateFechaRemito.setDate(dateFechaRemito);
+    }
+
+    public void setjTextNumeroRemito(Object numeroRemito) {
+        this.jTextNumeroRemito.setText((String) numeroRemito);
+    }
+
+    public void setjTextSeñaRemito(Object señaRemito) {
+        this.jTextSeñaRemito.setText((String) señaRemito);
+    }
+
+    public void setjTextTotalRemito(Object totalRemito) {
+        this.jTextTotalRemito.setText((String) totalRemito);
+    }
+    
+    public void limpiarComponentes(){
+        this.jTextNumeroRemito.setText("");
+        this.jTextSeñaRemito.setText("");
+        this.jTextTotalRemito.setText("");
+        this.busquedaClienteRemito.setText("");
+        this.busquedaCodigoArticulo.setText("");
+        this.jDateFechaRemito.setCalendar(null);
+        ((DefaultTableModel)this.tablaClienteRemito.getModel()).setRowCount(0);
+        ((DefaultTableModel)this.tablaArticulosRemito.getModel()).setRowCount(0);
+        ((DefaultTableModel)this.tablaBusquedaArticulosRemito.getModel()).setRowCount(0);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -43,10 +135,12 @@ public class RemitoGui extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jTextNumeroRemito = new javax.swing.JTextField();
+        jTextSeñaRemito = new javax.swing.JTextField();
+        jTextTotalRemito = new javax.swing.JTextField();
+        jDateFechaRemito = new com.toedter.calendar.JDateChooser();
+        bttnGuardarRemito = new javax.swing.JButton();
+        bttnCancelarRemito = new javax.swing.JButton();
         panelArticulosRemito = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tablaArticulosRemito = new javax.swing.JTable();
@@ -89,7 +183,7 @@ public class RemitoGui extends javax.swing.JInternalFrame {
         labelBusquedaCodigo.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
         labelBusquedaCodigo.setText("Código");
 
-        busquedaCodigoArticulo.setToolTipText("Filtrar por código");
+        busquedaCodigoArticulo.setToolTipText("Buscar por Modelo, Marca,Tipo,Talle o Nombre de Ambo.");
 
         javax.swing.GroupLayout panelBusquedaArticulosRemitoLayout = new javax.swing.GroupLayout(panelBusquedaArticulosRemito);
         panelBusquedaArticulosRemito.setLayout(panelBusquedaArticulosRemitoLayout);
@@ -172,11 +266,15 @@ public class RemitoGui extends javax.swing.JInternalFrame {
         jLabel4.setFont(new java.awt.Font("Century Schoolbook L", 3, 18)); // NOI18N
         jLabel4.setText("TOTAL $");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        jTextNumeroRemito.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                jTextNumeroRemitoActionPerformed(evt);
             }
         });
+
+        bttnGuardarRemito.setText("Guardar Remito");
+
+        bttnCancelarRemito.setText("Cancelar");
 
         javax.swing.GroupLayout panelDatosYConfirmacionRemitoLayout = new javax.swing.GroupLayout(panelDatosYConfirmacionRemito);
         panelDatosYConfirmacionRemito.setLayout(panelDatosYConfirmacionRemitoLayout);
@@ -186,21 +284,28 @@ public class RemitoGui extends javax.swing.JInternalFrame {
                 .addGap(25, 25, 25)
                 .addGroup(panelDatosYConfirmacionRemitoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(panelDatosYConfirmacionRemitoLayout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33)
-                        .addComponent(jLabel4))
-                    .addGroup(panelDatosYConfirmacionRemitoLayout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextNumeroRemito, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2)))
+                        .addComponent(jLabel2))
+                    .addGroup(panelDatosYConfirmacionRemitoLayout.createSequentialGroup()
+                        .addGroup(panelDatosYConfirmacionRemitoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelDatosYConfirmacionRemitoLayout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextSeñaRemito, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panelDatosYConfirmacionRemitoLayout.createSequentialGroup()
+                                .addGap(33, 33, 33)
+                                .addComponent(bttnGuardarRemito)))
+                        .addGap(33, 33, 33)
+                        .addGroup(panelDatosYConfirmacionRemitoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(bttnCancelarRemito)
+                            .addComponent(jLabel4))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(panelDatosYConfirmacionRemitoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jDateFechaRemito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextTotalRemito, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(52, Short.MAX_VALUE))
         );
         panelDatosYConfirmacionRemitoLayout.setVerticalGroup(
@@ -210,16 +315,20 @@ public class RemitoGui extends javax.swing.JInternalFrame {
                 .addGroup(panelDatosYConfirmacionRemitoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelDatosYConfirmacionRemitoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextNumeroRemito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel2))
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jDateFechaRemito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
                 .addGroup(panelDatosYConfirmacionRemitoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextSeñaRemito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(109, Short.MAX_VALUE))
+                    .addComponent(jTextTotalRemito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(34, 34, 34)
+                .addGroup(panelDatosYConfirmacionRemitoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bttnGuardarRemito)
+                    .addComponent(bttnCancelarRemito))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         panelArticulosRemito.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Articulos del Remito", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Schoolbook L", 3, 18))); // NOI18N
@@ -270,7 +379,7 @@ public class RemitoGui extends javax.swing.JInternalFrame {
                 .addGroup(panelContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelDatosYConfirmacionRemito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelBusquedaClienteRemito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
         panelContenedorLayout.setVerticalGroup(
             panelContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -282,7 +391,7 @@ public class RemitoGui extends javax.swing.JInternalFrame {
                 .addGroup(panelContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelDatosYConfirmacionRemito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelArticulosRemito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         jScrollPane1.setViewportView(panelContenedor);
@@ -292,28 +401,30 @@ public class RemitoGui extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 992, Short.MAX_VALUE)
+                .addComponent(jScrollPane1)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE)
+                .addComponent(jScrollPane1)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void jTextNumeroRemitoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextNumeroRemitoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_jTextNumeroRemitoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bttnCancelarRemito;
+    private javax.swing.JButton bttnGuardarRemito;
     private javax.swing.JTextField busquedaClienteRemito;
     private javax.swing.JTextField busquedaCodigoArticulo;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser jDateFechaRemito;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -322,9 +433,9 @@ public class RemitoGui extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextNumeroRemito;
+    private javax.swing.JTextField jTextSeñaRemito;
+    private javax.swing.JTextField jTextTotalRemito;
     private javax.swing.JLabel labelBusquedaCodigo;
     private javax.swing.JPanel panelArticulosRemito;
     private javax.swing.JPanel panelBusquedaArticulosRemito;
@@ -335,4 +446,9 @@ public class RemitoGui extends javax.swing.JInternalFrame {
     private javax.swing.JTable tablaBusquedaArticulosRemito;
     private javax.swing.JTable tablaClienteRemito;
     // End of variables declaration//GEN-END:variables
+
+    public void setActionListener(ActionListener lis) {
+        this.bttnGuardarRemito.addActionListener(lis);
+        this.bttnCancelarRemito.addActionListener(lis);
+    }
 }

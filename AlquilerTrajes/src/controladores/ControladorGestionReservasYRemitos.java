@@ -7,6 +7,7 @@ package controladores;
 
 import BD.BaseDatos;
 import busqueda.Busqueda;
+import busqueda.BusquedaRemito;
 import busqueda.BusquedaReserva;
 import interfaz.GestionReservasGui;
 import interfaz.RemitoGui;
@@ -40,6 +41,7 @@ public class ControladorGestionReservasYRemitos implements ActionListener {
     private ControladorRemito controladorRemito; //controlador de la gui de un remito
     private final Busqueda busqueda;
     private final BusquedaReserva busquedaReserva;
+    private final BusquedaRemito busquedaRemito;
     private Reserva reserva; //Resultado de la busqueda en la tabla de reservas
     private Remito remito; //Resultado de la busqueda en la tabla de remitos
     
@@ -53,6 +55,7 @@ public class ControladorGestionReservasYRemitos implements ActionListener {
         this.gestionReservasGui.setActionListener(this);
         this.busqueda = new Busqueda();
         this.busquedaReserva = new BusquedaReserva();
+        this.busquedaRemito = new BusquedaRemito();
         //escucho en el JText lo que se va ingresando para buscar una Reserva
         this.gestionReservasGui.getjTxtBuscarReserva().addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -62,6 +65,22 @@ public class ControladorGestionReservasYRemitos implements ActionListener {
                     listaReservas = busquedaReservas(evt); //busco las reservas
                     if (listaReservas != null) { //si hay reservas los cargo en la gui
                         actualizarTablaReservas(listaReservas);
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(ControladorGestionReservasYRemitos.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        });
+        //escucho en el JText lo que se va ingresando para buscar un Remito
+        this.gestionReservasGui.getjTxtBuscarRemito().addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                List<Remito> listaRemitos;
+                try {
+                    listaRemitos = busquedaRemitos(evt); //busco los remitos
+                    if (listaRemitos != null) { //si hay reservas los cargo en la gui
+                        actualizarTablaRemitos(listaRemitos);
                     }
                 } catch (SQLException ex) {
                     Logger.getLogger(ControladorGestionReservasYRemitos.class.getName()).log(Level.SEVERE, null, ex);
@@ -80,6 +99,17 @@ public class ControladorGestionReservasYRemitos implements ActionListener {
                 }
             }
         });
+        //reviso si se clickea alguna fila de la tabla Buscar Remitos
+        this.gestionReservasGui.getTablaBuscarRemito().addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                try {
+                    tablaBuscarRemitoMouseClicked(evt); //si se clickea alguna fila, saco el id del remito seleccionado
+                } catch (SQLException ex) {
+                    Logger.getLogger(ControladorGestionReservasYRemitos.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
     }
 
     /*Saca el id de la reserva seleccionado en la tabla de busqueda de Reservas
@@ -92,8 +122,19 @@ public class ControladorGestionReservasYRemitos implements ActionListener {
                 + modelo.getValueAt(selectedRow, 2) + " " + modelo.getValueAt(selectedRow, 3));
         this.reserva = busquedaReserva.buscarReserva(modelo.getValueAt(selectedRow, 0));
     }
+    
+    /*Saca el id del remito seleccionado en la tabla de busqueda de Remitos
+     * y setea el JText de busqueda con el remito seleccionado
+     */
+    private void tablaBuscarRemitoMouseClicked(MouseEvent evt) throws SQLException {
+        int selectedRow = gestionReservasGui.getTablaBuscarRemito().getSelectedRow();
+        DefaultTableModel modelo = ((DefaultTableModel) gestionReservasGui.getTablaBuscarRemito().getModel());
+        gestionReservasGui.getjTxtBuscarRemito().setText("ID: " + modelo.getValueAt(selectedRow, 0) + "Numero: "+modelo.getValueAt(selectedRow, 1)+ "- Fecha y Cliente:  "
+                + modelo.getValueAt(selectedRow, 2) + " " + modelo.getValueAt(selectedRow, 3));
+        this.remito = busquedaRemito.buscarRemito(modelo.getValueAt(selectedRow, 0));
+    }
 
-    //Busco los clientes a partir de los datos ingresados en el JText de busqueda
+    //Busco las reservas a partir de los datos ingresados en el JText de busqueda
     private List<Reserva> busquedaReservas(KeyEvent evt) throws SQLException {
         String textBusquedaReserva = gestionReservasGui.getjTxtBuscarReserva().getText();
         List<Reserva> listReservas;
@@ -120,6 +161,34 @@ public class ControladorGestionReservasYRemitos implements ActionListener {
         }
         return listReservas;
     }
+    
+    //Busco los remitos a partir de los datos ingresados en el JText de busqueda
+    private List<Remito> busquedaRemitos(KeyEvent evt) throws SQLException {
+        String textBusquedaRemito = gestionReservasGui.getjTxtBuscarRemito().getText();
+        List<Remito> listRemitos;
+        //Si la busqueda empieza con un numero, busco al/los remitos por su fecha o numero
+        if (textBusquedaRemito.startsWith("0") || textBusquedaRemito.startsWith("1") || textBusquedaRemito.startsWith("2") || textBusquedaRemito.startsWith("3") || textBusquedaRemito.startsWith("4")
+                || textBusquedaRemito.startsWith("5") || textBusquedaRemito.startsWith("6") || textBusquedaRemito.startsWith("7") || textBusquedaRemito.startsWith("8")
+                || textBusquedaRemito.startsWith("9")) {
+
+            listRemitos = busquedaRemito.buscarRemitoPorFechaONumero(textBusquedaRemito);
+
+            //Sino, busco los clientes por su nombre
+        } else {
+            List<Cliente> listClientes = busqueda.buscarCliente(textBusquedaRemito);
+            listRemitos = new LinkedList<>();
+            BaseDatos.abrirBase();
+            BaseDatos.openTransaction();
+            Iterator<Cliente> itrC = listClientes.iterator();
+            while(itrC.hasNext()){
+                List<Remito> listAux = Remito.where("id_cliente like ?", "%" +((Integer) itrC.next().getId())+ "%");
+                listRemitos.addAll(listAux);
+            }
+            BaseDatos.commitTransaction();
+            BaseDatos.close();
+        }
+        return listRemitos;
+    }
 
     //Carga la lista de reservas encontrados en la tabla de busqueda reservas
     private void actualizarTablaReservas(List listaReservas) throws SQLException {
@@ -144,6 +213,30 @@ public class ControladorGestionReservasYRemitos implements ActionListener {
         BaseDatos.commitTransaction();
         BaseDatos.cerrarBase();
     }
+    
+    //Carga la lista de remitos encontrados en la tabla de busqueda remitos
+    private void actualizarTablaRemitos(List listaRemitos) throws SQLException {
+        DefaultTableModel modelo = ((DefaultTableModel) gestionReservasGui.getTablaBuscarRemito().getModel());
+        modelo.setRowCount(0);
+        BaseDatos.abrirBase();
+        BaseDatos.openTransaction();
+        Iterator<Remito> itr = listaRemitos.iterator();
+        Remito r;
+        Cliente c;
+        Object[] o = new Object[4];
+        while (itr.hasNext()) {
+            r = itr.next();
+            o[0] = (r.getId());
+            o[1] = (r.getString("numero"));
+            c = Cliente.findById(r.get("id_cliente"));
+            o[2] = (c.get("nombre"));
+            o[3] = (r.getString("fecha_de_remito"));
+            modelo.addRow(o);
+
+        }
+        BaseDatos.commitTransaction();
+        BaseDatos.cerrarBase();
+    }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
@@ -155,9 +248,7 @@ public class ControladorGestionReservasYRemitos implements ActionListener {
                 reservaGui.setVisible(true);
                 reservaGui.toFront();
                 reservaGui.setMaximum(true);
-            } catch (SQLException ex) {
-                Logger.getLogger(ControladorGestionReservasYRemitos.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (PropertyVetoException ex) {
+            } catch (SQLException | PropertyVetoException ex) {
                 Logger.getLogger(ControladorGestionReservasYRemitos.class.getName()).log(Level.SEVERE, null, ex);
             }
 
@@ -169,7 +260,7 @@ public class ControladorGestionReservasYRemitos implements ActionListener {
                 remitoGui.setVisible(true);
                 remitoGui.toFront();
                 remitoGui.setMaximum(true);
-            } catch (PropertyVetoException ex) {
+            } catch (PropertyVetoException | SQLException ex) {
                 Logger.getLogger(ControladorGestionReservasYRemitos.class.getName()).log(Level.SEVERE, null, ex);
             }
 
@@ -181,9 +272,18 @@ public class ControladorGestionReservasYRemitos implements ActionListener {
                 reservaGui.setVisible(true);
                 reservaGui.toFront();
                 reservaGui.setMaximum(true);
-            } catch (SQLException ex) {
+            } catch (SQLException | PropertyVetoException ex) {
                 Logger.getLogger(ControladorGestionReservasYRemitos.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (PropertyVetoException ex) {
+            }
+        }
+        //Si presiono el boton de Aceptar de un remito encontrado
+        if (ae.getSource() == gestionReservasGui.getBttnRemitoEncontrado() && this.remito != null) {
+            try {
+                this.controladorRemito = new ControladorRemito(remitoGui, this.remito);
+                remitoGui.setVisible(true);
+                remitoGui.toFront();
+                remitoGui.setMaximum(true);
+            } catch (SQLException | PropertyVetoException ex) {
                 Logger.getLogger(ControladorGestionReservasYRemitos.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
