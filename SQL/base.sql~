@@ -35,8 +35,8 @@ CREATE  TABLE `alquilerTraje`.`ambos` (
 
 CREATE  TABLE `alquilerTraje`.`articulos_ambos` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-    `id_ambo` INT NOT NULL,
-    `id_articulo` INT NOT NULL,
+    `ambo_id` INT NOT NULL,
+    `articulo_id` INT NOT NULL,
   PRIMARY KEY (`id`));
 
 CREATE  TABLE `alquilerTraje`.`bajas` (
@@ -81,6 +81,12 @@ CREATE  TABLE `alquilerTraje`.`remitos` (
 CREATE  TABLE `alquilerTraje`.`articulos_remitos` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `articulo_id` INT NOT NULL,
+  `remito_id` INT NOT NULL,
+  PRIMARY KEY (`id`));
+
+CREATE  TABLE `alquilerTraje`.`ambos_remitos` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `ambo_id` INT NOT NULL,
   `remito_id` INT NOT NULL,
   PRIMARY KEY (`id`));
 

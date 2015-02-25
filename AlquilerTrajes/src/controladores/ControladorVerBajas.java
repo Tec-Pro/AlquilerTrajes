@@ -8,6 +8,8 @@ import BD.BaseDatos;
 import interfaz.VerBajasGui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.util.Iterator;
@@ -50,22 +52,47 @@ public class ControladorVerBajas implements ActionListener {
                 }
             }
         });
+        verBajasGui.getFechaBusqueda().getJCalendar().addPropertyChangeListener("calendar", new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent e) {
+                try {
+                    calenDesdePropertyChange(e);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ControladorVerBajas.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+    }
+
+    private void calenDesdePropertyChange(PropertyChangeEvent e) throws SQLException {
+        realizarBusquedaPorFecha();
     }
 
     public void busquedaKeyReleased(java.awt.event.KeyEvent evt) throws SQLException {
-        System.out.println("apreté el caracter: " + evt.getKeyChar());
         realizarBusqueda();
     }
 
     private void realizarBusqueda() throws SQLException {
         BaseDatos.abrirBase();
         Base.openTransaction();
-        listArticulos = Baja.where("(modelo like ? or descripcion like ? or marca like ? or id like ? or modelo like ? or id like ?)", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%");
+        listArticulos = Baja.where("(modelo like ? or descripcion like ? or marca like ? or id like ? or tipo like ?)", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%");
         Base.openTransaction();
+        BaseDatos.cerrarBase();
+        actualizarLista();
+    }
+    
+    private void realizarBusquedaPorFecha() throws SQLException {
+        BaseDatos.abrirBase();
+        Base.openTransaction();
+        listArticulos = Baja.where("(modelo like ? or descripcion like ? or marca like ? or id like ? or tipo like ? or fecha like ?)", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getFechaBusqueda().getDate() + "%");
+        Base.openTransaction();
+        BaseDatos.cerrarBase();
         actualizarLista();
     }
 
-    private void actualizarLista() {
+    private void actualizarLista() throws SQLException {
+        BaseDatos.abrirBase();
+        Base.openTransaction();
         tablaArtDefault.setRowCount(0);
         Iterator<Baja> it = listArticulos.iterator();
         while (it.hasNext()) {
@@ -80,7 +107,8 @@ public class ControladorVerBajas implements ActionListener {
             row[6] = art.getBigDecimal("cobro").setScale(2, RoundingMode.CEILING).toString();
             tablaArtDefault.addRow(row);
         }
-        verBajasGui.getCantidadArticulos().setText(String.valueOf(tablaArticulos.getRowCount()));
+        Base.openTransaction();
+        BaseDatos.cerrarBase();
     }
 
     @Override

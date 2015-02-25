@@ -56,13 +56,13 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="busqueda" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="cantidadArticulos" min="-2" pref="101" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="158" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="busqueda" min="-2" pref="407" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="buscarPorFecha" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="fechaBusqueda" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jScrollPane1" pref="843" max="32767" attributes="0"/>
               </Group>
@@ -71,13 +71,13 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="busqueda" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="buscarPorFecha" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="cantidadArticulos" min="-2" pref="36" max="-2" attributes="0"/>
+                          <Component id="fechaBusqueda" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                       <Component id="jScrollPane1" pref="396" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -87,11 +87,6 @@
             <Component class="javax.swing.JTextField" name="busqueda">
               <Properties>
                 <Property name="toolTipText" type="java.lang.String" value="B&#xfa;squeda personalizada"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="jLabel4">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Art&#xed;culos encontrados: "/>
               </Properties>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane1">
@@ -164,14 +159,11 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JLabel" name="cantidadArticulos">
+            <Component class="com.toedter.calendar.JDateChooser" name="fechaBusqueda">
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="buscarPorFecha">
               <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Century Schoolbook L" size="18" style="1"/>
-                </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="18" green="2" red="ed" type="rgb"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Buscar por fecha"/>
               </Properties>
             </Component>
           </SubComponents>
