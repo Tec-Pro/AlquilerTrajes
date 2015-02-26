@@ -243,7 +243,7 @@ public class ControladorGestionReservasYRemitos implements ActionListener {
         //Si presiono el boton de crear una Nueva Reserva
         if (ae.getSource() == gestionReservasGui.getBttnNuevaReserva()) {
             try {
-                this.controladorReserva = new ControladorReserva(reservaGui, null);
+                this.controladorReserva = new ControladorReserva(reservaGui, remitoGui, null);
                 reservaGui.limpiarComponentes();
                 reservaGui.setVisible(true);
                 reservaGui.toFront();
@@ -268,7 +268,7 @@ public class ControladorGestionReservasYRemitos implements ActionListener {
         //Si presiono el boton de Aceptar de una reserva encontrada
         if (ae.getSource() == gestionReservasGui.getBttnReservaEncontrada() && this.reserva != null) {
             try {
-                this.controladorReserva = new ControladorReserva(reservaGui, this.reserva);
+                this.controladorReserva = new ControladorReserva(reservaGui,remitoGui, this.reserva);
                 reservaGui.setVisible(true);
                 reservaGui.toFront();
                 reservaGui.setMaximum(true);

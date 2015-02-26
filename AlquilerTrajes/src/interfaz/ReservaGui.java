@@ -45,6 +45,10 @@ public class ReservaGui extends javax.swing.JInternalFrame {
         }
     }
 
+    public Date getFechaEntregaReservaDate(){
+        return this.fechaEntregaReserva.getDate();
+    }
+    
     public String getFechaReserva() {
         if( fechaReserva.getCalendar() !=null){
             int año = fechaReserva.getCalendar().get(Calendar.YEAR);
@@ -71,6 +75,14 @@ public class ReservaGui extends javax.swing.JInternalFrame {
 
     public JButton getConfirmarReserva() {
         return confirmarReserva;
+    }
+
+    public JButton getBttnCancelar() {
+        return bttnCancelar;
+    }
+
+    public JButton getBttnCrearRemito() {
+        return bttnCrearRemito;
     }
     
     public void setFechaEntregaReserva(Date date) {
@@ -419,5 +431,7 @@ public class ReservaGui extends javax.swing.JInternalFrame {
 
     public void setActionListener(ActionListener lis) {
         this.confirmarReserva.addActionListener(lis);
+        this.bttnCrearRemito.addActionListener(lis);
+        this.bttnCancelar.addActionListener(lis);
     }
 }

@@ -79,6 +79,7 @@ public class ABMReserva {
                     r.get("fecha_entrega_reserva"), "id_cliente", r.get("id_cliente")).saveIt();
             BaseDatos.commitTransaction();
             BaseDatos.cerrarBase();
+            this.ultimoId = r.getInteger("id");
             return true;
         }
         BaseDatos.commitTransaction();

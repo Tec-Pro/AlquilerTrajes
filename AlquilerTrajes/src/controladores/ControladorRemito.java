@@ -321,6 +321,14 @@ public class ControladorRemito implements ActionListener {
             señaRemito = Double.parseDouble(remitoGui.getjTextSeñaRemito().getText());
             totalRemito = Double.parseDouble(remitoGui.getjTextTotalRemito().getText());
             numeroRemito = Integer.parseInt(remitoGui.getjTextNumeroRemito().getText());
+            /*si es null, puede que no haya sido cargado de la tabla aun, asi que lo verifico
+            * ( es posible que el remito haya sido creado a traves de una reserva, por lo tanto
+            * el idCliente no fue obtenido de remitoGui aún).
+            */
+            DefaultTableModel modeloClientes = ((DefaultTableModel) remitoGui.getTablaClienteRemito().getModel());
+            if(idCliente == null && modeloClientes.getRowCount() != 0){
+                idCliente = (Integer) modeloClientes.getValueAt(remitoGui.getTablaClienteRemito().getSelectedRow(), 0);
+            }
             DefaultTableModel modeloArticulos = (DefaultTableModel) remitoGui.getTablaArticulosRemito().getModel();
             if (idCliente != null && fechaRemito != null && señaRemito != null && numeroRemito != null
                     && totalRemito != null && modeloArticulos.getRowCount() != 0) {

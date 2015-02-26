@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyVetoException;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.Iterator;
@@ -25,8 +26,8 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelos.Ambo;
 import modelos.Articulo;
-import modelos.ArticulosReservas;
 import modelos.Cliente;
+import modelos.Remito;
 import modelos.Reserva;
 
 /**
@@ -35,7 +36,7 @@ import modelos.Reserva;
  */
 public class ControladorReserva implements ActionListener {
 
-    private ABMReserva abmReserva; //abm de una reserva
+    private final ABMReserva abmReserva; //abm de una reserva
     private final ReservaGui reservaGui; // gui de una reserva
     private Reserva reserva; // modelo de reserva
     private final Busqueda busqueda; //busquedas de clientes
@@ -46,9 +47,12 @@ public class ControladorReserva implements ActionListener {
     private final BusquedaArticulo busquedaArticulo;//busqueda de articulos
     private List<Ambo> listaAmbos; //lista de Ambos de una Reserva a modificar
     private List<Articulo> listaArticulos; //lista de Articulos de una Reserva a modificar
+    private RemitoGui remitoGui;
+    private ControladorRemito controladorRemito;
 
-    public ControladorReserva(ReservaGui reservaGui, Reserva r) throws SQLException {
+    public ControladorReserva(ReservaGui reservaGui, RemitoGui remGui, Reserva r) throws SQLException {
         this.reservaGui = reservaGui;
+        this.remitoGui = remGui;
         this.busqueda = new Busqueda();
         this.busquedaArticulo = new BusquedaArticulo();
         this.reservaGui.setActionListener(this);
@@ -422,6 +426,49 @@ public class ControladorReserva implements ActionListener {
                     Logger.getLogger(ControladorReserva.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
+            } else {
+                JOptionPane.showMessageDialog(reservaGui, "La informacion es insuficiente o erronea, por favor complete todos los campos.", "Error!", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        /*
+        * Si presiono el boton de crear Remito en la gui de Reservas
+        * este abrira un nuevo Remito con los datos obtenidos en la reserva
+        */
+        if (e.getSource().equals(reservaGui.getBttnCrearRemito())) {
+            fechaReserva = reservaGui.getFechaReserva();
+            fechaEntregaReserva = reservaGui.getFechaEntregaReserva();
+            DefaultTableModel modeloArticulos = (DefaultTableModel) reservaGui.getTablaArticulosReserva().getModel();
+            if (idCliente != null && fechaEntregaReserva != null && fechaReserva != null && modeloArticulos.getRowCount() != 0) {
+                try {
+                //creo el controlador de la RemitoGui
+                this.controladorRemito = new ControladorRemito(remitoGui, null);
+                //Cargo los articulos del Remito en la gui
+                this.remitoGui.getTablaArticulosRemito().setModel(modeloArticulos);
+                //Cargo el cliente en la gui
+                BaseDatos.abrirBase();
+                BaseDatos.openTransaction();
+                Cliente c = Cliente.findById(idCliente);
+                DefaultTableModel modeloClientes = (DefaultTableModel) remitoGui.getTablaClienteRemito().getModel();
+                Object[] o = new Object[3];
+                o[0] = (c.getId());
+                o[1] = (c.getString("nombre"));
+                o[2] = (c.getString("dni"));
+                modeloClientes.addRow(o);
+                BaseDatos.commitTransaction();
+                BaseDatos.cerrarBase();
+                //marco como seleccionada la primera fila, que es la que contiene el cliente que agrege a la tabla
+                (this.remitoGui.getTablaClienteRemito().getSelectionModel()).addSelectionInterval(0, 0);
+                //seteo el jtext de busqueda de clientes de RemitoGui
+                this.remitoGui.getBusquedaClienteRemito().setText(modeloClientes.getValueAt(0, 0) + " - "
+                + modeloClientes.getValueAt(0, 1) + "  " + modeloClientes.getValueAt(0, 2));
+                //seteo la fecha del remito como la fecha de entrega de la reserva
+                this.remitoGui.setjDateFechaRemito(this.reservaGui.getFechaEntregaReservaDate());
+                //Seteo RemitoGui visible y en pantalla completa dentro de su contenedor
+                this.remitoGui.setVisible(true);
+                this.remitoGui.setMaximum(true);
+                } catch (SQLException | PropertyVetoException ex) {
+                    Logger.getLogger(ControladorReserva.class.getName()).log(Level.SEVERE, null, ex);
+                }
             } else {
                 JOptionPane.showMessageDialog(reservaGui, "La informacion es insuficiente o erronea, por favor complete todos los campos.", "Error!", JOptionPane.ERROR_MESSAGE);
             }
