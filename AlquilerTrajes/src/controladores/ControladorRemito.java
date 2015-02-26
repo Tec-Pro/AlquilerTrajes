@@ -440,6 +440,11 @@ public class ControladorRemito implements ActionListener {
                 JOptionPane.showMessageDialog(remitoGui, "La informacion es insuficiente o erronea, por favor complete todos los campos.", "Error!", JOptionPane.ERROR_MESSAGE);
             }
         }
+        /* Si presiona el boton Cancelar, se cierra la ventana
+        */
+        if (ae.getSource().equals(remitoGui.getBttnCancelarRemito())) {
+            this.remitoGui.hide();
+        }
     }
 
 }
