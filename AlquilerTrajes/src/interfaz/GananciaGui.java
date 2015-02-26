@@ -5,6 +5,8 @@
 package interfaz;
 
 import com.toedter.calendar.JDateChooser;
+import java.sql.Date;
+import java.util.Calendar;
 import javax.swing.JLabel;
 
 /**
@@ -18,6 +20,15 @@ public class GananciaGui extends javax.swing.JInternalFrame {
      */
     public GananciaGui() {
         initComponents();
+         Calendar miCalendario = Calendar.getInstance();
+        java.util.Date eldia = miCalendario.getTime();
+        int diaHoy = miCalendario.get(Calendar.DAY_OF_MONTH);
+        int mes = miCalendario.get(Calendar.MONTH);
+        int anio = miCalendario.get(Calendar.YEAR);
+        fechaDesde.setDate(Date.valueOf(anio + "-" + (mes + 1) + "-" + diaHoy));
+        fechaHasta.setDate(Date.valueOf(anio + "-" + (mes + 1) + "-" + diaHoy));
+        fechaHasta.setDateFormatString("yyyy-MM-dd");
+        fechaDesde.setDateFormatString("yyyy-MM-dd");
     }
     
     public JLabel getGanancia() {

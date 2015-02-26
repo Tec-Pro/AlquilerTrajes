@@ -5,6 +5,7 @@
 package controladores;
 
 import BD.BaseDatos;
+import com.toedter.calendar.JDateChooser;
 import interfaz.VerBajasGui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +13,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.math.RoundingMode;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -31,12 +34,15 @@ public class ControladorVerBajas implements ActionListener {
     private java.util.List<Baja> listArticulos;
     private DefaultTableModel tablaArtDefault;
     private JTable tablaArticulos;
+    private JDateChooser fechaBusqueda;
 
     public ControladorVerBajas(VerBajasGui verBajasGui) throws SQLException {
         this.verBajasGui = verBajasGui;
+        this.verBajasGui.setActionListener(this);
         listArticulos = new LinkedList();
         tablaArticulos = verBajasGui.getArticulos();
         tablaArtDefault = verBajasGui.getTablaArticulosDefault();
+        fechaBusqueda = verBajasGui.getFechaBusqueda();
         BaseDatos.abrirBase();
         BaseDatos.openTransaction();
         listArticulos = Baja.findAll();
@@ -52,11 +58,11 @@ public class ControladorVerBajas implements ActionListener {
                 }
             }
         });
-        verBajasGui.getFechaBusqueda().getJCalendar().addPropertyChangeListener("calendar", new PropertyChangeListener() {
+        fechaBusqueda.getJCalendar().addPropertyChangeListener("calendar", new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent e) {
                 try {
-                    calenDesdePropertyChange(e);
+                    calenPropertyChange(e);
                 } catch (SQLException ex) {
                     Logger.getLogger(ControladorVerBajas.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -64,12 +70,12 @@ public class ControladorVerBajas implements ActionListener {
         });
     }
 
-    private void calenDesdePropertyChange(PropertyChangeEvent e) throws SQLException {
-        realizarBusquedaPorFecha();
-    }
-
     public void busquedaKeyReleased(java.awt.event.KeyEvent evt) throws SQLException {
         realizarBusqueda();
+    }
+
+    private void calenPropertyChange(PropertyChangeEvent e) throws SQLException {
+        realizarBusquedaPorFecha();
     }
 
     private void realizarBusqueda() throws SQLException {
@@ -80,14 +86,16 @@ public class ControladorVerBajas implements ActionListener {
         BaseDatos.cerrarBase();
         actualizarLista();
     }
-    
+
     private void realizarBusquedaPorFecha() throws SQLException {
-        BaseDatos.abrirBase();
-        Base.openTransaction();
-        listArticulos = Baja.where("(modelo like ? or descripcion like ? or marca like ? or id like ? or tipo like ? or fecha like ?)", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getBusqueda().getText() + "%", "%" + verBajasGui.getFechaBusqueda().getDate() + "%");
-        Base.openTransaction();
-        BaseDatos.cerrarBase();
-        actualizarLista();
+        if (verBajasGui.getBuscarPorFecha().isSelected()) {
+            BaseDatos.abrirBase();
+            Base.openTransaction();            
+            listArticulos = Baja.where("fecha = ?", verBajasGui.getFechaBusqueda().getDate());
+            Base.openTransaction();
+            BaseDatos.cerrarBase();
+            actualizarLista();
+        }
     }
 
     private void actualizarLista() throws SQLException {

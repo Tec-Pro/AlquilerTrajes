@@ -5,6 +5,7 @@
 package controladores;
 
 import BD.BaseDatos;
+import com.toedter.calendar.JDateChooser;
 import interfaz.GananciaGui;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -25,30 +26,34 @@ public class ControladorGanacia {
     private java.util.List<Baja> listBajas;
     private java.util.List<Remito> listRemitos;
     private GananciaGui gananciaGui;
+    private JDateChooser desde;
+    private JDateChooser hasta;
 
     public ControladorGanacia(GananciaGui gananciaGui) throws SQLException {
         this.gananciaGui = gananciaGui;
+        desde = gananciaGui.getFechaDesde();
+        hasta = gananciaGui.getFechaHasta();
         BaseDatos.abrirBase();
         BaseDatos.openTransaction();
         listBajas = Baja.findAll();
         listRemitos = Remito.findAll();
         BaseDatos.commitTransaction();
         BaseDatos.cerrarBase();
-        gananciaGui.getFechaDesde().getJCalendar().addPropertyChangeListener("calendar", new PropertyChangeListener() {
+        desde.getJCalendar().addPropertyChangeListener("calendar", new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent e) {
                 try {
-                    calenDesdePropertyChange(e);
+                    calenPropertyChange(e);
                 } catch (SQLException ex) {
                     Logger.getLogger(ControladorVerBajas.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-        gananciaGui.getFechaHasta().getJCalendar().addPropertyChangeListener("calendar", new PropertyChangeListener() {
+        hasta.getJCalendar().addPropertyChangeListener("calendar", new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent e) {
                 try {
-                    calenDesdePropertyChange(e);
+                    calenPropertyChange(e);
                 } catch (SQLException ex) {
                     Logger.getLogger(ControladorVerBajas.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -56,7 +61,7 @@ public class ControladorGanacia {
         });
     }
 
-    private void calenDesdePropertyChange(PropertyChangeEvent e) throws SQLException {
+    private void calenPropertyChange(PropertyChangeEvent e) throws SQLException {
         realizarBusquedaPorFecha();
     }
 

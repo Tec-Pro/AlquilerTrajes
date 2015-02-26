@@ -7,6 +7,8 @@ package interfaz;
 
 import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.util.Calendar;
 import javax.swing.JCheckBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -26,13 +28,18 @@ public class VerBajasGui extends javax.swing.JInternalFrame {
     public VerBajasGui() {
         initComponents();
         tablaArticulosDefault = (DefaultTableModel) articulos.getModel(); //convierto la tabla
-
+        Calendar miCalendario = Calendar.getInstance();
+        java.util.Date eldia = miCalendario.getTime();
+        int diaHoy = miCalendario.get(Calendar.DAY_OF_MONTH);
+        int mes = miCalendario.get(Calendar.MONTH);
+        int anio = miCalendario.get(Calendar.YEAR);
+        fechaBusqueda.setDate(Date.valueOf(anio + "-" + (mes + 1) + "-" + diaHoy));
+        fechaBusqueda.setDateFormatString("yyyy-MM-dd");
     }
 
     public void setActionListener(ActionListener lis) {
     }
 
-    
     public DefaultTableModel getTablaArticulosDefault() {
         return tablaArticulosDefault;
     }
@@ -41,7 +48,10 @@ public class VerBajasGui extends javax.swing.JInternalFrame {
         return articulos;
     }
 
-  
+    public JTextField getCalenText() {
+        return ((JTextField) fechaBusqueda.getDateEditor().getUiComponent());
+    }
+
     public JTextField getBusqueda() {
         return busqueda;
     }
@@ -54,9 +64,6 @@ public class VerBajasGui extends javax.swing.JInternalFrame {
         return fechaBusqueda;
     }
 
-    
-    
-  
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -147,8 +154,6 @@ public class VerBajasGui extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable articulos;
     private javax.swing.JCheckBox buscarPorFecha;

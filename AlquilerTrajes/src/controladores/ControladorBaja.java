@@ -149,6 +149,9 @@ public class ControladorBaja implements ActionListener {
                         if (abmArticulo.restarStock(art.getInteger("id"))) {
                             if (abmAmbo.revisarStock(art.getInteger("id"))) {
                                 JOptionPane.showMessageDialog(bajaGui, "¡Baja guardada exitosamente!");
+                                bajaGui.getArticuloBaja().setText("");
+                                bajaGui.getCobro().setText("");
+                                bajaGui.getDescripcion().setText("");        
                             } else {
                                 JOptionPane.showMessageDialog(bajaGui, "No se guardó la baja", "Error!", JOptionPane.ERROR_MESSAGE);
                             }
