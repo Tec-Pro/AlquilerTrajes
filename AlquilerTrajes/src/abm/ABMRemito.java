@@ -28,7 +28,7 @@ public class ABMRemito {
         //Si el remito no existe, lo creo
         if (Remito.first("numero = ?", r.get("numero")) == null) {
             Remito nuevo = Remito.create("numero", r.get("numero"), "fecha_de_remito",
-                    r.get("fecha_de_remito"), "id_cliente", r.get("id_cliente"),
+                    r.get("fecha_de_remito"), "cliente_id", r.get("cliente_id"),
                     "total", r.get("total"), "senia", r.get("senia"));
             nuevo.saveIt();
             ultimoId = nuevo.getInteger("id");
@@ -68,7 +68,7 @@ public class ABMRemito {
         if (viejo != null) {
 
             viejo.set("numero", r.get("numero"), "fecha_de_remito",
-                    r.get("fecha_de_remito"), "id_cliente", r.get("id_cliente"),
+                    r.get("fecha_de_remito"), "cliente_id", r.get("cliente_id"),
                     "total", r.get("total"), "senia", r.get("senia")).saveIt();
             BaseDatos.commitTransaction();
             BaseDatos.cerrarBase();

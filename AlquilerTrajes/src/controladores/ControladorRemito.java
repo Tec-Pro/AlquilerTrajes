@@ -59,7 +59,7 @@ public class ControladorRemito implements ActionListener {
             this.isNuevoRemito = false; //el remito no es nuevo
             this.remito = r; // le asigno al remito, que es pasado por parametro para modificar
             this.abmRemito = new ABMRemito();
-            this.idCliente = (Integer) remito.get("id_cliente");
+            this.idCliente = (Integer) remito.get("cliente_id");
             cargarRemito(this.remito); //cargo la remito en la gui
             // sino creamos una nueva remito
         } else {
@@ -120,7 +120,7 @@ public class ControladorRemito implements ActionListener {
         this.remitoGui.getTablaBusquedaArticulosRemito().addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaMouseClickedBusquedaArticulos(evt); //si se clickea alguna fila, saco el id del cliente seleccionado
+                tablaMouseClickedBusquedaArticulos(evt); //cargo la fila clickeada en la tabla de Articulos del Remito
             }
         });
         //reviso si se clickea alguna fila de la tabla de articulos para el remito (Doble click sobre el articulo lo elimina de la tabla)
@@ -128,7 +128,7 @@ public class ControladorRemito implements ActionListener {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (evt.getClickCount() == 2) {
-                    eliminarFilaArticulosReserva();
+                    eliminarFilaArticulosRemito();
                 }
             }
         });
@@ -153,14 +153,19 @@ public class ControladorRemito implements ActionListener {
         int selectedRow = remitoGui.getTablaBusquedaArticulosRemito().getSelectedRow();
         DefaultTableModel modeloBusqueda = ((DefaultTableModel) remitoGui.getTablaBusquedaArticulosRemito().getModel());
         Object[] row;
-        DefaultTableModel modeloReserva = ((DefaultTableModel) remitoGui.getTablaArticulosRemito().getModel());
-        row = new Object[5];
+        DefaultTableModel modeloRemito = ((DefaultTableModel) remitoGui.getTablaArticulosRemito().getModel());
+        row = new Object[6];
         row[0] = (modeloBusqueda.getValueAt(selectedRow, 0));
         row[1] = (modeloBusqueda.getValueAt(selectedRow, 1));
         row[2] = (modeloBusqueda.getValueAt(selectedRow, 2));
         row[3] = (modeloBusqueda.getValueAt(selectedRow, 3));
         row[4] = (modeloBusqueda.getValueAt(selectedRow, 4));
-        modeloReserva.addRow(row);
+        row[5] = (modeloBusqueda.getValueAt(selectedRow, 6));
+        modeloRemito.addRow(row);
+        Double precio = Double.parseDouble((String) modeloBusqueda.getValueAt(selectedRow, 6));
+        //si agrego un articulo a la tabla de articulos del remito, sumo su precio del total
+        remitoGui.setjTextTotalRemito((Double.parseDouble(remitoGui.getjTextTotalRemito().getText())) + precio);
+        
     }
 
     //Busco los clientes a partir de los datos ingresados en el JText de busqueda
@@ -225,7 +230,7 @@ public class ControladorRemito implements ActionListener {
         Iterator<Ambo> itrAmbo = listaAmbos.iterator();
         Articulo ar;
         Ambo am;
-        Object[] o = new Object[6];
+        Object[] o = new Object[7];
         while (itrArticulo.hasNext()) {
             ar = itrArticulo.next();
             o[0] = (ar.getId());
@@ -234,6 +239,7 @@ public class ControladorRemito implements ActionListener {
             o[3] = (ar.getString("tipo"));
             o[4] = (ar.getString("talle"));
             o[5] = (ar.getString("descripcion"));
+            o[6] = (ar.getString("precio_alquiler"));
             modelo.addRow(o);
 
         }
@@ -245,6 +251,7 @@ public class ControladorRemito implements ActionListener {
             o[3] = ("ambo");
             o[4] = (am.getString("talle"));
             o[5] = (am.getString("descripcion"));
+            o[6] = (am.getString("precio_alquiler"));
             modelo.addRow(o);
 
         }
@@ -255,15 +262,18 @@ public class ControladorRemito implements ActionListener {
     /*
      * Elimino el articulo de la tabla de productos de una remito, si se hace doble click sobre el
      */
-    private void eliminarFilaArticulosReserva() {
+    private void eliminarFilaArticulosRemito() {
         int selectedRow = remitoGui.getTablaArticulosRemito().getSelectedRow();
-        DefaultTableModel modeloReserva = ((DefaultTableModel) remitoGui.getTablaArticulosRemito().getModel());
-        modeloReserva.removeRow(selectedRow);
+        DefaultTableModel modeloRemito = ((DefaultTableModel) remitoGui.getTablaArticulosRemito().getModel());
+        Double precio = Double.parseDouble((String) modeloRemito.getValueAt(selectedRow, 5));
+        //si quito un articulo de la tabla de articulos del remito, resto su precio del total
+        remitoGui.setjTextTotalRemito((Double.parseDouble(remitoGui.getjTextTotalRemito().getText())) - precio);
+        modeloRemito.removeRow(selectedRow);
     }
 
     //Carga un remito en la gui (Remito guardado previamente a modificar)
     private void cargarRemito(Remito r) throws SQLException {
-        Cliente c = busqueda.buscarCliente(r.get("id_cliente"));
+        Cliente c = busqueda.buscarCliente(r.get("cliente_id"));
         remitoGui.setBusquedaClienteRemito(c.getId() + " - " + c.getString("nombre") + " " + c.getString("dni"));
         Date dateFR = r.getDate("fecha_de_remito");
         remitoGui.setjDateFechaRemito(dateFR);
@@ -278,7 +288,7 @@ public class ControladorRemito implements ActionListener {
         modeloArticulos.setRowCount(0);
         BaseDatos.abrirBase();
         BaseDatos.openTransaction();
-        Object[] o = new Object[5];
+        Object[] o = new Object[6];
         if (listaArticulos != null) {
             Articulo ar;
             Iterator<Articulo> itrArticulo = listaArticulos.iterator();
@@ -289,8 +299,11 @@ public class ControladorRemito implements ActionListener {
                 o[2] = (ar.getString("marca"));
                 o[3] = (ar.getString("tipo"));
                 o[4] = (ar.getString("talle"));
+                o[5] = (ar.getDouble("precio_alquiler"));
                 modeloArticulos.addRow(o);
-
+                Double precio = ar.getDouble("precio_alquiler");
+                //si agrego un articulo a la tabla articulos del remito, sumo su precio del total
+                remitoGui.setjTextTotalRemito((Double.parseDouble(remitoGui.getjTextTotalRemito().getText())) + precio);
             }
         }
         if (listaAmbos != null) {
@@ -303,7 +316,11 @@ public class ControladorRemito implements ActionListener {
                 o[2] = (am.getString("marca"));
                 o[3] = ("ambo");
                 o[4] = (am.getString("talle"));
+                o[5] = (am.getDouble("precio_alquiler"));
                 modeloArticulos.addRow(o);
+                Double precio = am.getDouble("precio_alquiler");
+                //si agrego un ambo a la tabla articulos del remito, sumo su precio del total
+                remitoGui.setjTextTotalRemito((Double.parseDouble(remitoGui.getjTextTotalRemito().getText())) + precio);
             }
         }
         BaseDatos.commitTransaction();
@@ -336,7 +353,7 @@ public class ControladorRemito implements ActionListener {
                 remito.set("total", totalRemito);
                 remito.set("senia", señaRemito);
                 remito.set("numero", numeroRemito);
-                remito.set("id_cliente", idCliente);
+                remito.set("cliente_id", idCliente);
                 try {
                     if (abmRemito.alta(remito)) {//si el remito pudo ser creado, procedo a guardar la demas informacion
                         remito.set("id", abmRemito.getUltimoId());
@@ -385,7 +402,7 @@ public class ControladorRemito implements ActionListener {
                 remito.set("total", totalRemito);
                 remito.set("senia", señaRemito);
                 remito.set("numero", numeroRemito);
-                remito.set("id_cliente", idCliente);
+                remito.set("cliente_id", idCliente);
                 try {
                     if (abmRemito.modificar(remito)) {
                         BaseDatos.abrirBase();
@@ -445,6 +462,7 @@ public class ControladorRemito implements ActionListener {
         if (ae.getSource().equals(remitoGui.getBttnCancelarRemito())) {
             this.remitoGui.hide();
         }
+        
     }
 
 }

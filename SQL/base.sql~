@@ -54,7 +54,7 @@ CREATE  TABLE `alquilerTraje`.`reservas` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `fecha_reserva` DATE NOT NULL ,
   `fecha_entrega_reserva` DATE NOT NULL ,
-  `id_cliente` INT NOT NULL,
+  `cliente_id` INT NOT NULL,
   PRIMARY KEY (`id`));
 
 CREATE  TABLE `alquilerTraje`.`articulos_reservas` (
@@ -73,9 +73,10 @@ CREATE  TABLE `alquilerTraje`.`remitos` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `numero` INT NOT NULL ,
   `fecha_de_remito` DATE NOT NULL ,
-  `id_cliente` INT NOT NULL,
+  `cliente_id` INT NOT NULL,
   `total` FLOAT NOT NULL,
-  `senia` FLOAT NOT NULL,    
+  `senia` FLOAT NOT NULL,
+  `cerrado` TINYINT(1) NOT NULL,
   PRIMARY KEY (`id`));
 
 CREATE  TABLE `alquilerTraje`.`articulos_remitos` (

@@ -153,7 +153,7 @@ public class ControladorGestionReservasYRemitos implements ActionListener {
             BaseDatos.openTransaction();
             Iterator<Cliente> itrC = listClientes.iterator();
             while(itrC.hasNext()){
-                List<Reserva> listAux = Reserva.where("id_cliente like ?", "%" +((Integer) itrC.next().getId())+ "%");
+                List<Reserva> listAux = Reserva.where("cliente_id like ?", "%" +((Integer) itrC.next().getId())+ "%");
                 listReservas.addAll(listAux);
             }
             BaseDatos.commitTransaction();
@@ -181,7 +181,7 @@ public class ControladorGestionReservasYRemitos implements ActionListener {
             BaseDatos.openTransaction();
             Iterator<Cliente> itrC = listClientes.iterator();
             while(itrC.hasNext()){
-                List<Remito> listAux = Remito.where("id_cliente like ?", "%" +((Integer) itrC.next().getId())+ "%");
+                List<Remito> listAux = Remito.where("cliente_id like ?", "%" +((Integer) itrC.next().getId())+ "%");
                 listRemitos.addAll(listAux);
             }
             BaseDatos.commitTransaction();
@@ -205,7 +205,7 @@ public class ControladorGestionReservasYRemitos implements ActionListener {
             o[0] = (r.getId());
             o[1] = (r.getString("fecha_reserva"));
             o[2] = (r.getString("fecha_entrega_reserva"));
-            c = Cliente.findById(r.get("id_cliente"));
+            c = Cliente.findById(r.get("cliente_id"));
             o[3] = (c.get("nombre"));
             modelo.addRow(o);
 
@@ -228,7 +228,7 @@ public class ControladorGestionReservasYRemitos implements ActionListener {
             r = itr.next();
             o[0] = (r.getId());
             o[1] = (r.getString("numero"));
-            c = Cliente.findById(r.get("id_cliente"));
+            c = Cliente.findById(r.get("cliente_id"));
             o[2] = (c.get("nombre"));
             o[3] = (r.getString("fecha_de_remito"));
             modelo.addRow(o);

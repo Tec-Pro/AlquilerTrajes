@@ -7,6 +7,9 @@ package abm;
 
 import BD.BaseDatos;
 import java.sql.SQLException;
+import modelos.AmbosReservas;
+import modelos.Articulo;
+import modelos.ArticulosReservas;
 import modelos.Reserva;
 import org.javalite.activejdbc.Base;
 
@@ -40,7 +43,7 @@ public class ABMReserva {
         BaseDatos.abrirBase();
         BaseDatos.openTransaction();
         Reserva nuevo = Reserva.create("fecha_reserva", r.get("fecha_reserva"), "fecha_entrega_reserva",
-                r.get("fecha_entrega_reserva"), "id_cliente", r.get("id_cliente"));
+                r.get("fecha_entrega_reserva"), "cliente_id", r.get("cliente_id"));
         nuevo.saveIt();
         ultimoId = nuevo.getInteger("id");
         BaseDatos.commitTransaction();
@@ -51,14 +54,13 @@ public class ABMReserva {
         //}
     }
 
-    //Revisar el delete que no rompa toda la base (deleteOnCascade deberia ser)
-    //Da de baja una reserva en la BD (lo elimina)
+    //Da de baja una reserva en la BD (lo elimina), junto con todos sus articulos relacionados
     public boolean baja(Reserva r) throws SQLException {
         BaseDatos.abrirBase();
         BaseDatos.openTransaction();
         Reserva viejo = Reserva.findById(r.getId());
         if (viejo != null) {
-            viejo.delete();
+            viejo.deleteCascadeShallow();
             BaseDatos.commitTransaction();
             BaseDatos.cerrarBase();
             return true;
@@ -76,7 +78,7 @@ public class ABMReserva {
         Reserva viejo = Reserva.findById(r.getId());
         if (viejo != null) {
             viejo.set("fecha_reserva", r.get("fecha_reserva"), "fecha_entrega_reserva",
-                    r.get("fecha_entrega_reserva"), "id_cliente", r.get("id_cliente")).saveIt();
+                    r.get("fecha_entrega_reserva"), "cliente_id", r.get("cliente_id")).saveIt();
             BaseDatos.commitTransaction();
             BaseDatos.cerrarBase();
             this.ultimoId = r.getInteger("id");

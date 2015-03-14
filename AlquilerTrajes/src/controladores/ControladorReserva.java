@@ -63,7 +63,7 @@ public class ControladorReserva implements ActionListener {
             this.isNuevaReserva = false; //la reserva no es nueva
             this.reserva = r; // le asigno a la reserva, que pasada por parametro para modificar
             this.abmReserva = new ABMReserva();
-            this.idCliente = (Integer) reserva.get("id_cliente");
+            this.idCliente = (Integer) reserva.get("cliente_id");
             cargarReserva(this.reserva); //cargo la reserva en la gui
             // sino creamos una nueva reserva
         } else {
@@ -156,12 +156,13 @@ public class ControladorReserva implements ActionListener {
         DefaultTableModel modeloBusqueda = ((DefaultTableModel) reservaGui.getTablaBusquedaArticulosReserva().getModel());
         Object[] row;
         DefaultTableModel modeloReserva = ((DefaultTableModel) reservaGui.getTablaArticulosReserva().getModel());
-        row = new Object[5];
+        row = new Object[6];
         row[0] = (modeloBusqueda.getValueAt(selectedRow, 0));
         row[1] = (modeloBusqueda.getValueAt(selectedRow, 1));
         row[2] = (modeloBusqueda.getValueAt(selectedRow, 2));
         row[3] = (modeloBusqueda.getValueAt(selectedRow, 3));
         row[4] = (modeloBusqueda.getValueAt(selectedRow, 4));
+        row[5] = (modeloBusqueda.getValueAt(selectedRow, 6));
         modeloReserva.addRow(row);
     }
 
@@ -227,7 +228,7 @@ public class ControladorReserva implements ActionListener {
         Iterator<Ambo> itrAmbo = listaAmbos.iterator();
         Articulo ar;
         Ambo am;
-        Object[] o = new Object[6];
+        Object[] o = new Object[7];
         while (itrArticulo.hasNext()) {
             ar = itrArticulo.next();
             o[0] = (ar.getId());
@@ -236,6 +237,7 @@ public class ControladorReserva implements ActionListener {
             o[3] = (ar.getString("tipo"));
             o[4] = (ar.getString("talle"));
             o[5] = (ar.getString("descripcion"));
+            o[6] = (ar.getString("precio_alquiler"));
             modelo.addRow(o);
 
         }
@@ -247,6 +249,7 @@ public class ControladorReserva implements ActionListener {
             o[3] = ("ambo");
             o[4] = (am.getString("talle"));
             o[5] = (am.getString("descripcion"));
+            o[6] = (am.getString("precio_alquiler"));
             modelo.addRow(o);
 
         }
@@ -265,7 +268,7 @@ public class ControladorReserva implements ActionListener {
 
     //Carga una reserva en la gui (Reserva guardada previamente a modificar)
     private void cargarReserva(Reserva r) throws SQLException {
-        Cliente c = busqueda.buscarCliente(r.get("id_cliente"));
+        Cliente c = busqueda.buscarCliente(r.get("cliente_id"));
         reservaGui.setBusquedaCliente(c.getId() + " - " + c.getString("nombre") + " " + c.getString("dni"));
         Date dateFR = r.getDate("fecha_reserva");
         Date dateFER = r.getDate("fecha_entrega_reserva");
@@ -324,7 +327,7 @@ public class ControladorReserva implements ActionListener {
             if (idCliente != null && fechaEntregaReserva != null && fechaReserva != null && modeloArticulos.getRowCount() != 0) {
                 reserva.set("fecha_reserva", fechaReserva);
                 reserva.set("fecha_entrega_reserva", fechaEntregaReserva);
-                reserva.set("id_cliente", idCliente);
+                reserva.set("cliente_id", idCliente);
                 try {
                     if (abmReserva.alta(reserva)) {//si la reserva pudo ser creada, procedo a guardar la demas informacion
                         reserva.set("id", abmReserva.getUltimoId());
@@ -368,7 +371,7 @@ public class ControladorReserva implements ActionListener {
             if (idCliente != null && fechaEntregaReserva != null && fechaReserva != null && modeloArticulos.getRowCount() != 0) {
                 this.reserva.set("fecha_reserva", fechaReserva);
                 this.reserva.set("fecha_entrega_reserva", fechaEntregaReserva);
-                this.reserva.set("id_cliente", idCliente);
+                this.reserva.set("cliente_id", idCliente);
                 try {
                     if (abmReserva.modificar(reserva)) {
                         try {
@@ -478,5 +481,23 @@ public class ControladorReserva implements ActionListener {
         if (e.getSource().equals(reservaGui.getBttnCancelar())) {
             this.reservaGui.hide();
         }
+        /* Si presiona el boton Eliminar Reserva y esta todavia no fue creada
+        * en la base de datos, solamente cierro la ventana.
+        */
+        if (e.getSource().equals(reservaGui.getBttnEliminar()) && isNuevaReserva) {
+            this.reservaGui.hide();
+        }
+        /* Si presiona el boton Eliminar Reserva y esta habia sido creada
+        * previamente, la reserva se borra de la base de datos.
+        */
+        if (e.getSource().equals(reservaGui.getBttnEliminar()) && !isNuevaReserva) {
+            try {
+                this.abmReserva.baja(this.reserva);
+            } catch (SQLException ex) {
+                Logger.getLogger(ControladorReserva.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            this.reservaGui.hide();
+        }
+        
     }
 }
