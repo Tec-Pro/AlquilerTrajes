@@ -270,17 +270,21 @@ public class ReservaGui extends javax.swing.JInternalFrame {
 
         fechaReserva.setToolTipText("Fecha en que se realiza la Reserva");
 
-        confirmarReserva.setText("Confirmar Reserva");
-        confirmarReserva.setToolTipText("Crear la Reserva en Base de Datos");
+        confirmarReserva.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/guardar.png"))); // NOI18N
+        confirmarReserva.setText("Guardar");
+        confirmarReserva.setToolTipText("Crear Reserva en Base de Datos");
 
+        bttnCrearRemito.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/enviar.png"))); // NOI18N
         bttnCrearRemito.setText("Crear Remito");
         bttnCrearRemito.setToolTipText("Crear un Remito con los datos de esta Reserva");
 
-        bttnEliminar.setText("Eliminar Reserva");
-        bttnEliminar.setToolTipText("Eliminar la Reserva creada en Base de Datos");
+        bttnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/borrar.png"))); // NOI18N
+        bttnEliminar.setText("Eliminar");
+        bttnEliminar.setToolTipText("Borrar Reserva creada en Base de Datos");
 
+        bttnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/cancelar.png"))); // NOI18N
         bttnCancelar.setText("Cancelar");
-        bttnCancelar.setToolTipText("Descartar la Reserva todavia no realizada");
+        bttnCancelar.setToolTipText("Descartar Reserva todavia no realizada");
 
         javax.swing.GroupLayout panelDatosYConfirmacionReservaLayout = new javax.swing.GroupLayout(panelDatosYConfirmacionReserva);
         panelDatosYConfirmacionReserva.setLayout(panelDatosYConfirmacionReservaLayout);
@@ -373,7 +377,7 @@ public class ReservaGui extends javax.swing.JInternalFrame {
             panelArticulosReservaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelArticulosReservaLayout.createSequentialGroup()
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 15, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelContenedorLayout = new javax.swing.GroupLayout(panelContenedor);

@@ -29,7 +29,7 @@ public class ABMRemito {
         if (Remito.first("numero = ?", r.get("numero")) == null) {
             Remito nuevo = Remito.create("numero", r.get("numero"), "fecha_de_remito",
                     r.get("fecha_de_remito"), "cliente_id", r.get("cliente_id"),
-                    "total", r.get("total"), "senia", r.get("senia"));
+                    "total", r.get("total"), "senia", r.get("senia"),"cerrado", r.get("cerrado"));
             nuevo.saveIt();
             ultimoId = nuevo.getInteger("id");
             BaseDatos.commitTransaction();
@@ -42,18 +42,17 @@ public class ABMRemito {
         }
     }
 
-    //Revisar el delete que no rompa toda la base (deleteOnCascade deberia ser)
-    //Da de baja un remito en la BD (lo elimina)
+    //Da de baja un remito en la BD (lo elimina), junto con todos sus articulos relacionados
     public boolean baja(Remito r) throws SQLException {
         BaseDatos.abrirBase();
         BaseDatos.openTransaction();
         Remito viejo = Remito.findById(r.getId());
         if (viejo != null) {
-            viejo.delete();
+            viejo.deleteCascadeShallow();
             BaseDatos.commitTransaction();
             BaseDatos.cerrarBase();
             return true;
-        } else {
+        }else{
             BaseDatos.commitTransaction();
             BaseDatos.cerrarBase();
             return false;
@@ -69,7 +68,7 @@ public class ABMRemito {
 
             viejo.set("numero", r.get("numero"), "fecha_de_remito",
                     r.get("fecha_de_remito"), "cliente_id", r.get("cliente_id"),
-                    "total", r.get("total"), "senia", r.get("senia")).saveIt();
+                    "total", r.get("total"), "senia", r.get("senia"),"cerrado",r.get("cerrado")).saveIt();
             BaseDatos.commitTransaction();
             BaseDatos.cerrarBase();
             return true;

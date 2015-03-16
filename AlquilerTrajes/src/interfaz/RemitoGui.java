@@ -115,6 +115,7 @@ public class RemitoGui extends javax.swing.JInternalFrame {
         this.busquedaClienteRemito.setText("");
         this.busquedaCodigoArticulo.setText("");
         this.jDateFechaRemito.setCalendar(null);
+        this.jCheckConfirmarPago.setSelected(false);
         ((DefaultTableModel)this.tablaClienteRemito.getModel()).setRowCount(0);
         ((DefaultTableModel)this.tablaArticulosRemito.getModel()).setRowCount(0);
         ((DefaultTableModel)this.tablaBusquedaArticulosRemito.getModel()).setRowCount(0);
@@ -288,11 +289,17 @@ public class RemitoGui extends javax.swing.JInternalFrame {
             }
         });
 
-        bttnGuardarRemito.setText("Guardar Remito");
+        bttnGuardarRemito.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/guardar.png"))); // NOI18N
+        bttnGuardarRemito.setText("Guardar");
+        bttnGuardarRemito.setToolTipText("Guardar Remito en Base de Datos");
 
-        bttnEliminarRemito.setText("Eliminar Remito");
+        bttnEliminarRemito.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/borrar.png"))); // NOI18N
+        bttnEliminarRemito.setText("Eliminar");
+        bttnEliminarRemito.setToolTipText("Borrar Remito de Base de Datos");
 
+        bttnCancelarRemito.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/cancelar.png"))); // NOI18N
         bttnCancelarRemito.setText("Cancelar");
+        bttnCancelarRemito.setToolTipText("Descartar Remito");
 
         jLabel5.setFont(new java.awt.Font("Century Schoolbook L", 3, 18)); // NOI18N
         jLabel5.setText("Seña  $");

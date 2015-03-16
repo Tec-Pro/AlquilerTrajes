@@ -64,10 +64,11 @@ public class ABMReserva {
             BaseDatos.commitTransaction();
             BaseDatos.cerrarBase();
             return true;
+        }else{
+            BaseDatos.commitTransaction();
+            BaseDatos.cerrarBase();
+            return false;
         }
-        BaseDatos.commitTransaction();
-        BaseDatos.cerrarBase();
-        return false;
 
     }
 

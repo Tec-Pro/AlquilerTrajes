@@ -89,7 +89,7 @@ public class AplicacionGui extends javax.swing.JFrame {
         panelBotones.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelBotones.setLayout(new java.awt.GridLayout(1, 0));
 
-        reservas.setText("RESERVAS");
+        reservas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/reservas_y_remitos.png"))); // NOI18N
         reservas.setToolTipText("Gestión de Reservas y Alquileres");
         panelBotones.add(reservas);
 

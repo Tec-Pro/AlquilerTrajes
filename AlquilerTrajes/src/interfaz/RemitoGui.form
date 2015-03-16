@@ -403,17 +403,29 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="bttnGuardarRemito">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Guardar Remito"/>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/interfaz/Icons/guardar.png"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Guardar"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Guardar Remito en Base de Datos"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JButton" name="bttnEliminarRemito">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Eliminar Remito"/>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/interfaz/Icons/borrar.png"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Eliminar"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Borrar Remito de Base de Datos"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JButton" name="bttnCancelarRemito">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/interfaz/Icons/cancelar.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Cancelar"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Descartar Remito"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel5">

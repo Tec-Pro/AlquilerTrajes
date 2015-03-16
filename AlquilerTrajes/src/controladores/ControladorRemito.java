@@ -280,6 +280,12 @@ public class ControladorRemito implements ActionListener {
         remitoGui.setjTextNumeroRemito(r.getString("numero"));
         remitoGui.setjTextSeñaRemito(r.getString("senia"));
         remitoGui.setjTextTotalRemito(r.getString("total"));
+        //actualizo el checkbox de pago confirmado (remito cerrado o abierto)
+        if (r.getBoolean("cerrado")){
+            remitoGui.getjCheckConfirmarPago().setSelected(true);
+        }else{
+            remitoGui.getjCheckConfirmarPago().setSelected(false);
+        }
         //Saco todos los articulos y ambos de la remito a cargar
         this.listaAmbos = r.getAll(Ambo.class);
         this.listaArticulos = r.getAll(Articulo.class);
@@ -354,6 +360,15 @@ public class ControladorRemito implements ActionListener {
                 remito.set("senia", señaRemito);
                 remito.set("numero", numeroRemito);
                 remito.set("cliente_id", idCliente);
+                /*Si el pago fue realizado en su totalidad (pago confirmado - checkbox seleccionado),
+                * cierro el remito asignandole (con un 1 en la base de datos)
+                */
+                System.out.println("Cerrado: "+remitoGui.getjCheckConfirmarPago().isSelected());
+                if(remitoGui.getjCheckConfirmarPago().isSelected()){
+                    remito.set("cerrado", true);
+                }else{//si el pago no fue realizado, el remito sigue abierto (con 0 en la base de datos)
+                    remito.set("cerrado", false);
+                }
                 try {
                     if (abmRemito.alta(remito)) {//si el remito pudo ser creado, procedo a guardar la demas informacion
                         remito.set("id", abmRemito.getUltimoId());
@@ -395,6 +410,12 @@ public class ControladorRemito implements ActionListener {
             señaRemito = Double.parseDouble(remitoGui.getjTextSeñaRemito().getText());
             totalRemito = Double.parseDouble(remitoGui.getjTextTotalRemito().getText());
             numeroRemito = Integer.parseInt(remitoGui.getjTextNumeroRemito().getText());
+            boolean remitoCerrado; //1 si el remito esta cerrado, 0 si esta abierto
+            if(remitoGui.getjCheckConfirmarPago().isSelected()){
+                remitoCerrado = true;
+            }else{
+                remitoCerrado = false;
+            }
             DefaultTableModel modeloArticulos = (DefaultTableModel) remitoGui.getTablaArticulosRemito().getModel();
             if (idCliente != null && fechaRemito != null && señaRemito != null && numeroRemito != null
                     && totalRemito != null && modeloArticulos.getRowCount() != 0) {
@@ -403,6 +424,7 @@ public class ControladorRemito implements ActionListener {
                 remito.set("senia", señaRemito);
                 remito.set("numero", numeroRemito);
                 remito.set("cliente_id", idCliente);
+                remito.set("cerrado", remitoCerrado);
                 try {
                     if (abmRemito.modificar(remito)) {
                         BaseDatos.abrirBase();
@@ -462,7 +484,23 @@ public class ControladorRemito implements ActionListener {
         if (ae.getSource().equals(remitoGui.getBttnCancelarRemito())) {
             this.remitoGui.hide();
         }
-        
+        /* Si presiona el boton Eliminar Remito y este todavia no fue creado
+        * en la base de datos, solamente cierro la ventana.
+        */
+        if (ae.getSource().equals(remitoGui.getBttnEliminarRemito()) && isNuevoRemito) {
+            this.remitoGui.hide();
+        }
+        /* Si presiona el boton Eliminar Remito y este habia sido creado
+        * previamente, el remito se borra de la base de datos.
+        */
+        if (ae.getSource().equals(remitoGui.getBttnEliminarRemito()) && !isNuevoRemito) {
+            try {
+                this.abmRemito.baja(this.remito);
+            } catch (SQLException ex) {
+                Logger.getLogger(ControladorReserva.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            this.remitoGui.hide();
+        }
     }
 
 }

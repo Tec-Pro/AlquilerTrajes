@@ -100,6 +100,7 @@ public class GestionReservasGui extends javax.swing.JInternalFrame {
 
         jTxtBuscarRemito.setToolTipText("Buscar por Fecha, Cliente o Número de Remito.");
 
+        bttnRemitoEncontrado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/ok.png"))); // NOI18N
         bttnRemitoEncontrado.setText("Aceptar");
 
         tablaBuscarRemito.setModel(new javax.swing.table.DefaultTableModel(
@@ -127,12 +128,12 @@ public class GestionReservasGui extends javax.swing.JInternalFrame {
             .addGroup(panelBusquedaRemitoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelBusquedaRemitoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 730, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(panelBusquedaRemitoLayout.createSequentialGroup()
-                        .addComponent(jTxtBuscarRemito, javax.swing.GroupLayout.PREFERRED_SIZE, 660, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTxtBuscarRemito)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bttnRemitoEncontrado))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 730, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(bttnRemitoEncontrado)))
+                .addGap(25, 25, 25))
         );
         panelBusquedaRemitoLayout.setVerticalGroup(
             panelBusquedaRemitoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -154,6 +155,7 @@ public class GestionReservasGui extends javax.swing.JInternalFrame {
             }
         });
 
+        bttnReservaEncontrada.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/ok.png"))); // NOI18N
         bttnReservaEncontrada.setText("Aceptar");
 
         tablaBuscarReserva.setModel(new javax.swing.table.DefaultTableModel(
@@ -180,13 +182,13 @@ public class GestionReservasGui extends javax.swing.JInternalFrame {
             panelBusquedaReservaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBusquedaReservaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelBusquedaReservaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelBusquedaReservaLayout.createSequentialGroup()
-                        .addComponent(jTxtBuscarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 666, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelBusquedaReservaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBusquedaReservaLayout.createSequentialGroup()
+                        .addComponent(jTxtBuscarReserva)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bttnReservaEncontrada))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 736, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         panelBusquedaReservaLayout.setVerticalGroup(
             panelBusquedaReservaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -201,9 +203,12 @@ public class GestionReservasGui extends javax.swing.JInternalFrame {
 
         panelNuevaReservaRemito.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        bttnNuevoRemito.setText("Nuevo Remito");
+        bttnNuevoRemito.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/remito.png"))); // NOI18N
+        bttnNuevoRemito.setText("Remito");
+        bttnNuevoRemito.setToolTipText("Nuevo Remito");
 
-        bttnNuevaReserva.setText("Nueva Reserva");
+        bttnNuevaReserva.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/reserva.png"))); // NOI18N
+        bttnNuevaReserva.setText("Reserva");
 
         javax.swing.GroupLayout panelNuevaReservaRemitoLayout = new javax.swing.GroupLayout(panelNuevaReservaRemito);
         panelNuevaReservaRemito.setLayout(panelNuevaReservaRemitoLayout);
