@@ -307,9 +307,6 @@ public class ControladorRemito implements ActionListener {
                 o[4] = (ar.getString("talle"));
                 o[5] = (ar.getDouble("precio_alquiler"));
                 modeloArticulos.addRow(o);
-                Double precio = ar.getDouble("precio_alquiler");
-                //si agrego un articulo a la tabla articulos del remito, sumo su precio del total
-                remitoGui.setjTextTotalRemito((Double.parseDouble(remitoGui.getjTextTotalRemito().getText())) + precio);
             }
         }
         if (listaAmbos != null) {
@@ -324,9 +321,6 @@ public class ControladorRemito implements ActionListener {
                 o[4] = (am.getString("talle"));
                 o[5] = (am.getDouble("precio_alquiler"));
                 modeloArticulos.addRow(o);
-                Double precio = am.getDouble("precio_alquiler");
-                //si agrego un ambo a la tabla articulos del remito, sumo su precio del total
-                remitoGui.setjTextTotalRemito((Double.parseDouble(remitoGui.getjTextTotalRemito().getText())) + precio);
             }
         }
         BaseDatos.commitTransaction();
@@ -343,6 +337,10 @@ public class ControladorRemito implements ActionListener {
             fechaRemito = remitoGui.getFechaRemito();
             señaRemito = Double.parseDouble(remitoGui.getjTextSeñaRemito().getText());
             totalRemito = Double.parseDouble(remitoGui.getjTextTotalRemito().getText());
+            
+            //REVISAR QUE EL NUMERO DE REMITO NO SE UN STRING, SINO NUMEROS
+            
+            
             numeroRemito = Integer.parseInt(remitoGui.getjTextNumeroRemito().getText());
             /*si es null, puede que no haya sido cargado de la tabla aun, asi que lo verifico
             * ( es posible que el remito haya sido creado a traves de una reserva, por lo tanto

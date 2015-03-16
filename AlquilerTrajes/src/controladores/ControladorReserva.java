@@ -282,7 +282,7 @@ public class ControladorReserva implements ActionListener {
         modeloArticulos.setRowCount(0);
         BaseDatos.abrirBase();
         BaseDatos.openTransaction();
-        Object[] o = new Object[5];
+        Object[] o = new Object[6];
         if (listaArticulos != null) {
             Articulo ar;
             Iterator<Articulo> itrArticulo = listaArticulos.iterator();
@@ -293,6 +293,7 @@ public class ControladorReserva implements ActionListener {
                 o[2] = (ar.getString("marca"));
                 o[3] = (ar.getString("tipo"));
                 o[4] = (ar.getString("talle"));
+                o[5] = (ar.getString("precio_alquiler"));
                 modeloArticulos.addRow(o);
 
             }
@@ -307,6 +308,7 @@ public class ControladorReserva implements ActionListener {
                 o[2] = (am.getString("marca"));
                 o[3] = ("ambo");
                 o[4] = (am.getString("talle"));
+                o[5] = (am.getString("precio_alquiler"));
                 modeloArticulos.addRow(o);
             }
         }
@@ -443,10 +445,20 @@ public class ControladorReserva implements ActionListener {
             DefaultTableModel modeloArticulos = (DefaultTableModel) reservaGui.getTablaArticulosReserva().getModel();
             if (idCliente != null && fechaEntregaReserva != null && fechaReserva != null && modeloArticulos.getRowCount() != 0) {
                 try {
+                //limpio la remitoGui
+                this.remitoGui.limpiarComponentes();
                 //creo el controlador de la RemitoGui
                 this.controladorRemito = new ControladorRemito(remitoGui, null);
                 //Cargo los articulos del Remito en la gui
                 this.remitoGui.getTablaArticulosRemito().setModel(modeloArticulos);
+                //Cargo el total del remito en la gui
+                int cantFilas = modeloArticulos.getRowCount();
+                Double totalRemito = 0.0;
+                for (int i = 0;i<cantFilas;i++){
+                    //saco el precio de cada articulo en la tabla de Articulos Reserva, que se encuentra en la fila "i" columna "5"
+                    totalRemito += Double.parseDouble((String)reservaGui.getTablaArticulosReserva().getValueAt(i, 5));
+                }
+                this.remitoGui.setjTextTotalRemito(totalRemito);
                 //Cargo el cliente en la gui
                 BaseDatos.abrirBase();
                 BaseDatos.openTransaction();
