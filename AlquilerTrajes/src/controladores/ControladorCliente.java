@@ -192,13 +192,9 @@ public class ControladorCliente implements ActionListener {
                         JOptionPane.showMessageDialog(clienteGui, "¡Cliente modificado exitosamente!");
                         clienteGui.getNuevo().setEnabled(true);
                         clienteGui.getGuardar().setEnabled(false);
+                        realizarBusqueda();
                     } else {
                         JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error,revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
-                    }
-                    try {
-                        realizarBusqueda();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ControladorCliente.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             } catch (SQLException ex) {

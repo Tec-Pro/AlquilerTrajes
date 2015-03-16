@@ -90,7 +90,8 @@ public class ControladorVerBajas implements ActionListener {
     private void realizarBusquedaPorFecha() throws SQLException {
         if (verBajasGui.getBuscarPorFecha().isSelected()) {
             BaseDatos.abrirBase();
-            Base.openTransaction();            
+            Base.openTransaction();
+            System.out.println(verBajasGui.getFechaBusqueda().getDate().toString());
             listArticulos = Baja.where("fecha = ?", verBajasGui.getFechaBusqueda().getDate());
             Base.openTransaction();
             BaseDatos.cerrarBase();

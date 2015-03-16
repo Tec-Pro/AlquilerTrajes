@@ -10,6 +10,7 @@ import java.util.Iterator;
 import modelos.Ambo;
 import modelos.Articulo;
 import modelos.ArticulosAmbos;
+import org.javalite.activejdbc.ModelListener;
 
 /**
  *
@@ -24,8 +25,7 @@ public class ABMAmbo {
         boolean ret = (Ambo.first("id = ?", p.get("id")) != null);
         return ret;
 
-    }  
-    
+    }
 
     public boolean findNombre(String nombre) throws SQLException {
         boolean ret = (Ambo.first("nombre = ?", nombre) != null);
@@ -60,9 +60,14 @@ public class ABMAmbo {
         boolean ret = false;
         BaseDatos.abrirBase();
         BaseDatos.openTransaction();
-        if (findArticulo(art)) {
-            ret = art.delete();
-            art.defrost();
+        Ambo viejo = Ambo.findFirst("id = ?", art.get("id"));
+        if (viejo != null) {
+            Iterator it2 = ArticulosAmbos.find("ambo_id = ?", viejo.getString("id")).iterator();
+            while (it2.hasNext()) {
+                ArticulosAmbos artAmb = (ArticulosAmbos) it2.next();
+                artAmb.delete();
+            }
+            ret = viejo.delete();
         }
         BaseDatos.commitTransaction();
         BaseDatos.cerrarBase();
@@ -94,22 +99,32 @@ public class ABMAmbo {
         BaseDatos.abrirBase();
         BaseDatos.openTransaction();
         int stock = Articulo.findById(id).getInteger("stock");
-        Iterator it = ArticulosAmbos.find("articulo_id = ?",  id ).iterator();
-        while (it.hasNext()) {
-            ArticulosAmbos artAmb = (ArticulosAmbos) it.next();
-            Iterator it2 = ArticulosAmbos.find("id = ?", artAmb.get("ambo_id")).iterator();
-            while (it2.hasNext()){
-                ArticulosAmbos artAmb2 = (ArticulosAmbos) it2.next();
-                if (id != artAmb2.getInteger("articulo_id")) {
-                    Articulo a = Articulo.findById(artAmb2.get("articulo_id"));
-                    if (stock > a.getInteger("stock")){
-                        stock = a.getInteger("stock");
+        Iterator it = ArticulosAmbos.find("articulo_id = ?", id).iterator();
+        if (it.hasNext()) {
+            while (it.hasNext()) {
+                ArticulosAmbos artAmb = (ArticulosAmbos) it.next();
+                Iterator it2 = ArticulosAmbos.find("id = ?", artAmb.get("ambo_id")).iterator();
+                while (it2.hasNext()) {
+                    ArticulosAmbos artAmb2 = (ArticulosAmbos) it2.next();
+                    if (id != artAmb2.getInteger("articulo_id")) {
+                        Articulo a = Articulo.findById(artAmb2.get("articulo_id"));
+                        if (a != null) {
+                            if (stock > a.getInteger("stock")) {
+                                stock = a.getInteger("stock");
+                            }
+                        }
                     }
                 }
+                Ambo a = Ambo.findById(artAmb.get("ambo_id"));
+                if (a != null) {
+                    a.set("stock", stock);
+                    ret = a.saveIt();
+                } else {
+                    ret = true;
+                }
             }
-            Ambo a = Ambo.findById(artAmb.get("ambo_id"));
-            a.set("stock",stock);
-            ret = a.saveIt();            
+        } else {
+            ret = true;
         }
         BaseDatos.commitTransaction();
         BaseDatos.cerrarBase();

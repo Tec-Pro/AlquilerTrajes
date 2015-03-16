@@ -60,12 +60,10 @@ public class ABMCliente {
         BaseDatos.abrirBase();
         BaseDatos.openTransaction();
         Cliente viejo = Cliente.findById(c.getId());
-        if (viejo != null) {
-            Base.openTransaction();
-            ret = viejo.set("nombre", c.get("nombre"), "telefono",
-                    c.get("telefono"), "celular", c.get("celular"), "direccion", c.get("direccion"), "dni", c.get("dni")).saveIt();
-
-        }
+        if (viejo != null) {            
+            viejo.set("nombre", c.get("nombre"), "telefono", c.get("telefono"), "celular", c.get("celular"), "direccion", c.get("direccion"), "dni", c.get("dni"));
+            ret =  viejo.saveIt();
+        }       
         BaseDatos.commitTransaction();
         BaseDatos.cerrarBase();
         return ret;

@@ -47,7 +47,12 @@ public class RegistroAmboGui extends javax.swing.JInternalFrame {
      }
 
      
-    
+    public void clearAll(){
+        tablaFacturaDefault.setRowCount(0);
+        busquedaCodigoArticulo.setText("");
+        totalFactura.setText("");
+        nombre.setText("");
+    }
     /**
      *
      * Retorno la tabla Articulos con tipo TableModelDefault para pdoer realizar

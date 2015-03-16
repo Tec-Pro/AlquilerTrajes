@@ -72,7 +72,7 @@ public class AcercaDe extends javax.swing.JDialog {
         jLabel7.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
         jLabel7.setText("Contáctanos!");
 
-        jLabel2.setText("Copyright ©2013-2014 Tec-Pro");
+        jLabel2.setText("Copyright ©2013-2015 Tec-Pro");
 
         jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 

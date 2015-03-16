@@ -6,7 +6,11 @@ package abm;
 
 import BD.BaseDatos;
 import java.sql.SQLException;
+import java.util.Iterator;
+import modelos.Ambo;
 import modelos.Articulo;
+import modelos.ArticulosAmbos;
+import org.javalite.activejdbc.Model;
 
 /**
  *
@@ -46,8 +50,18 @@ public class ABMArticulo {
         BaseDatos.abrirBase();
         BaseDatos.openTransaction();
         if (findArticulo(art)) {
-            ret = art.delete();
-            art.defrost();
+            Iterator it2 = ArticulosAmbos.find("articulo_id = ?", art.getString("id")).iterator();
+            while (it2.hasNext()) {
+                ArticulosAmbos artAmb = (ArticulosAmbos) it2.next();
+                Iterator it = ArticulosAmbos.find("ambo_id = ?", artAmb.get("ambo_id")).iterator();
+                while (it.hasNext()) {
+                    ArticulosAmbos artAmb2 = (ArticulosAmbos) it.next();
+                    artAmb2.delete();
+                }
+                Ambo a = Ambo.findById(artAmb.get("ambo_id"));
+                a.delete();
+            }
+              ret = art.delete();
         }
         BaseDatos.commitTransaction();
         BaseDatos.cerrarBase();
@@ -88,7 +102,7 @@ public class ABMArticulo {
                 viejo.set("stock", 0);
             }
             ret = viejo.saveIt();
-        }        
+        }
         BaseDatos.commitTransaction();
         BaseDatos.cerrarBase();
         return ret;

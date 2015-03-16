@@ -72,7 +72,7 @@ public class ControladorRegistroAmbo implements ActionListener {
         });
     }
 
-    private void actualizarLista() throws SQLException {
+    public void actualizarLista() throws SQLException {
         BaseDatos.abrirBase();
         BaseDatos.openTransaction();
         tablaArtDefault.setRowCount(0);
@@ -176,7 +176,7 @@ public class ControladorRegistroAmbo implements ActionListener {
                                 marca += tablaAmbo.getValueAt(i, 2) + "-";
                                 talle += tablaAmbo.getValueAt(i, 4) + "-";
                             }
-                            if (stock < Articulo.findById(tablaAmbo.getValueAt(i, 0)).getInteger("stock")) {
+                            if (stock > Articulo.findById(tablaAmbo.getValueAt(i, 0)).getInteger("stock")) {
                                 stock = Articulo.findById(tablaAmbo.getValueAt(i, 0)).getInteger("stock");
                             }
                         }
@@ -199,6 +199,7 @@ public class ControladorRegistroAmbo implements ActionListener {
                                 BaseDatos.commitTransaction();
                                 BaseDatos.cerrarBase();
                             }
+                            registroAmboGui.clearAll();
                             JOptionPane.showMessageDialog(registroAmboGui, "¡Ambo guardado exitosamente!");
                         } else {
                             JOptionPane.showMessageDialog(registroAmboGui, "Error, no se guardó el ambo", "Error!", JOptionPane.ERROR_MESSAGE);

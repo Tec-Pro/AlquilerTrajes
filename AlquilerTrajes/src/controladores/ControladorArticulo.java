@@ -306,20 +306,21 @@ public class ControladorArticulo implements ActionListener, FocusListener {
                                 articuloGui.getNuevo().setEnabled(true);
                                 articuloGui.getGuardar().setEnabled(false);
                             } else {
+                                System.out.println("EL EROR ESTA EN AMBO VIEJITA");
                                 JOptionPane.showMessageDialog(articuloGui, "Ocurrió un error,revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
                             }
                         } else {
                             JOptionPane.showMessageDialog(articuloGui, "Ocurrió un error,revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
                         }
-                        try {
-                            realizarBusqueda();
-                        } catch (SQLException ex) {
-                            Logger.getLogger(ControladorArticulo.class.getName()).log(Level.SEVERE, null, ex);
-                        }
                     }
                 } catch (SQLException ex) {
                     Logger.getLogger(ControladorArticulo.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }
+            try {
+                realizarBusqueda();
+            } catch (SQLException ex) {
+                Logger.getLogger(ControladorArticulo.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         if (e.getSource() == articuloGui.getRegistrarAmbo()) {
