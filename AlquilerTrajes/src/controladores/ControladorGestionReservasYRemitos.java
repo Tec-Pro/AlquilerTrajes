@@ -50,6 +50,8 @@ public class ControladorGestionReservasYRemitos implements ActionListener {
         this.gestionReservasGui = gestionReservasGui;
         this.reservaGui = resGui;
         this.remitoGui = remGui;
+        this.controladorRemito = new ControladorRemito(remitoGui);
+        this.controladorReserva = new ControladorReserva(reservaGui, remitoGui);
         this.reserva = null;
         this.remito = null;
         this.gestionReservasGui.setActionListener(this);
@@ -243,7 +245,7 @@ public class ControladorGestionReservasYRemitos implements ActionListener {
         //Si presiono el boton de crear una Nueva Reserva
         if (ae.getSource() == gestionReservasGui.getBttnNuevaReserva()) {
             try {
-                this.controladorReserva = new ControladorReserva(reservaGui, remitoGui, null);
+                this.controladorReserva.setReserva(null);
                 reservaGui.limpiarComponentes();
                 reservaGui.setVisible(true);
                 reservaGui.toFront();
@@ -256,7 +258,7 @@ public class ControladorGestionReservasYRemitos implements ActionListener {
         //Si presiono el boton de crear un Nuevo Remito
         if (ae.getSource() == gestionReservasGui.getBttnNuevoRemito()) {
             try {    
-                this.controladorRemito = new ControladorRemito(remitoGui, null);
+                this.controladorRemito.setRemito(null);
                 remitoGui.limpiarComponentes();
                 remitoGui.setVisible(true);
                 remitoGui.toFront();
@@ -270,7 +272,7 @@ public class ControladorGestionReservasYRemitos implements ActionListener {
         if (ae.getSource() == gestionReservasGui.getBttnReservaEncontrada() && this.reserva != null) {
             try {
                 reservaGui.limpiarComponentes();
-                this.controladorReserva = new ControladorReserva(reservaGui,remitoGui, this.reserva);
+                this.controladorReserva.setReserva(this.reserva);
                 reservaGui.setVisible(true);
                 reservaGui.toFront();
                 reservaGui.setMaximum(true);
@@ -282,7 +284,7 @@ public class ControladorGestionReservasYRemitos implements ActionListener {
         if (ae.getSource() == gestionReservasGui.getBttnRemitoEncontrado() && this.remito != null) {
             try {
                 remitoGui.limpiarComponentes();
-                this.controladorRemito = new ControladorRemito(remitoGui, this.remito);
+                this.controladorRemito.setRemito(this.remito);
                 remitoGui.setVisible(true);
                 remitoGui.toFront();
                 remitoGui.setMaximum(true);

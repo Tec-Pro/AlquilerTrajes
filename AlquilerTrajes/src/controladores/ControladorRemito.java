@@ -37,7 +37,7 @@ public class ControladorRemito implements ActionListener {
     private final RemitoGui remitoGui; // gui de una remito
     private Remito remito; // modelo de remito
     private final Busqueda busqueda; //busquedas de clientes
-    private final boolean isNuevoRemito; //si el remito es nuevo, o es uno que se modificara
+    private boolean isNuevoRemito; //si el remito es nuevo, o es uno que se modificara
     private String fechaRemito; //fecha en que se realiza el remito
     private Integer idCliente; //ID del cliente que realizo el remito
     private final BusquedaArticulo busquedaArticulo;//busqueda de articulos
@@ -47,31 +47,16 @@ public class ControladorRemito implements ActionListener {
     private List<Ambo> listaAmbos; //lista de Ambos de un Remito a modificar
     private List<Articulo> listaArticulos; //lista de Articulos de un remito a modificar
 
-    ControladorRemito(RemitoGui remitoGui, Remito r) throws SQLException {
+    ControladorRemito(RemitoGui remitoGui) throws SQLException {
         this.remitoGui = remitoGui;
         this.busqueda = new Busqueda();
         this.busquedaArticulo = new BusquedaArticulo();
         this.remitoGui.setActionListener(this);
         this.listaAmbos = null;
         this.listaArticulos = null;
-        // si r es distinto de null, tenemos un remito a modificar
-        if (r != null) {
-            this.isNuevoRemito = false; //el remito no es nuevo
-            this.remito = r; // le asigno al remito, que es pasado por parametro para modificar
-            this.abmRemito = new ABMRemito();
-            this.idCliente = (Integer) remito.get("cliente_id");
-            cargarRemito(this.remito); //cargo la remito en la gui
-            // sino creamos una nueva remito
-        } else {
-            this.isNuevoRemito = true; // el remito es nuevo
-            this.fechaRemito = null;
-            this.idCliente = null;
-            this.señaRemito = null;
-            this.totalRemito = null;
-            this.numeroRemito = null;
-            this.remito = new Remito(); // creo un modelo nuevo de remito
-            this.abmRemito = new ABMRemito();
-        }
+        this.abmRemito = new ABMRemito();
+        //por default asumo que se esta creando un nuevo remito
+        this.setRemito(null);
         //escucho en el JText lo que se va ingresando para buscar un cliente
         this.remitoGui.getBusquedaClienteRemito().addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -134,6 +119,26 @@ public class ControladorRemito implements ActionListener {
         });
     }
 
+    //Seteo un Remito en la gui
+    public void setRemito(Remito r) throws SQLException{
+        // si r es distinto de null, tenemos un remito a modificar
+        if (r != null) {
+            this.isNuevoRemito = false; //el remito no es nuevo
+            this.remito = r; // le asigno al remito, que es pasado por parametro para modificar
+            this.idCliente = (Integer) remito.get("cliente_id");
+            cargarRemito(this.remito); //cargo la remito en la gui
+            // sino creamos una nueva remito
+        } else {
+            this.isNuevoRemito = true; // el remito es nuevo
+            this.fechaRemito = null;
+            this.idCliente = null;
+            this.señaRemito = null;
+            this.totalRemito = null;
+            this.numeroRemito = null;
+            this.remito = new Remito();
+        }
+    }
+    
     /*Saca el id del cliente seleccionado en la tabla de busqueda de clientes
      * y setea el JText de busqueda con el cliente seleccionado
      */
@@ -361,7 +366,6 @@ public class ControladorRemito implements ActionListener {
                 /*Si el pago fue realizado en su totalidad (pago confirmado - checkbox seleccionado),
                 * cierro el remito asignandole (con un 1 en la base de datos)
                 */
-                System.out.println("Cerrado: "+remitoGui.getjCheckConfirmarPago().isSelected());
                 if(remitoGui.getjCheckConfirmarPago().isSelected()){
                     remito.set("cerrado", true);
                 }else{//si el pago no fue realizado, el remito sigue abierto (con 0 en la base de datos)

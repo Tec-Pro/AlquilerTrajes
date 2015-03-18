@@ -40,17 +40,16 @@ public class ControladorReserva implements ActionListener {
     private final ReservaGui reservaGui; // gui de una reserva
     private Reserva reserva; // modelo de reserva
     private final Busqueda busqueda; //busquedas de clientes
-    private final boolean isNuevaReserva; //si la reserva es nueva, o es una que se modificara
+    private boolean isNuevaReserva; //si la reserva es nueva, o es una que se modificara
     private String fechaReserva; //fecha en que se realiza la reserva
     private String fechaEntregaReserva; //fecha en que se debe entregar la reserva
     private Integer idCliente; //ID del cliente que realizo la reserva
     private final BusquedaArticulo busquedaArticulo;//busqueda de articulos
     private List<Ambo> listaAmbos; //lista de Ambos de una Reserva a modificar
     private List<Articulo> listaArticulos; //lista de Articulos de una Reserva a modificar
-    private RemitoGui remitoGui;
-    private ControladorRemito controladorRemito;
+    private final RemitoGui remitoGui;
 
-    public ControladorReserva(ReservaGui reservaGui, RemitoGui remGui, Reserva r) throws SQLException {
+    public ControladorReserva(ReservaGui reservaGui, RemitoGui remGui) throws SQLException {
         this.reservaGui = reservaGui;
         this.remitoGui = remGui;
         this.busqueda = new Busqueda();
@@ -58,22 +57,9 @@ public class ControladorReserva implements ActionListener {
         this.reservaGui.setActionListener(this);
         this.listaAmbos = null;
         this.listaArticulos = null;
-        // si r es distinto de null, tenemos una reserva a modificar
-        if (r != null) {
-            this.isNuevaReserva = false; //la reserva no es nueva
-            this.reserva = r; // le asigno a la reserva, que pasada por parametro para modificar
-            this.abmReserva = new ABMReserva();
-            this.idCliente = (Integer) reserva.get("cliente_id");
-            cargarReserva(this.reserva); //cargo la reserva en la gui
-            // sino creamos una nueva reserva
-        } else {
-            this.isNuevaReserva = true; // la reserva es nueva
-            this.fechaEntregaReserva = null;
-            this.fechaReserva = null;
-            this.idCliente = null;
-            this.reserva = new Reserva(); // creo un modelo nuevo de reserva
-            this.abmReserva = new ABMReserva();
-        }
+        this.abmReserva = new ABMReserva();
+        //por default asumo que se esta creando una nueva reserva
+        this.setReserva(null);
         //escucho en el JText lo que se va ingresando para buscar un cliente
         this.reservaGui.getBusquedaCliente().addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -136,6 +122,25 @@ public class ControladorReserva implements ActionListener {
         });
     }
 
+    
+    //Seteo una reserva en la gui
+    public void setReserva(Reserva r) throws SQLException{
+        // si r es distinto de null, tenemos una reserva a modificar
+        if (r != null) {
+            this.isNuevaReserva = false; //la reserva no es nueva
+            this.reserva = r; // le asigno a la reserva, que pasada por parametro para modificar
+            this.idCliente = (Integer) reserva.get("cliente_id");
+            cargarReserva(this.reserva); //cargo la reserva en la gui
+        }else {// sino creamos una nueva reserva
+            this.isNuevaReserva = true; // la reserva es nueva
+            this.fechaEntregaReserva = null;
+            this.fechaReserva = null;
+            this.idCliente = null;
+            this.reserva = new Reserva(); // creo un modelo nuevo de reserva
+            
+        }
+    }
+    
     /*Saca el id del cliente seleccionado en la tabla de busqueda de clientes
      * y setea el JText de busqueda con el cliente seleccionado
      */
@@ -447,8 +452,6 @@ public class ControladorReserva implements ActionListener {
                 try {
                 //limpio la remitoGui
                 this.remitoGui.limpiarComponentes();
-                //creo el controlador de la RemitoGui
-                this.controladorRemito = new ControladorRemito(remitoGui, null);
                 //Cargo los articulos del Remito en la gui
                 this.remitoGui.getTablaArticulosRemito().setModel(modeloArticulos);
                 //Cargo el total del remito en la gui
