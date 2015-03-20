@@ -60,9 +60,9 @@
                       <Component id="busqueda" min="-2" pref="407" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="buscarPorFecha" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="fechaBusqueda" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="fechaBusqueda" min="-2" pref="140" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jScrollPane1" pref="843" max="32767" attributes="0"/>
               </Group>
@@ -159,11 +159,14 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="com.toedter.calendar.JDateChooser" name="fechaBusqueda">
-            </Component>
             <Component class="javax.swing.JCheckBox" name="buscarPorFecha">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Buscar por fecha"/>
+              </Properties>
+            </Component>
+            <Component class="com.toedter.calendar.JDateChooser" name="fechaBusqueda">
+              <Properties>
+                <Property name="dateFormatString" type="java.lang.String" value="yyyy-MM-dd"/>
               </Properties>
             </Component>
           </SubComponents>

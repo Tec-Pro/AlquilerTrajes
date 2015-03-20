@@ -5,6 +5,8 @@
 package interfaz;
 
 import com.toedter.calendar.JDateChooser;
+import controladores.ControladorGanacia;
+import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.util.Calendar;
 import javax.swing.JLabel;
@@ -20,7 +22,7 @@ public class GananciaGui extends javax.swing.JInternalFrame {
      */
     public GananciaGui() {
         initComponents();
-         Calendar miCalendario = Calendar.getInstance();
+        Calendar miCalendario = Calendar.getInstance();
         java.util.Date eldia = miCalendario.getTime();
         int diaHoy = miCalendario.get(Calendar.DAY_OF_MONTH);
         int mes = miCalendario.get(Calendar.MONTH);
@@ -30,7 +32,10 @@ public class GananciaGui extends javax.swing.JInternalFrame {
         fechaHasta.setDateFormatString("yyyy-MM-dd");
         fechaDesde.setDateFormatString("yyyy-MM-dd");
     }
-    
+
+    public void setActionListener(ActionListener lis) {
+    }
+
     public JLabel getGanancia() {
         return ganancia;
     }
@@ -55,8 +60,8 @@ public class GananciaGui extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         ganancia = new javax.swing.JLabel();
-        fechaDesde = new com.toedter.calendar.JDateChooser();
         jLabel3 = new javax.swing.JLabel();
+        fechaDesde = new com.toedter.calendar.JDateChooser();
         fechaHasta = new com.toedter.calendar.JDateChooser();
 
         setClosable(true);
@@ -73,6 +78,10 @@ public class GananciaGui extends javax.swing.JInternalFrame {
 
         jLabel3.setText("Hasta");
 
+        fechaDesde.setDateFormatString("yyyy-MM-dd");
+
+        fechaHasta.setDateFormatString("yyyy-MM-dd");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -88,24 +97,24 @@ public class GananciaGui extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(fechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(30, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(fechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(fechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                .addGap(39, 39, 39)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(fechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(fechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(fechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(ganancia))

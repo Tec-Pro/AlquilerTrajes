@@ -75,7 +75,9 @@ public class ControladorVerBajas implements ActionListener {
     }
 
     private void calenPropertyChange(PropertyChangeEvent e) throws SQLException {
-        realizarBusquedaPorFecha();
+        final Calendar c = (Calendar) e.getNewValue();
+        Date fecha = c.getTime();
+        realizarBusquedaPorFecha(fecha);
     }
 
     private void realizarBusqueda() throws SQLException {
@@ -87,12 +89,11 @@ public class ControladorVerBajas implements ActionListener {
         actualizarLista();
     }
 
-    private void realizarBusquedaPorFecha() throws SQLException {
+    private void realizarBusquedaPorFecha(Date fecha) throws SQLException {
         if (verBajasGui.getBuscarPorFecha().isSelected()) {
             BaseDatos.abrirBase();
-            Base.openTransaction();
-            System.out.println(verBajasGui.getFechaBusqueda().getDate().toString());
-            listArticulos = Baja.where("fecha = ?", verBajasGui.getFechaBusqueda().getDate());
+            Base.openTransaction();           
+            listArticulos = Baja.where("fecha = ?", fecha);
             Base.openTransaction();
             BaseDatos.cerrarBase();
             actualizarLista();
