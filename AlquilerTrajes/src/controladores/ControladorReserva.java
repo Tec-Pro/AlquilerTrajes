@@ -484,6 +484,7 @@ public class ControladorReserva implements ActionListener {
                 //Seteo RemitoGui visible y en pantalla completa dentro de su contenedor
                 this.remitoGui.setVisible(true);
                 this.remitoGui.setMaximum(true);
+                this.reservaGui.hide();
                 } catch (SQLException | PropertyVetoException ex) {
                     Logger.getLogger(ControladorReserva.class.getName()).log(Level.SEVERE, null, ex);
                 }

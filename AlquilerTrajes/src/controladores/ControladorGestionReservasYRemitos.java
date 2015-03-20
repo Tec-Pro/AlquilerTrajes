@@ -250,6 +250,7 @@ public class ControladorGestionReservasYRemitos implements ActionListener {
                 reservaGui.setVisible(true);
                 reservaGui.toFront();
                 reservaGui.setMaximum(true);
+                this.gestionReservasGui.limpiarComponentes();
             } catch (SQLException | PropertyVetoException ex) {
                 Logger.getLogger(ControladorGestionReservasYRemitos.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -263,6 +264,7 @@ public class ControladorGestionReservasYRemitos implements ActionListener {
                 remitoGui.setVisible(true);
                 remitoGui.toFront();
                 remitoGui.setMaximum(true);
+                this.gestionReservasGui.limpiarComponentes();
             } catch (PropertyVetoException | SQLException ex) {
                 Logger.getLogger(ControladorGestionReservasYRemitos.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -276,6 +278,7 @@ public class ControladorGestionReservasYRemitos implements ActionListener {
                 reservaGui.setVisible(true);
                 reservaGui.toFront();
                 reservaGui.setMaximum(true);
+                this.gestionReservasGui.limpiarComponentes();
             } catch (SQLException | PropertyVetoException ex) {
                 Logger.getLogger(ControladorGestionReservasYRemitos.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -288,6 +291,7 @@ public class ControladorGestionReservasYRemitos implements ActionListener {
                 remitoGui.setVisible(true);
                 remitoGui.toFront();
                 remitoGui.setMaximum(true);
+                this.gestionReservasGui.limpiarComponentes();
             } catch (SQLException | PropertyVetoException ex) {
                 Logger.getLogger(ControladorGestionReservasYRemitos.class.getName()).log(Level.SEVERE, null, ex);
             }

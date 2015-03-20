@@ -340,13 +340,14 @@ public class ControladorRemito implements ActionListener {
          */
         if (ae.getSource().equals(remitoGui.getBttnGuardarRemito()) && isNuevoRemito) {
             fechaRemito = remitoGui.getFechaRemito();
-            señaRemito = Double.parseDouble(remitoGui.getjTextSeñaRemito().getText());
-            totalRemito = Double.parseDouble(remitoGui.getjTextTotalRemito().getText());
             
-            //REVISAR QUE EL NUMERO DE REMITO NO SE UN STRING, SINO NUMEROS
-            
-            
-            numeroRemito = Integer.parseInt(remitoGui.getjTextNumeroRemito().getText());
+            if (!("").equals(remitoGui.getjTextNumeroRemito().getText()) &&
+                    !("").equals(remitoGui.getjTextSeñaRemito().getText()) &&
+                            !("").equals(remitoGui.getjTextTotalRemito().getText()) ){
+                numeroRemito = Integer.parseInt(remitoGui.getjTextNumeroRemito().getText());
+                señaRemito = Double.parseDouble(remitoGui.getjTextSeñaRemito().getText());
+                totalRemito = Double.parseDouble(remitoGui.getjTextTotalRemito().getText());
+            }
             /*si es null, puede que no haya sido cargado de la tabla aun, asi que lo verifico
             * ( es posible que el remito haya sido creado a traves de una reserva, por lo tanto
             * el idCliente no fue obtenido de remitoGui aún).
