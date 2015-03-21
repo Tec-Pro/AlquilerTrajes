@@ -86,7 +86,7 @@ public class ControladorGanacia implements ActionListener{
         BaseDatos.abrirBase();
         Base.openTransaction();
         listBajas = Baja.where("fecha between ? AND ? ", fechaDesde, fechaHasta);
-        listRemitos = Remito.where("fecha_de_remito between ? AND ? ", fechaDesde, fechaHasta);
+        listRemitos = Remito.where("fecha_de_remito between ? AND ? and cerrado = ?", fechaDesde, fechaHasta, 1);
         Base.openTransaction();
         BaseDatos.cerrarBase();
         actualizarPrecio();

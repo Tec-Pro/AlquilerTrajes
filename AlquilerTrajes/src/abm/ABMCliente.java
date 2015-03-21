@@ -15,7 +15,7 @@ import org.javalite.activejdbc.Base;
  */
 public class ABMCliente {
 
-    public Cliente getCliente(Cliente c) throws SQLException { 
+    public Cliente getCliente(Cliente c) throws SQLException {
         Cliente c2 = Cliente.first("nombre = ?", c.get("nombre"));
         return c2;
     }
@@ -30,12 +30,10 @@ public class ABMCliente {
         boolean ret = false;
         BaseDatos.abrirBase();
         BaseDatos.openTransaction();
-        if (!findCliente(c)) {
-            Cliente nuevo = Cliente.create("nombre", c.get("nombre"), "telefono",
-                    c.get("telefono"), "celular", c.get("celular"),
-                    "direccion", c.get("direccion"), "dni", c.get("dni"));
-            ret = nuevo.saveIt();
-        }
+        Cliente nuevo = Cliente.create("nombre", c.get("nombre"), "telefono",
+                c.get("telefono"), "celular", c.get("celular"),
+                "direccion", c.get("direccion"), "dni", c.get("dni"));
+        ret = nuevo.saveIt();
         BaseDatos.commitTransaction();
         BaseDatos.cerrarBase();
         return ret;
@@ -60,10 +58,10 @@ public class ABMCliente {
         BaseDatos.abrirBase();
         BaseDatos.openTransaction();
         Cliente viejo = Cliente.findById(c.getId());
-        if (viejo != null) {            
+        if (viejo != null) {
             viejo.set("nombre", c.get("nombre"), "telefono", c.get("telefono"), "celular", c.get("celular"), "direccion", c.get("direccion"), "dni", c.get("dni"));
-            ret =  viejo.saveIt();
-        }       
+            ret = viejo.saveIt();
+        }
         BaseDatos.commitTransaction();
         BaseDatos.cerrarBase();
         return ret;
