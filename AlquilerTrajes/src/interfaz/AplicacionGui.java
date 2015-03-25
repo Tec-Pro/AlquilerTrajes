@@ -35,6 +35,10 @@ public class AplicacionGui extends javax.swing.JFrame {
         return reservas;
     }
 
+    public JButton getDisponibilidadArticulos() {
+        return disponibilidadArticulos;
+    }
+    
     public void setActionListener(ActionListener lis) {
         this.getArticulos().addActionListener(lis);
         this.clientes.addActionListener(lis);
@@ -42,6 +46,7 @@ public class AplicacionGui extends javax.swing.JFrame {
         this.baja.addActionListener(lis);
         this.verBajas.addActionListener(lis);
         this.ganancia.addActionListener(lis);
+        this.disponibilidadArticulos.addActionListener(lis);
     }
 
     public JButton getBaja() {
@@ -71,6 +76,7 @@ public class AplicacionGui extends javax.swing.JFrame {
         contenedor = new javax.swing.JDesktopPane();
         panelBotones = new javax.swing.JPanel();
         reservas = new javax.swing.JButton();
+        disponibilidadArticulos = new javax.swing.JButton();
         articulos = new javax.swing.JButton();
         clientes = new javax.swing.JButton();
         baja = new javax.swing.JButton();
@@ -92,6 +98,10 @@ public class AplicacionGui extends javax.swing.JFrame {
         reservas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/reservas_y_remitos.png"))); // NOI18N
         reservas.setToolTipText("Gestión de Reservas y Alquileres");
         panelBotones.add(reservas);
+
+        disponibilidadArticulos.setText("Disponibilidad Articulos");
+        disponibilidadArticulos.setToolTipText("Chequeo de Disponibilidad de Artículos");
+        panelBotones.add(disponibilidadArticulos);
 
         articulos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/productos.png"))); // NOI18N
         articulos.setToolTipText("Gestión de artículos");
@@ -145,7 +155,7 @@ public class AplicacionGui extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelBotones, javax.swing.GroupLayout.DEFAULT_SIZE, 841, Short.MAX_VALUE)
+            .addComponent(panelBotones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(contenedor, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
@@ -178,6 +188,7 @@ public class AplicacionGui extends javax.swing.JFrame {
     private javax.swing.JButton baja;
     private javax.swing.JButton clientes;
     private javax.swing.JDesktopPane contenedor;
+    private javax.swing.JButton disponibilidadArticulos;
     private javax.swing.JButton ganancia;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu3;
