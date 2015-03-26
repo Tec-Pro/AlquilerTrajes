@@ -65,9 +65,9 @@ public class BusquedaArticulo {
     }
     
     /*
-    *Busqueda de clientes
-    *Retorna una lista con los clientes que contengan en alguna parte de su dni
-    *o de su id, el numero pasado por parametro
+    *Busqueda de ambos
+    *Retorna una lista con los ambos que contengan en alguna parte de su modelo,
+    *marca,talle o tipo, la consulta pasada por parametro.
     */
     public List<Ambo> buscarAmbos(Object consulta) throws SQLException {
         BaseDatos.abrirBase();

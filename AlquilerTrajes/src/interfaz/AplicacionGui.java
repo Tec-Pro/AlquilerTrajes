@@ -99,7 +99,7 @@ public class AplicacionGui extends javax.swing.JFrame {
         reservas.setToolTipText("Gestión de Reservas y Alquileres");
         panelBotones.add(reservas);
 
-        disponibilidadArticulos.setText("Disponibilidad Articulos");
+        disponibilidadArticulos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/disponibilidadDeArticulos.png"))); // NOI18N
         disponibilidadArticulos.setToolTipText("Chequeo de Disponibilidad de Artículos");
         panelBotones.add(disponibilidadArticulos);
 
@@ -163,7 +163,7 @@ public class AplicacionGui extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 682, Short.MAX_VALUE))
+                .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 618, Short.MAX_VALUE))
         );
 
         pack();
