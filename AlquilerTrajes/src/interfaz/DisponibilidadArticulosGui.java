@@ -32,10 +32,6 @@ public class DisponibilidadArticulosGui extends javax.swing.JInternalFrame {
         return dateFecha;
     }
 
-    public JComboBox getComboDisponibilidad() {
-        return comboDisponibilidad;
-    }
-
     public JComboBox getComboTipo() {
         return comboTipo;
     }
@@ -70,10 +66,8 @@ public class DisponibilidadArticulosGui extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaDisponibilidadArticulos = new javax.swing.JTable();
-        comboDisponibilidad = new javax.swing.JComboBox();
         comboTipo = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -92,14 +86,14 @@ public class DisponibilidadArticulosGui extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Id", "Modelo", "Marca", "Tipo", "Talle", "Descripcion", "Precio", "Disponible", "Cant. Disp."
+                "Id", "Modelo", "Marca", "Tipo", "Talle", "Stock", "Descripcion", "Precio", "Disponible", "Cant. Disp."
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class, java.lang.Object.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -110,32 +104,32 @@ public class DisponibilidadArticulosGui extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tablaDisponibilidadArticulos.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(tablaDisponibilidadArticulos);
         if (tablaDisponibilidadArticulos.getColumnModel().getColumnCount() > 0) {
-            tablaDisponibilidadArticulos.getColumnModel().getColumn(0).setPreferredWidth(45);
+            tablaDisponibilidadArticulos.getColumnModel().getColumn(0).setResizable(false);
+            tablaDisponibilidadArticulos.getColumnModel().getColumn(0).setPreferredWidth(35);
             tablaDisponibilidadArticulos.getColumnModel().getColumn(1).setResizable(false);
             tablaDisponibilidadArticulos.getColumnModel().getColumn(2).setResizable(false);
             tablaDisponibilidadArticulos.getColumnModel().getColumn(3).setResizable(false);
+            tablaDisponibilidadArticulos.getColumnModel().getColumn(3).setPreferredWidth(40);
             tablaDisponibilidadArticulos.getColumnModel().getColumn(4).setResizable(false);
-            tablaDisponibilidadArticulos.getColumnModel().getColumn(4).setPreferredWidth(45);
+            tablaDisponibilidadArticulos.getColumnModel().getColumn(4).setPreferredWidth(35);
             tablaDisponibilidadArticulos.getColumnModel().getColumn(5).setResizable(false);
+            tablaDisponibilidadArticulos.getColumnModel().getColumn(5).setPreferredWidth(20);
             tablaDisponibilidadArticulos.getColumnModel().getColumn(6).setResizable(false);
-            tablaDisponibilidadArticulos.getColumnModel().getColumn(6).setPreferredWidth(45);
             tablaDisponibilidadArticulos.getColumnModel().getColumn(7).setResizable(false);
-            tablaDisponibilidadArticulos.getColumnModel().getColumn(7).setPreferredWidth(40);
+            tablaDisponibilidadArticulos.getColumnModel().getColumn(7).setPreferredWidth(35);
             tablaDisponibilidadArticulos.getColumnModel().getColumn(8).setResizable(false);
-            tablaDisponibilidadArticulos.getColumnModel().getColumn(8).setPreferredWidth(40);
+            tablaDisponibilidadArticulos.getColumnModel().getColumn(8).setPreferredWidth(25);
+            tablaDisponibilidadArticulos.getColumnModel().getColumn(9).setResizable(false);
+            tablaDisponibilidadArticulos.getColumnModel().getColumn(9).setPreferredWidth(20);
         }
-
-        comboDisponibilidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Disponibles", "Alquilados" }));
 
         comboTipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Todos", "Ambo", "Camisa", "Corbata", "Chaleco", "Cinto", "Pantalón", "Saco", "Zapato" }));
 
         jLabel4.setFont(new java.awt.Font("Century Schoolbook L", 3, 18)); // NOI18N
-        jLabel4.setText("Tipo");
-
-        jLabel5.setFont(new java.awt.Font("Century Schoolbook L", 3, 18)); // NOI18N
-        jLabel5.setText("Disponibilidad");
+        jLabel4.setText("Tipo de Artículo");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -151,15 +145,11 @@ public class DisponibilidadArticulosGui extends javax.swing.JInternalFrame {
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(dateFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(42, 42, 42)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(comboDisponibilidad, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(46, 46, 46)
+                        .addGap(69, 69, 69)
                         .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(comboTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(73, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -169,13 +159,11 @@ public class DisponibilidadArticulosGui extends javax.swing.JInternalFrame {
                     .addComponent(jLabel2)
                     .addComponent(dateFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(comboDisponibilidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(comboTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel4)
-                        .addComponent(jLabel5)))
+                        .addComponent(jLabel4)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         jScrollPane1.setViewportView(jPanel1);
@@ -196,12 +184,10 @@ public class DisponibilidadArticulosGui extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox comboDisponibilidad;
     private javax.swing.JComboBox comboTipo;
     private com.toedter.calendar.JDateChooser dateFecha;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -212,11 +198,9 @@ public class DisponibilidadArticulosGui extends javax.swing.JInternalFrame {
         ((DefaultTableModel)this.tablaDisponibilidadArticulos.getModel()).setRowCount(0);
         this.dateFecha.setCalendar(null);
         this.comboTipo.setSelectedItem("Todos");
-        this.comboDisponibilidad.setSelectedItem("Disponibles");
     }
     
     public void setActionListener(ActionListener lis) {
-        this.comboDisponibilidad.addActionListener(lis);
         this.comboTipo.addActionListener(lis);
     }
 }

@@ -82,4 +82,20 @@ public class BusquedaArticulo {
         BaseDatos.cerrarBase();
         return result;
     }
+    
+    /*
+    *Busqueda de Articulos por tipo
+    *Retorna una lista con los articulos que correspondan al tipo pasado por parametro
+    */
+    public List<Articulo> buscarArticulosPorTipo(String tipo) throws SQLException {
+        BaseDatos.abrirBase();
+        BaseDatos.openTransaction();
+        List<Articulo> result = null;
+        result = Articulo.where("tipo = ?", tipo);
+        BaseDatos.commitTransaction();
+        BaseDatos.cerrarBase();
+        return result;
+    }
+    
+    
 }
