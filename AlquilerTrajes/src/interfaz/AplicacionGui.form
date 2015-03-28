@@ -70,7 +70,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="panelBotones" alignment="0" pref="841" max="32767" attributes="0"/>
+          <Component id="panelBotones" alignment="0" max="32767" attributes="0"/>
           <Component id="contenedor" alignment="1" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
@@ -79,7 +79,7 @@
           <Group type="102" alignment="0" attributes="0">
               <Component id="panelBotones" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-              <Component id="contenedor" pref="682" max="32767" attributes="0"/>
+              <Component id="contenedor" pref="618" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -111,6 +111,14 @@
               <Image iconType="3" name="/interfaz/Icons/reservas_y_remitos.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Gesti&#xf3;n de Reservas y Alquileres"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="disponibilidadArticulos">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/interfaz/Icons/disponibilidadDeArticulos.png"/>
+            </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Chequeo de Disponibilidad de Art&#xed;culos"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="articulos">

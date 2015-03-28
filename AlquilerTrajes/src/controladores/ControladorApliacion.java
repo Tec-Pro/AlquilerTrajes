@@ -8,6 +8,7 @@ import interfaz.AplicacionGui;
 import interfaz.ArticuloGui;
 import interfaz.BajaGui;
 import interfaz.ClienteGui;
+import interfaz.DisponibilidadArticulosGui;
 import interfaz.GananciaGui;
 import interfaz.GestionReservasGui;
 import interfaz.RegistroAmboGui;
@@ -51,9 +52,11 @@ public class ControladorApliacion implements ActionListener {
     private final GestionReservasGui gestResGui;
     private final ReservaGui reservaGui;
     private final RemitoGui remitoGui;
+    private final DisponibilidadArticulosGui disponibilidadArticulosGui;
     private final ControladorRegistroAmbo controladorRegistroAmbo;
     private final GananciaGui gananciaGui;
     private final ControladorGanacia controladorGanancia;
+    private final ControladorDisponibilidadArticulos controladorDisponibilidadArticulos;
 
     public ControladorApliacion() throws JRException, ClassNotFoundException, SQLException, PropertyVetoException {
         try {
@@ -72,6 +75,7 @@ public class ControladorApliacion implements ActionListener {
         gestResGui = new GestionReservasGui();
         reservaGui = new ReservaGui();
         remitoGui = new RemitoGui();
+        disponibilidadArticulosGui = new DisponibilidadArticulosGui();
         gananciaGui = new GananciaGui();
         controladorVerBajas = new ControladorVerBajas(VerbajasGui);
         controladorBaja = new ControladorBaja(bajaGui);
@@ -80,6 +84,7 @@ public class ControladorApliacion implements ActionListener {
         controladorGestReserv = new ControladorGestionReservasYRemitos(gestResGui, reservaGui, remitoGui);
         controladorRegistroAmbo = new ControladorRegistroAmbo(registroAmbo);
         controladorGanancia = new ControladorGanacia(gananciaGui);
+        controladorDisponibilidadArticulos = new ControladorDisponibilidadArticulos(disponibilidadArticulosGui);
         aplicacionGui.getContenedor().add(articuloGui);
         aplicacionGui.getContenedor().add(clienteGui);
         aplicacionGui.getContenedor().add(bajaGui);
@@ -89,6 +94,7 @@ public class ControladorApliacion implements ActionListener {
         aplicacionGui.getContenedor().add(reservaGui);
         aplicacionGui.getContenedor().add(remitoGui);
         aplicacionGui.getContenedor().add(gananciaGui);
+        aplicacionGui.getContenedor().add(disponibilidadArticulosGui);
         aplicacionGui.setCursor(Cursor.DEFAULT_CURSOR);
         aplicacionGui.setVisible(true);
     }
@@ -126,6 +132,16 @@ public class ControladorApliacion implements ActionListener {
                 gestResGui.setVisible(true);
                 gestResGui.toFront();
                 gestResGui.setMaximum(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(ControladorApliacion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if(ae.getSource() == aplicacionGui.getDisponibilidadArticulos()){
+            try {
+                disponibilidadArticulosGui.limpiarComponentes();
+                disponibilidadArticulosGui.setVisible(true);
+                disponibilidadArticulosGui.toFront();
+                disponibilidadArticulosGui.setMaximum(true);
             } catch (PropertyVetoException ex) {
                 Logger.getLogger(ControladorApliacion.class.getName()).log(Level.SEVERE, null, ex);
             }

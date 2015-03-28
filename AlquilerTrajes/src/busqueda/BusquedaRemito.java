@@ -28,7 +28,7 @@ public class BusquedaRemito {
         BaseDatos.cerrarBase();
         return result;
     }
-
+    
     //busca un remito por su id
     public Remito buscarRemito(Object id) throws SQLException {
         BaseDatos.abrirBase();
