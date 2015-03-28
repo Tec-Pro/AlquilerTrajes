@@ -167,7 +167,7 @@ public class ControladorRegistroAmbo implements ActionListener {
                         am.set("precio_alquiler", Float.valueOf(registroAmboGui.getTotalFactura().getText()));
                         String marca = "";
                         String talle = "";
-                        int stock = 0;
+                        int stock = 99999;
                         for (int i = 0; i < tablaAmbo.getRowCount(); i++) {
                             if (i == tablaAmbo.getRowCount() - 1) {
                                 marca += tablaAmbo.getValueAt(i, 2);

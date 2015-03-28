@@ -10,8 +10,6 @@ import java.util.Iterator;
 import modelos.Ambo;
 import modelos.Articulo;
 import modelos.ArticulosAmbos;
-import org.javalite.activejdbc.ModelListener;
-
 /**
  *
  * @author jacinto
@@ -46,7 +44,7 @@ public class ABMAmbo {
                     "nombre", art.get("nombre"),
                     "marca", art.get("marca"),
                     "stock", art.get("stock"),
-                    "precio_alquiler", art.get("precio_alquiler"),
+                    "precio_alquiler", art.getString("precio_alquiler").replace(',', '.'),
                     "talle", art.get("talle"));
             ret = nuevo.saveIt();
             ultimoId = nuevo.getInteger("id");
@@ -85,7 +83,7 @@ public class ABMAmbo {
                     "marca", art.get("marca"),
                     "stock", art.get("stock"),
                     "descripcion", art.get("descripcion"),
-                    "precio_alquiler", art.get("precio_alquiler"),
+                    "precio_alquiler", art.getString("precio_alquiler").replace(',', '.'),
                     "talle", art.get("talle"));
             ret = viejo.saveIt();
         }

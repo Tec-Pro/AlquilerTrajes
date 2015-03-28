@@ -31,7 +31,6 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
     public ArticuloGui() {
         initComponents();
         tablaArticulosDefault = (DefaultTableModel) articulos.getModel(); //convierto la tabla
-
     }
 
     public void setActionListener(ActionListener lis) {

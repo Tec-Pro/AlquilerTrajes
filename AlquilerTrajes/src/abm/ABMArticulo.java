@@ -10,8 +10,6 @@ import java.util.Iterator;
 import modelos.Ambo;
 import modelos.Articulo;
 import modelos.ArticulosAmbos;
-import org.javalite.activejdbc.Model;
-
 /**
  *
  * @author nico
@@ -27,14 +25,14 @@ public class ABMArticulo {
     public boolean alta(Articulo art) throws SQLException {
         boolean ret = false;
         BaseDatos.abrirBase();
-        BaseDatos.openTransaction();
+        BaseDatos.openTransaction();        
         if (!findArticulo(art)) {
             Articulo nuevo = Articulo.create(
                     "modelo", art.get("modelo"),
                     "marca", art.get("marca"),
-                    "stock", art.get("stock"),
-                    "precio_compra", art.get("precio_compra"),
-                    "precio_alquiler", art.get("precio_alquiler"),
+                    "stock", art.get("stock"), 
+                    "precio_compra", art.getString("precio_compra").replace(',', '.'),
+                    "precio_alquiler", art.getString("precio_alquiler").replace(',', '.'),
                     "descripcion", art.get("descripcion"),
                     "talle", art.get("talle"),
                     "tipo", art.get("tipo"));
@@ -78,8 +76,8 @@ public class ABMArticulo {
                     "modelo", art.get("modelo"),
                     "marca", art.get("marca"),
                     "stock", art.get("stock"),
-                    "precio_compra", art.get("precio_compra"),
-                    "precio_alquiler", art.get("precio_alquiler"),
+                    "precio_compra", art.getString("precio_compra").replace(',', '.'),
+                    "precio_alquiler", art.getString("precio_alquiler").replace(',', '.'),
                     "descripcion", art.get("descripcion"),
                     "talle", art.get("talle"),
                     "tipo", art.get("tipo"));

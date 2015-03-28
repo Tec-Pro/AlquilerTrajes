@@ -63,7 +63,7 @@ public class ABMBaja {
                     "modelo", art.get("modelo"),
                     "marca", art.get("marca"),
                     "fecha", art.getDate("fecha"),
-                    "cobro", art.getFloat("cobro"),
+                    "cobro", art.getString("cobro").replace(',', '.'),
                     "descripcion", art.get("descripcion"),
                     "talle", art.get("talle"),
                     "tipo", art.get("tipo"));
