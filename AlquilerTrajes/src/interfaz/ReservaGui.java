@@ -5,6 +5,7 @@
  */
 package interfaz;
 
+import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
 import java.util.Date;
@@ -43,6 +44,10 @@ public class ReservaGui extends javax.swing.JInternalFrame {
         }else{
             return null;
         }
+    }
+
+    public JDateChooser getFechaEntregaReservaDateChooser() {
+        return fechaEntregaReserva;
     }
 
     public Date getFechaEntregaReservaDate(){

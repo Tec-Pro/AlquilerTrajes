@@ -53,6 +53,10 @@ public class RemitoGui extends javax.swing.JInternalFrame {
         return busquedaCodigoArticulo;
     }
 
+    public JDateChooser getFechaRemitoDateChooser() {
+        return jDateFechaRemito;
+    }
+    
     public String getFechaRemito() {
         if( jDateFechaRemito.getCalendar() !=null){
             int año = jDateFechaRemito.getCalendar().get(Calendar.YEAR);
