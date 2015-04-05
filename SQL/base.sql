@@ -91,6 +91,14 @@ CREATE  TABLE `alquilerTraje`.`ambos_remitos` (
   `remito_id` INT NOT NULL,
   PRIMARY KEY (`id`));
 
- GRANT ALL PRIVILEGES ON *.* TO 'tecpro'@'%'  IDENTIFIED BY 'tecpro'; 
- GRANT ALL PRIVILEGES ON *.* TO 'tecpro'@'localhost'  IDENTIFIED BY 'tecpro' WITH GRANT OPTION; 
+CREATE  TABLE `alquilerTraje`.`contadors` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `numero` INT NULL DEFAULT 0,
+  `clave1` INT NULL DEFAULT 0,
+  `clave2` INT NULL DEFAULT 0,
+  PRIMARY KEY (`id`) );
+
+INSERT INTO `alquilerTraje`.`contadors` (`numero`,`clave1`,`clave2`) VALUES (0,0,0);
+
+
 

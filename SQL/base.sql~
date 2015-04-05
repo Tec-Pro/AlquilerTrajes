@@ -76,7 +76,7 @@ CREATE  TABLE `alquilerTraje`.`remitos` (
   `cliente_id` INT NOT NULL,
   `total` FLOAT NOT NULL,
   `senia` FLOAT NOT NULL,
-  `cerrado` TINYINT(1) NOT NULL,
+  `cerrado` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`));
 
 CREATE  TABLE `alquilerTraje`.`articulos_remitos` (
@@ -91,6 +91,11 @@ CREATE  TABLE `alquilerTraje`.`ambos_remitos` (
   `remito_id` INT NOT NULL,
   PRIMARY KEY (`id`));
 
- GRANT ALL PRIVILEGES ON *.* TO 'tecpro'@'%'  IDENTIFIED BY 'tecpro'; 
- GRANT ALL PRIVILEGES ON *.* TO 'tecpro'@'localhost'  IDENTIFIED BY 'tecpro' WITH GRANT OPTION; 
+CREATE  TABLE `alquilerTraje`.`contadors` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `numero` INT NULL ,
+  `clave1` VARCHAR(45) NULL,
+  `clave2` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`) );
+
 

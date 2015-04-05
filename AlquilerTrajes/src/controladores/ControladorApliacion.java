@@ -11,6 +11,7 @@ import interfaz.ClienteGui;
 import interfaz.DisponibilidadArticulosGui;
 import interfaz.GananciaGui;
 import interfaz.GestionReservasGui;
+import interfaz.PeriodoDePrueba;
 import interfaz.RegistroAmboGui;
 import interfaz.RemitoGui;
 import interfaz.ReservaGui;
@@ -24,8 +25,10 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import modelos.Contador;
 import net.sf.jasperreports.engine.JRException;
 
 /**
@@ -100,7 +103,16 @@ public class ControladorApliacion implements ActionListener {
     }
 
     public static void main(String[] args) throws InterruptedException, ClassNotFoundException, SQLException, JRException, PropertyVetoException {
-        ControladorApliacion controladorAplicacion = new ControladorApliacion();
+        Contador c = new Contador();
+        c.sumar();
+        if (c.mayor30() || c.mayor60()){
+            PeriodoDePrueba p = new PeriodoDePrueba();
+            if (p.isVerificacion()){
+                  ControladorApliacion controladorAplicacion = new ControladorApliacion();
+            }            
+        } else {
+            ControladorApliacion controladorAplicacion = new ControladorApliacion();
+        }
     }
 
     @Override
